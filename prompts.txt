@@ -1,0 +1,5 @@
+1. execute md
+2. use light theme and make cvards like this and add image to cards dont add image to hero
+3. increase width size of cards  just like attached image with textured cards
+4. make the cards just like image attached
+5. make a text file of every prompt i have given u

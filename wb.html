@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stacked Cards - Flush Alignment</title>
+  <style>
+    /* 1. Global & Theme Setup */
+    :root {
+      --bg-dark: #0f0f1a;
+      --card-bg-1: #1e1e38;
+      --card-bg-2: #2d1b4e;
+      --card-bg-3: #581c87;
+      --text-main: #ffffff;
+      --text-muted: #a5b4fc;
+      --accent-neon: #a855f7;
+      
+      /* Enforcing uniform sizing for flat stacking */
+      --card-height: 420px; 
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* 2. Intro Spaces */
+    header {
+      height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 15px;
+      background: linear-gradient(to right, #ffffff, var(--text-muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 600px;
+    }
+
+    /* 3. The Refactored Stacking Engine */
+    .stack-wrapper {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 0 20px;
+      
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stack-card {
+      position: sticky;
+      /* FIX: Every card freezes at the exact same ceiling coordinate */
+      top: 12vh; 
+      
+      width: 100%;
+      height: var(--card-height);
+      
+      /* FIX: Margin controls how long a card stays on screen before being covered */
+      margin-bottom: 150px; 
+      
+      border-radius: 24px;
+      padding: 45px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      
+      /* Clean card overlay separators */
+      box-shadow: 0 -15px 35px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Assigning explicit background transitions */
+    .stack-card:nth-child(1) { background-color: var(--card-bg-1); }
+    .stack-card:nth-child(2) { background-color: var(--card-bg-2); }
+    .stack-card:nth-child(3) { background-color: var(--card-bg-3); }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent-neon);
+    }
+
+    .card-tag {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .card-body {
+      margin-top: 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .card-body h2 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      letter-spacing: -0.02em;
+    }
+
+    .card-body p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+    }
+
+    .card-footer {
+      margin-top: 20px;
+    }
+
+    .card-btn {
+      display: inline-block;
+      padding: 12px 28px;
+      background-color: var(--text-main);
+      color: var(--bg-dark);
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 12px;
+      transition: background-color 0.2s ease;
+    }
+
+    .card-btn:hover {
+      background-color: var(--accent-neon);
+      color: white;
+    }
+
+    /* Buffer element to hold the last card in position during scroll */
+    .scroll-spacer {
+      height: 30vh;
+    }
+
+    footer {
+      height: 40vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #06060b;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    footer p {
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 0.9rem;
+    }
+
+    /* Mobile Scaling Protection */
+    @media (max-width: 600px) {
+      header h1 { font-size: 2.2rem; }
+      .stack-card { height: auto; min-height: 400px; padding: 25px; margin-bottom: 100px; top: 8vh; }
+      .card-body h2 { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Ditch the Gaps</h1>
+    <p>Scroll down. The cards below are configured to glide seamlessly over one another flush against the layout guidelines.</p>
+  </header>
+
+  <main class="stack-wrapper">
+    
+    <div class="stack-card">
+      <div class="card-meta">
+        <span class="card-num">01</span>
+        <span class="card-tag">SAFETY</span>
+      </div>
+      <div class="card-body">
+        <h2>Anonymous Safe Spaces</h2>
+        <p>A completely secure ecosystem custom-tailored to remove identity indicators. Say what you need to say, completely judgment-free.</p>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="card-btn">Enter Safe Space</a>
+      </div>
+    </div>
+
+    <div class="stack-card">
+      <div class="card-meta">
+        <span class="card-num">02</span>
+        <span class="card-tag">COMMUNITY</span>
+      </div>
+      <div class="card-body">
+        <h2>Peer-to-Peer Networks</h2>
+        <p>Connect instantly with thousands of young advocates across the globe. Share stories, overcome systemic hurdles, and heal together.</p>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="card-btn">Find Peers</a>
+      </div>
+    </div>
+
+    <div class="stack-card">
+      <div class="card-meta">
+        <span class="card-num">03</span>
+        <span class="card-tag">RESOURCES</span>
+      </div>
+      <div class="card-body">
+        <h2>Digital Crisis Toolkits</h2>
+        <p>Access modern, clinical-grade mental health frameworks rewritten completely for digital-native generations. Instant help when it matters most.</p>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="card-btn">Download Toolkits</a>
+      </div>
+    </div>
+
+    <div class="scroll-spacer"></div>
+
+  </main>
+
+  <footer>
+    <p>© Flush Stack Interface Complete.</p>
+  </footer>
+
+</body>
+</html>

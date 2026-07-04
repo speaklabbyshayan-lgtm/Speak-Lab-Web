@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Details - SpeakLabs</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* Course Details Page specific layout */
+    .detail-wrapper {
+      max-width: 1200px;
+      width: 92%;
+      margin: 0 auto;
+      padding: 0 0 60px 0;
+      display: grid;
+      grid-template-columns: 1.8fr 1fr;
+      gap: 30px;
+    }
+    .detail-card {
+      border-radius: 35px;
+      padding: 40px;
+      position: relative;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      overflow: hidden;
+      margin-bottom: 30px;
+      color: #111;
+    }
+    .detail-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.55;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .detail-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Gradients perfectly matched with main page theme */
+    .theme-1 {
+      /* Matching Card 1 */
+      background: radial-gradient(circle at 10% 100%, rgba(225, 150, 60, 0.7) 0%, transparent 60%), linear-gradient(135deg, #d3cce3 0%, #e5ddd7 100%);
+    }
+    .theme-2 {
+      /* Matching Card 3 */
+      background: radial-gradient(circle at 30% 110%, rgba(103, 232, 249, 0.7) 0%, transparent 50%), linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(132, 204, 22, 0.4) 100%);
+    }
+    .theme-3 {
+      /* Matching Card 4 */
+      background: radial-gradient(circle at 30% 110%, rgba(254, 240, 138, 0.8) 0%, transparent 50%), linear-gradient(135deg, rgba(244, 63, 94, 0.3) 0%, rgba(225, 29, 72, 0.3) 100%);
+    }
+
+    .detail-card h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 30px;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    .overview-item {
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(10px);
+      padding: 18px 25px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    .overview-item h5 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: #333;
+      letter-spacing: 0.05em;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+    .overview-item p {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #000;
+    }
+
+    .curr-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(10px);
+      padding: 20px 25px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      margin-bottom: 15px;
+    }
+    .curr-item:last-child {
+      margin-bottom: 0;
+    }
+    .curr-icon {
+      background: #000;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+    .curr-content h4 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+    .curr-content p {
+      font-size: 0.95rem;
+      color: #222;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .sidebar .detail-card {
+      position: sticky;
+      top: 100px;
+    }
+
+    .price-box {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .price-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 800;
+      color: #333;
+      margin-bottom: 5px;
+    }
+    .price-amount {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: #000;
+      line-height: 1;
+      margin: 10px 0 5px 0;
+      letter-spacing: -0.05em;
+    }
+    .price-regular {
+      font-size: 1.1rem;
+      color: #444;
+      text-decoration: line-through;
+      font-weight: 700;
+    }
+    
+    .price-details {
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(10px);
+      padding: 25px;
+      border-radius: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      font-size: 0.95rem;
+      color: #222;
+    }
+    .price-row:last-child {
+      border-bottom: none;
+    }
+    .price-row strong {
+      color: #000;
+      font-weight: 800;
+    }
+    
+    .enroll-btn {
+      display: block;
+      text-align: center;
+      background: #000;
+      color: #fff;
+      padding: 20px;
+      border-radius: 40px;
+      font-weight: 800;
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      margin-top: 30px;
+    }
+    .enroll-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    @media (max-width: 900px) {
+      .detail-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .overview-grid {
+        grid-template-columns: 1fr;
+      }
+      .detail-card h2 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+
+  <meta property="og:title" content="SpeakLab - Communication & Confidence Program">
+  <meta property="og:description" content="Master Spoken English in 8 weeks. In-person classes at Punjab Tianjin University of Technology, Lahore. Only 20 seats available.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://speaklab.pk">
+  <meta property="og:image" content="https://speaklab.pk/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SpeakLab - Speak English with Confidence">
+  <meta name="twitter:description" content="8-week Communication & Confidence Program in Lahore. PKR 15,000 only.">
+  <meta name="description" content="SpeakLab offers an intensive 8-week Communication & Confidence Program in Lahore at Punjab Tianjin University of Technology. Learn Spoken English, Public Speaking, and Interview Skills.">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+</head>
+
+<body>
+
+  <!-- Matching Top Navigation from index.html -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="index.html" class="join-btn" style="text-decoration: none; color: #111; display: flex; align-items: center; gap: 8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        BACK TO HOME
+      </a>
+    </div>
+    <div class="nav-center">
+      <h2>Speak Lab</h2>
+    </div>
+    <div class="nav-right">
+      <a href="#pricing" class="donate-btn" style="text-decoration: none; color: #111;">ENROLL NOW</a>
+    </div>
+  </nav>
+
+  <!-- Matching Hero Section -->
+  <header class="hero-section" style="padding: 80px 20px 80px 20px;">
+    <div class="hero-content">
+      <h1 class="gradient-heading" style="font-size: 4rem;">Communication &<br>Confidence Program</h1>
+      <p style="font-size: 1.2rem;">Transform your English. Transform your life. Step into the professional world with unshakeable confidence.</p>
+    </div>
+  </header>
+
+  <!-- Content section with matched texture & gradient styling -->
+  <main class="detail-wrapper">
+    
+    <!-- Left Column: Details -->
+    <div class="main-details">
+      
+      <!-- Overview Card -->
+      <section id="overview" class="detail-card theme-1">
+        <div class="detail-content">
+          <h2>PROGRAM OVERVIEW</h2>
+          <div class="overview-grid">
+            <div class="overview-item">
+              <h5>Duration</h5>
+              <p id="prog-duration">8 Weeks (24 Sessions)</p>
+            </div>
+            <div class="overview-item">
+              <h5>Location</h5>
+              <p id="prog-location">Punjab Tianjin University, Lahore</p>
+            </div>
+            <div class="overview-item">
+              <h5>Schedule</h5>
+              <p id="prog-schedule">Mon, Wed, Fri</p>
+            </div>
+            <div class="overview-item">
+              <h5>Timing</h5>
+              <p id="prog-timing">5:00 PM – 6:45 PM</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Curriculum Card -->
+      <section id="curriculum" class="detail-card theme-2">
+        <div class="detail-content">
+          <h2>WHAT YOU'LL LEARN</h2>
+          <div class="curriculum-list" id="curriculum-container">
+            <div class="curr-item">
+              <div class="curr-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <div class="curr-content">
+                <h4>Spoken English Mastery</h4>
+                <p>Speak naturally and fluently in any situation without hesitation.</p>
+              </div>
+            </div>
+            <div class="curr-item">
+              <div class="curr-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <div class="curr-content">
+                <h4>Public Speaking & Confidence</h4>
+                <p>Overcome stage fright and build unshakeable self-belief.</p>
+              </div>
+            </div>
+            <div class="curr-item">
+              <div class="curr-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <div class="curr-content">
+                <h4>Professional Communication</h4>
+                <p>Tailored soft skills and etiquette for success in the corporate world.</p>
+              </div>
+            </div>
+            <div class="curr-item">
+              <div class="curr-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <div class="curr-content">
+                <h4>Interview Preparation</h4>
+                <p>Hands-on practice to help you ace your job interviews.</p>
+              </div>
+            </div>
+            <div class="curr-item">
+              <div class="curr-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <div class="curr-content">
+                <h4>Critical Thinking & Expression</h4>
+                <p>Learn to think on your feet and respond intelligently.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Right Column: Pricing Sidebar -->
+    <aside class="sidebar">
+      <div id="pricing" class="detail-card theme-3">
+        <div class="detail-content">
+          <div class="price-box">
+            <div class="price-title">Special Batch Fee</div>
+            <div class="price-amount" id="prog-fee">PKR 15k</div>
+            <div class="price-regular">Regular Fee: <span id="prog-reg-fee">PKR 20,000</span></div>
+          </div>
+          
+          <div class="price-details">
+            <div class="price-row">
+              <span>Registration Fee</span>
+              <strong id="prog-reg-amount">PKR 5,000</strong>
+            </div>
+            <div class="price-row" style="font-size: 0.8rem; color: #444; border-bottom: 1px solid rgba(0,0,0,0.1); padding-top: 0;">
+              <span>(Secures your seat)</span>
+            </div>
+            <div class="price-row" style="padding-top: 15px;">
+              <span>Remaining Balance</span>
+              <strong id="prog-rem-amount">PKR 10,000</strong>
+            </div>
+            <div class="price-row" style="font-size: 0.8rem; color: #444; padding-top: 0; border: none;">
+              <span id="prog-balance-due">(Due by 5th of next month)</span>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 25px;">
+            <span style="background: rgba(0,0,0,0.8); color: #fff; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em;"><span id="seats-available">LIMITED</span> SEATS AVAILABLE</span>
+          </div>
+
+          <a href="#" class="enroll-btn">ENROLL NOW</a>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <footer style="text-align: center; padding: 40px 20px; color: #888; font-size: 0.85rem;">
+    <p>© 2025 SpeakLab. All rights reserved.</p>
+  </footer>
+
+    <script>
+    fetch('./data.json')
+      .then(res => res.json())
+      .then(data => {
+        const update = (id, text) => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = text;
+        };
+
+        // Site
+        update('site-tagline', data.site.tagline);
+        update('footer-location', `VENUE: ${data.site.location}`);
+        update('contact-email-text', data.site.email);
+        update('contact-email-text2', data.site.email);
+        const emailLink = document.getElementById('contact-email-link');
+        if (emailLink) emailLink.href = `mailto:${data.site.email}`;
+
+        // Program
+        update('prog-name', data.program.name);
+        update('prog-duration', `${data.program.duration} (${data.program.sessions})`);
+        update('prog-schedule', data.program.schedule);
+        update('prog-timing', data.program.timing);
+        update('prog-location', data.site.location);
+        update('tag-duration', data.program.duration.toUpperCase());
+        update('tag-sessions', data.program.sessions.toUpperCase());
+        update('prog-batch', data.program.batch);
+        update('prog-fee', `PKR ${data.program.fee.toLocaleString()}`);
+        update('prog-reg-fee', `PKR ${data.program.regularFee.toLocaleString()}`);
+        update('prog-reg-amount', `PKR ${data.program.registrationFee.toLocaleString()}`);
+        const rem = data.program.fee - data.program.registrationFee;
+        update('prog-rem-amount', `PKR ${rem.toLocaleString()}`);
+        update('prog-balance-due', data.program.balanceDue);
+        update('cta-batch', `JOIN ${data.program.batch.toUpperCase()}`);
+        update('seats-available', data.program.seats);
+
+        // Instructor
+        update('inst-name', data.instructor.name);
+        update('inst-bio', data.instructor.bio);
+
+        // Faq
+        const faqContainer = document.getElementById('faq-container');
+        if (faqContainer && data.faqs) {
+          const seeAllBtn = faqContainer.parentElement.querySelector('.faq-see-all');
+          const isIndex = !!seeAllBtn;
+          
+          faqContainer.innerHTML = ''; 
+          data.faqs.forEach((faq, index) => {
+            const isHidden = (isIndex && index >= 3) ? 'faq-hidden' : '';
+            faqContainer.innerHTML += `
+              <div class="faq-item ${isHidden}">
+                <button class="faq-question">${faq.q}<span class="faq-icon">+</span></button>
+                <div class="faq-answer"><p>${faq.a}</p></div>
+              </div>
+            `;
+          });
+        }
+
+        // Curriculum
+        const currContainer = document.getElementById('curriculum-container');
+        if (currContainer && data.curriculum) {
+          currContainer.innerHTML = '';
+          data.curriculum.forEach(item => {
+            currContainer.innerHTML += `
+              <div class="curr-item">
+                <div class="curr-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="curr-content">
+                  <h4>${item.title}</h4>
+                  <p>${item.desc}</p>
+                </div>
+              </div>
+            `;
+          });
+        }
+      })
+      .catch(err => console.error('Failed to load data.json', err));
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

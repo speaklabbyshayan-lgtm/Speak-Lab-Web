@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpeakLabs - Contact Us</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    .contact-container { max-width: 1100px; margin: 0 auto; padding: 40px 20px 80px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    @media (max-width: 768px) { .contact-container { grid-template-columns: 1fr; } }
+    .contact-card { background: radial-gradient(circle at 10% 100%, rgba(225, 150, 60, 0.9) 0%, transparent 60%), linear-gradient(135deg, #d3cce3 0%, #e5ddd7 100%); border-radius: 30px; padding: 40px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    .contact-info-item { font-size: 1.1rem; color: #333; }
+    .contact-info-item strong { display: block; font-size: 1.3rem; margin-bottom: 5px; color: #000; }
+    .contact-form { background: #fff; padding: 40px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+    .contact-form h3 { font-size: 2rem; margin-bottom: 20px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
+    .form-group input, .form-group textarea { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; font-size: 1rem; }
+    .contact-form button { padding: 14px 34px; border-radius: 40px; background-color: #000; color: #c0f4f9; border: none; font-weight: 700; cursor: pointer; width: 100%; font-size: 1.1rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 0 12px rgba(0, 255, 255, 0.2); }
+    .contact-form button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 255, 255, 0.3); }
+    .wa-cta { text-align: center; margin-top: 20px; padding-bottom: 80px;}
+    .btn-whatsapp { display: inline-block; padding: 16px 40px; background: #25D366; color: #fff; font-weight: 700; border-radius: 40px; text-decoration: none; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); transition: transform 0.2s; }
+    .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6); }
+  </style>
+
+  <meta property="og:title" content="SpeakLab - Communication & Confidence Program">
+  <meta property="og:description" content="Master Spoken English in 8 weeks. In-person classes at Punjab Tianjin University of Technology, Lahore. Only 20 seats available.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://speaklab.pk">
+  <meta property="og:image" content="https://speaklab.pk/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SpeakLab - Speak English with Confidence">
+  <meta name="twitter:description" content="8-week Communication & Confidence Program in Lahore. PKR 15,000 only.">
+  <meta name="description" content="SpeakLab offers an intensive 8-week Communication & Confidence Program in Lahore at Punjab Tianjin University of Technology. Learn Spoken English, Public Speaking, and Interview Skills.">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+</head>
+<body>
+
+  <!-- Top Navigation (Light Theme) -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <div class="menu-wrapper" style="position: relative;">
+        <button class="menu-btn" aria-label="Menu" onclick="document.getElementById('mobile-dropdown').classList.toggle('show')">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <div id="mobile-dropdown" class="dropdown-content">
+          <h3 class="dropdown-header">SPEAKLAB</h3>
+          <ul class="dropdown-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="course-details.html">Our Program</a></li>
+            <li><a href="about.html#team">Meet The Team</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="venue.html">Venue</a></li>
+          </ul>
+          <a href="login.html" class="speaklab-join-btn" style="padding: 6px 16px; font-size: 0.7rem; color: #ffffff !important; margin-top: 10px;">LOG IN / SIGN UP</a>
+        </div>
+      </div>
+      <a href="#" class="speaklab-join-btn"
+        style="padding: 6px 16px; font-size: 0.7rem; color: #ffffff !important;">JOIN JULY BATCH</a>
+    </div>
+    <div class="nav-center">
+      <h2>Speak Lab</h2>
+    </div>
+    <div class="nav-right">
+      <button class="search-btn" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
+      <a href="#" class="donate-btn">❤️ GET STARTED</a>
+    </div>
+  </nav>
+
+  <header class="hero-section">
+    <div class="hero-content">
+      <h1 class="gradient-heading">Get In Touch</h1>
+      <p>We're here to help you start your journey</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="contact-container">
+      <div class="contact-card">
+        <div class="contact-info-item">
+          <strong>Email</strong>
+          <span id="contact-email-text2">support@speaklab.pk</span>
+        </div>
+        <div class="contact-info-item">
+          <strong>WhatsApp</strong>
+          Number coming soon
+        </div>
+        <div class="contact-info-item">
+          <strong>Location</strong>
+          <span id="prog-location">Punjab Tianjin University of Technology, Lahore</span>
+        </div>
+        <div class="contact-info-item">
+          <strong>Hours</strong>
+          <span id="prog-schedule">Mon, Wed, Fri</span> — <span id="prog-timing">5:00 PM to 6:45 PM</span>
+        </div>
+      </div>
+      
+      <div class="contact-form">
+        <h3>Send us a message</h3>
+        <form action="mailto:support@speaklab.pk" method="post" enctype="text/plain">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="name" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label>WhatsApp Number</label>
+            <input type="text" name="whatsapp" required>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea name="message" rows="4" required></textarea>
+          </div>
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+    </div>
+    <div class="wa-cta">
+      <a href="https://wa.me/" target="_blank" class="btn-whatsapp">Chat With Us on WhatsApp</a>
+    </div>
+  </main>
+
+  <footer class="dtl-footer">
+    <div class="dtl-footer-inner">
+      <!-- 1. TOP CALL-TO-ACTION (CTA) SECTION -->
+      <div class="speaklab-bottom cta-section">
+        <div class="dtl-bottom-left">
+          <h2>SPEAK WITH CONFIDENCE.<br>LEAD WITH IMPACT.</h2>
+          <p>Join Pakistan's most practical English communication program.</p>
+          <a href="#" class="speaklab-join-btn">JOIN JULY BATCH</a>
+        </div>
+        <div class="dtl-bottom-right">
+          <div class="dtl-graphic">
+            <span class="emoji-circle circle-lg rot-left" style="top:8%; left:18%;">🎤</span>
+            <span class="emoji-circle circle-sm rot-right" style="top:42%; left:5%;">💬</span>
+            <span class="emoji-circle circle-md rot-left" style="top:62%; left:32%;">🏆</span>
+            <span class="emoji-circle circle-lg rot-right" style="top:18%; left:52%;">⭐</span>
+            <span class="emoji-circle circle-md rot-left" style="top:48%; left:72%;">📚</span>
+
+            <div class="dtl-badge" style="top:30%; left:10%; transform:rotate(-15deg);">PUBLIC SPEAKING</div>
+            <div class="dtl-badge" style="top:80%; left:20%;">COMMUNICATION</div>
+            <div class="dtl-badge" style="top:75%; left:45%; transform:rotate(10deg);">CONFIDENCE</div>
+            <div class="dtl-badge" style="top:25%; left:85%; transform:rotate(45deg);">ENGLISH</div>
+            <div class="dtl-badge" style="top:70%; left:80%; transform:rotate(-20deg);">LEADERSHIP</div>
+
+            <div class="dtl-star">✨</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="footer-divider">
+
+      <!-- 2. MIDDLE LINKS GRID (4 Columns) -->
+      <div class="dtl-footer-top links-grid">
+        <div class="dtl-col">
+          <h3>SPEAKLAB</h3>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="course-details.html">Our Program</a></li>
+            <li><a href="about.html#team">Meet The Team</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="venue.html">Venue</a></li>
+          </ul>
+        </div>
+        <div class="dtl-col">
+          <h3>QUICK LINKS</h3>
+          <ul>
+            <li><a href="course-details.html">Communication Program</a></li>
+            <li><a href="course-details.html#pricing">July Batch Details</a></li>
+            <li><a href="course-details.html#pricing">Fee Structure</a></li>
+            <li><a href="enroll.html">Enroll Now</a></li>
+            <li><a href="https://wa.me/" target="_blank">WhatsApp Us</a></li>
+          </ul>
+        </div>
+        <div class="dtl-col">
+          <h3>PROGRAM</h3>
+          <ul>
+            <li><a href="course-details.html#curriculum">Spoken English</a></li>
+            <li><a href="course-details.html#curriculum">Public Speaking</a></li>
+            <li><a href="course-details.html#curriculum">Interview Prep</a></li>
+            <li><a href="course-details.html#curriculum">Confidence Building</a></li>
+            <li><a href="course-details.html#curriculum">Critical Thinking</a></li>
+          </ul>
+        </div>
+        <div class="dtl-col dtl-col-right stay-connected">
+          <div class="dtl-newsletter">
+            <h3>GET EARLY ACCESS</h3>
+            <p class="subtext">Register your interest and we'll contact you on WhatsApp!</p>
+            <div class="dtl-input-group">
+              <input type="text" placeholder="Enter your WhatsApp number...">
+              <button type="button">ENROLL</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="footer-divider">
+
+      <!-- 3. BOTTOM LEGAL & SOCIAL BAR (Inside dark box) -->
+      <div class="dtl-footer-legal bottom-bar">
+        <div class="legal-left">
+          <p>VENUE: Punjab Tianjin University of Technology, Lahore</p>
+          <p class="copyright">© 2025 SpeakLab. All rights reserved.</p>
+        </div>
+        <div class="legal-right">
+          <div class="follow-us-section">
+            <span>FOLLOW US</span>
+            <div class="dtl-socials">
+              <a href="#" class="social-icon fb"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                  <path
+                    d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V15.3h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 3.3h-2.33v6.579C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z" />
+                </svg></a>
+              <a href="#" class="social-icon ig"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                  <path
+                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+                </svg></a>
+              <a href="#" class="social-icon yt"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                  <path
+                    d="M21.582 6.186a2.663 2.663 0 00-1.875-1.884C18.053 3.86 12 3.86 12 3.86s-6.053 0-7.707.442a2.662 2.662 0 00-1.875 1.884C1.97 7.847 1.97 12 1.97 12s0 4.153.448 5.814a2.66 2.66 0 001.875 1.884C5.947 20.14 12 20.14 12 20.14s6.053 0 7.707-.442a2.66 2.66 0 001.875-1.884C22.03 16.153 22.03 12 22.03 12s0-4.153-.448-5.814zM9.99 15.485V8.515L15.933 12l-5.943 3.485z" />
+                </svg></a>
+            </div>
+          </div>
+          <div class="legal-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms</a>
+            <a href="#">Contact</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dtl-chat-icon">
+      <svg viewBox="0 0 24 24" width="30" height="30" fill="#000">
+        <path
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-3-9c.83 0 1.5-.67 1.5-1.5S9.83 8 9 8s-1.5.67-1.5 1.5S8.17 11 9 11zm6 0c.83 0 1.5-.67 1.5-1.5S15.83 8 15 8s-1.5.67-1.5 1.5S14.17 11 15 11zm-3 5.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
+      </svg>
+    </div>
+  </footer>
+    <script>
+    fetch('./data.json')
+      .then(res => res.json())
+      .then(data => {
+        const update = (id, text) => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = text;
+        };
+
+        // Site
+        update('site-tagline', data.site.tagline);
+        update('footer-location', `VENUE: ${data.site.location}`);
+        update('contact-email-text', data.site.email);
+        update('contact-email-text2', data.site.email);
+        const emailLink = document.getElementById('contact-email-link');
+        if (emailLink) emailLink.href = `mailto:${data.site.email}`;
+
+        // Program
+        update('prog-name', data.program.name);
+        update('prog-duration', `${data.program.duration} (${data.program.sessions})`);
+        update('prog-schedule', data.program.schedule);
+        update('prog-timing', data.program.timing);
+        update('prog-location', data.site.location);
+        update('tag-duration', data.program.duration.toUpperCase());
+        update('tag-sessions', data.program.sessions.toUpperCase());
+        update('prog-batch', data.program.batch);
+        update('prog-fee', `PKR ${data.program.fee.toLocaleString()}`);
+        update('prog-reg-fee', `PKR ${data.program.regularFee.toLocaleString()}`);
+        update('prog-reg-amount', `PKR ${data.program.registrationFee.toLocaleString()}`);
+        const rem = data.program.fee - data.program.registrationFee;
+        update('prog-rem-amount', `PKR ${rem.toLocaleString()}`);
+        update('prog-balance-due', data.program.balanceDue);
+        update('cta-batch', `JOIN ${data.program.batch.toUpperCase()}`);
+        update('seats-available', data.program.seats);
+
+        // Instructor
+        update('inst-name', data.instructor.name);
+        update('inst-bio', data.instructor.bio);
+
+        // Faq
+        const faqContainer = document.getElementById('faq-container');
+        if (faqContainer && data.faqs) {
+          const seeAllBtn = faqContainer.parentElement.querySelector('.faq-see-all');
+          const isIndex = !!seeAllBtn;
+          
+          faqContainer.innerHTML = ''; 
+          data.faqs.forEach((faq, index) => {
+            const isHidden = (isIndex && index >= 3) ? 'faq-hidden' : '';
+            faqContainer.innerHTML += `
+              <div class="faq-item ${isHidden}">
+                <button class="faq-question">${faq.q}<span class="faq-icon">+</span></button>
+                <div class="faq-answer"><p>${faq.a}</p></div>
+              </div>
+            `;
+          });
+        }
+
+        // Curriculum
+        const currContainer = document.getElementById('curriculum-container');
+        if (currContainer && data.curriculum) {
+          currContainer.innerHTML = '';
+          data.curriculum.forEach(item => {
+            currContainer.innerHTML += `
+              <div class="curr-item">
+                <div class="curr-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="curr-content">
+                  <h4>${item.title}</h4>
+                  <p>${item.desc}</p>
+                </div>
+              </div>
+            `;
+          });
+        }
+      })
+      .catch(err => console.error('Failed to load data.json', err));
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

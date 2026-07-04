@@ -1,0 +1,90 @@
+{
+  "site": {
+    "name": "SpeakLab",
+    "tagline": "Speak. Communicate. Succeed.",
+    "email": "support@speaklab.pk",
+    "whatsapp": "",
+    "location": "Punjab Tianjin University of Technology, Lahore"
+  },
+  "program": {
+    "name": "Communication & Confidence Program",
+    "duration": "8 Weeks",
+    "sessions": "24 Sessions",
+    "schedule": "Monday, Wednesday, Friday",
+    "timing": "5:00 PM to 6:45 PM",
+    "batch": "June Batch",
+    "seats": 20,
+    "fee": 15000,
+    "regularFee": 20000,
+    "registrationFee": 5000,
+    "balanceDue": "5th of next month"
+  },
+  "instructor": {
+    "name": "Sir Shayan",
+    "bio": "An experienced English communication coach with a passion for helping students unlock their true potential. His dynamic teaching style combines theory with real-world practice, making every class engaging and impactful."
+  },
+  "curriculum": [
+    {
+      "title": "Spoken English Mastery",
+      "desc": "Speak naturally and fluently in any situation without hesitation."
+    },
+    {
+      "title": "Public Speaking & Confidence",
+      "desc": "Overcome stage fright and build unshakeable self-belief."
+    },
+    {
+      "title": "Professional Communication",
+      "desc": "Tailored soft skills and etiquette for success in the corporate world."
+    },
+    {
+      "title": "Interview Preparation",
+      "desc": "Hands-on practice to help you ace your job interviews."
+    },
+    {
+      "title": "Critical Thinking & Expression",
+      "desc": "Learn to think on your feet and respond intelligently."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "What is the Communication & Confidence Program?",
+      "a": "It is an intensive 8-week English communication course held at Punjab Tianjin University of Technology, Lahore. Classes run Monday, Wednesday, and Friday from 5:00 PM to 6:45 PM — 24 total sessions."
+    },
+    {
+      "q": "Who is this program designed for?",
+      "a": "Students, fresh graduates, and young professionals who want to speak English confidently in interviews, workplaces, and everyday conversations."
+    },
+    {
+      "q": "What will I learn in 8 weeks?",
+      "a": "Spoken English, Professional Communication, Public Speaking, Interview Preparation, Critical Thinking, and Confidence Building."
+    },
+    {
+      "q": "How much does the program cost?",
+      "a": "Special June Batch fee is PKR 15,000 (regular PKR 20,000). Secure your seat with PKR 5,000 registration fee, balance due by 5th of next month."
+    },
+    {
+      "q": "How many seats are available?",
+      "a": "Only 20 seats are available for the June Batch. Once filled, registration closes."
+    },
+    {
+      "q": "How do I enroll?",
+      "a": "Click Enroll Now, fill in your details, and our team will contact you on WhatsApp to confirm your seat and share payment details."
+    },
+    {
+      "q": "Will this program help me in job interviews?",
+      "a": "Yes. Interview Preparation is a core module. You will practice real scenarios and develop the communication skills employers look for."
+    },
+    {
+      "q": "Is the class online or in-person?",
+      "a": "Classes are in-person at Punjab Tianjin University of Technology, Lahore."
+    },
+    {
+      "q": "What is the contact email?",
+      "a": "You can reach us at support@speaklab.pk and our team will respond within 24 hours."
+    },
+    {
+      "q": "Can I pay in installments?",
+      "a": "Yes. Pay PKR 5,000 to reserve your seat, remaining PKR 10,000 due by 5th of next month."
+    }
+  ]
+}
