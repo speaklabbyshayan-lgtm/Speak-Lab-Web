@@ -10,6 +10,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -27,13 +28,16 @@ body {
   align-items: center;
   padding: 18px 40px;
   background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   position: sticky;
   top: 0;
   z-index: 100;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .nav-left,
@@ -117,6 +121,9 @@ body {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: colorFlow 8s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 @keyframes colorFlow {
@@ -244,6 +251,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .stack-card {
@@ -263,6 +273,8 @@ body {
   /* Micro-animation transitions */
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
   will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 
@@ -537,6 +549,9 @@ body {
       #ff455b);
   animation: rotate-gradient 4s linear infinite;
   z-index: -2;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .speaklab-join-btn::after {
@@ -641,6 +656,9 @@ body {
   backdrop-filter: blur(5px);
   letter-spacing: 0.05em;
   white-space: nowrap;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .dtl-star {
@@ -1046,6 +1064,9 @@ body {
   animation: blob-morph 12s ease-in-out infinite alternate;
   border: none;
   margin: 0 auto;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 @keyframes blob-morph {
@@ -1086,6 +1107,9 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   color: #fff;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .ai-card-content h2 {
@@ -1422,5 +1446,12 @@ body {
   .topic-tag {
     font-size: 0.65rem;
     padding: 6px 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }
