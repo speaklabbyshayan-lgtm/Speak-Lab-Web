@@ -412,31 +412,42 @@ body {
   .stack-card {
     flex-direction: column-reverse;
     /* Image on top */
-    height: auto;
-    padding: 20px;
-    gap: 16px;
-    border-radius: 32px;
+    height: 460px;
+    top: 90px;
+    padding: 18px;
+    gap: 14px;
+    border-radius: 30px;
   }
 
   .card-left {
     padding: 0;
     align-items: flex-start;
     text-align: left;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   .card-left h2 {
-    font-size: 2.2rem;
-    margin-bottom: 8px;
+    font-size: 1.9rem;
+    margin-bottom: 6px;
     line-height: 1.1;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 
   .card-left p {
-    font-size: 1rem;
-    margin-bottom: 20px;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
     max-width: 100%;
-    color: #222;
+    color: #333;
     line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .card-tags {
@@ -449,15 +460,16 @@ body {
     border: 1.5px solid rgba(255, 255, 255, 0.6);
     color: #ffffff;
     box-shadow: none;
-    padding: 14px 20px;
+    padding: 12px 20px;
     font-size: 0.95rem;
+    border-radius: 50px;
   }
 
   .card-right {
-    height: 220px;
+    height: 200px;
     margin-top: 0;
     flex: none;
-    border-radius: 24px;
+    border-radius: 20px;
     width: 100%;
   }
 
