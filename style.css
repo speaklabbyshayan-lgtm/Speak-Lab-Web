@@ -412,7 +412,9 @@ body {
   .stack-card {
     flex-direction: column-reverse;
     /* Image on top */
-    height: 460px;
+    height: calc(100vh - 130px);
+    max-height: 490px;
+    min-height: 420px;
     top: 110px;
     padding: 18px;
     gap: 14px;
