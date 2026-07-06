@@ -413,10 +413,14 @@ body {
     flex-direction: column-reverse;
     /* Image on top */
     height: 460px;
-    top: 90px;
+    top: 110px;
     padding: 18px;
     gap: 14px;
     border-radius: 30px;
+  }
+
+  .stack-card::before {
+    display: none; /* Removes heavy noise filter for smooth scrolling on mobile */
   }
 
   .card-left {
@@ -443,11 +447,22 @@ body {
     max-width: 100%;
     color: #333;
     line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 5px;
+  }
+
+  .card-left p::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .card-left p::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .card-left p::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
   }
 
   .card-tags {
