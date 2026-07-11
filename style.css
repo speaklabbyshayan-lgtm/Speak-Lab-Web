@@ -13,12 +13,29 @@
   -webkit-overflow-scrolling: touch;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: 'Outfit', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-light);
   color: var(--text-main);
   overflow-x: hidden;
   line-height: 1.6;
+  text-rendering: optimizeSpeed;
+}
+
+/* Performance: Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Nav */
@@ -38,6 +55,7 @@ body {
   will-change: transform;
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+  contain: layout style paint;
 }
 
 .nav-left,
@@ -159,6 +177,10 @@ body {
   background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   opacity: 0.025;
   pointer-events: none;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  contain: layout style paint;
 }
 
 .hero-content {
@@ -180,9 +202,10 @@ body {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: colorFlow 8s linear infinite;
-  will-change: transform;
+  will-change: background-position;
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+  contain: layout style paint;
 }
 
 @keyframes colorFlow {
@@ -281,6 +304,7 @@ body {
   will-change: transform;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  contain: layout style paint;
 }
 
 .stack-card {
@@ -302,6 +326,8 @@ body {
   will-change: transform;
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+  contain: layout style paint;
+  content-visibility: auto;
 }
 
 
@@ -592,6 +618,10 @@ body {
   border: none;
   transition: transform 0.2s, color 0.2s;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  contain: layout style paint;
 }
 
 .speaklab-join-btn::before {
@@ -669,6 +699,10 @@ body {
   cursor: pointer;
   z-index: 2;
   box-sizing: border-box;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  contain: layout style paint;
 }
 
 .emoji-circle.circle-sm {
@@ -722,6 +756,7 @@ body {
   will-change: transform;
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+  contain: layout style paint;
 }
 
 .dtl-star {
@@ -1129,9 +1164,10 @@ body {
   animation: blob-morph 12s ease-in-out infinite alternate;
   border: none;
   margin: 0 auto;
-  will-change: transform;
+  will-change: border-radius, transform;
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+  contain: layout style paint;
 }
 
 @keyframes blob-morph {
@@ -1159,6 +1195,10 @@ body {
   mix-blend-mode: overlay;
   pointer-events: none;
   z-index: 1;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  contain: layout style paint;
 }
 
 .ai-card-content {
@@ -1186,6 +1226,7 @@ body {
   will-change: transform;
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+  contain: layout style paint;
 }
 
 .ai-card-content h2 {
@@ -1220,8 +1261,12 @@ body {
   text-decoration: none;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  contain: layout style paint;
 }
 
 .ai-cta-btn:hover {
@@ -1283,6 +1328,10 @@ body {
   box-shadow: 0 20px 50px rgba(15, 118, 110, 0.3);
   margin-top: -80px;
   /* Overlaps the section line by half */
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  contain: layout style paint;
 }
 
 .support-noise {
@@ -1293,6 +1342,10 @@ body {
   mix-blend-mode: overlay;
   pointer-events: none;
   z-index: 1;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  contain: layout style paint;
 }
 
 .support-content {
@@ -1404,6 +1457,10 @@ body {
   overflow: hidden;
   background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%);
   box-shadow: 0 20px 50px rgba(30, 58, 138, 0.2);
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  contain: layout style paint;
 }
 
 .faq-noise {
@@ -1596,6 +1653,10 @@ body {
 .hero-section.inner-page .gradient-heading {
   font-size: clamp(2.5rem, 6vw, 4rem) !important;
   margin-bottom: 10px !important;
+  will-change: background-position;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  contain: layout style paint;
 }
 .hero-section.inner-page .hero-content p {
   color: #555 !important;

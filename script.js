@@ -102,23 +102,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 4. STICKY NAV SHADOW
+  // 4. STICKY NAV SHADOW - Optimized with passive listener and debouncing
   const nav = document.querySelector('.top-nav');
   if (nav) {
     nav.style.transition = 'box-shadow 0.3s ease';
+    let scrollTimeout;
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 10) {
-        nav.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
-      } else {
-        nav.style.boxShadow = 'none';
-      }
-    });
+      if (scrollTimeout) return;
+      scrollTimeout = setTimeout(() => {
+        if (window.scrollY > 10) {
+          nav.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+        } else {
+          nav.style.boxShadow = 'none';
+        }
+        scrollTimeout = null;
+      }, 16); // ~60fps
+    }, { passive: true });
   }
 
-  // 5. ENROLL BUTTON PULSE
-  const elements = document.querySelectorAll('button, a');
-  elements.forEach(el => {
-    if (el.textContent.trim().toUpperCase() === 'ENROLL NOW') {
+  // 5. ENROLL BUTTON PULSE - More specific selector for performance
+  const enrollButtons = document.querySelectorAll('.speaklab-join-btn, .enroll-btn, .btn-primary');
+  enrollButtons.forEach(el => {
+    if (el.textContent.trim().toUpperCase().includes('ENROLL') || el.textContent.trim().toUpperCase().includes('JOIN')) {
       el.classList.add('btn-pulse');
     }
   });
