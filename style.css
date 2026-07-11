@@ -306,18 +306,7 @@ body {
 
 
 
-/* Texture Overlay */
-.stack-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 45px;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.55;
-  mix-blend-mode: overlay;
-  pointer-events: none;
-  z-index: 0;
-}
+/* Texture Overlay removed for scroll performance */
 
 .stack-card:hover {
   transform: translateY(-5px);
@@ -623,8 +612,6 @@ body {
   animation: rotate-gradient 4s linear infinite;
   z-index: -2;
   will-change: transform;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
 }
 
 .speaklab-join-btn::after {
@@ -647,6 +634,9 @@ body {
 }
 
 @keyframes rotate-gradient {
+  0% {
+    transform: rotate(0deg);
+  }
   100% {
     transform: rotate(360deg);
   }
@@ -813,7 +803,7 @@ body {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 30px;
-  padding: 12px 110px 12px 25px;
+  padding: 12px 150px 12px 25px;
   color: #fff;
   font-size: 0.85rem;
   outline: none;
@@ -832,11 +822,12 @@ body {
   background: linear-gradient(90deg, #fde047 0%, #93c5fd 50%, #fbcfe8 100%);
   border: none;
   border-radius: 26px;
-  padding: 0 25px;
+  padding: 0 20px;
   color: #111;
   font-weight: 800;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   cursor: pointer;
+  white-space: nowrap;
   transition: transform 0.2s;
 }
 
@@ -1589,4 +1580,24 @@ body {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+/* Inner Page Hero Override */
+.hero-section.inner-page {
+  padding: 50px 20px 40px !important;
+  background: #fcfcfc !important;
+  background-image: radial-gradient(#e5e5e5 1.5px, transparent 1.5px) !important;
+  background-size: 20px 20px !important;
+  border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+  min-height: auto !important;
+}
+.hero-section.inner-page::before {
+  display: none !important;
+}
+.hero-section.inner-page .gradient-heading {
+  font-size: clamp(2.5rem, 6vw, 4rem) !important;
+  margin-bottom: 10px !important;
+}
+.hero-section.inner-page .hero-content p {
+  color: #555 !important;
+  font-size: 1.1rem !important;
 }

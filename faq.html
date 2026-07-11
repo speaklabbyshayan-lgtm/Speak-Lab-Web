@@ -5,19 +5,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Frequently Asked Questions - SpeakLabs</title>
+
+  <!-- Resource Hints for Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://wa.me" crossorigin>
+  <link rel="preconnect" href="https://maps.google.com" crossorigin>
+  
+  <!-- Prefetch critical pages -->
+  <link rel="prefetch" href="index.html" as="document">
+  <link rel="prefetch" href="enroll.html" as="document">
+  <link rel="prefetch" href="ai-tutor.html" as="document">
+  <link rel="prefetch" href="about.html" as="document">
+  <link rel="prefetch" href="course-details.html" as="document">
+  <link rel="prefetch" href="contact.html" as="document">
+  
+  <!-- Preload critical fonts -->
+  <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/outfit/v14/QGYsz_wNahGAdqQ43Rh_fKDptfpM.woff2" crossorigin>
   
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
   <meta property="og:title" content="SpeakLab - Communication & Confidence Program">
-  <meta property="og:description" content="Master Spoken English in 8 weeks. In-person classes at Punjab Tianjin University of Technology, Lahore. Only 20 seats available.">
+  <meta property="og:description"
+    content="Master Spoken English in 8 weeks. In-person classes at Punjab Tianjin University of Technology, Lahore. Only 20 seats available.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://speaklab.pk">
   <meta property="og:image" content="https://speaklab.pk/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SpeakLab - Speak English with Confidence">
-  <meta name="twitter:description" content="8-week Communication & Confidence Program in Lahore. PKR 15,000 only.">
-  <meta name="description" content="SpeakLab offers an intensive 8-week Communication & Confidence Program in Lahore at Punjab Tianjin University of Technology. Learn Spoken English, Public Speaking, and Interview Skills.">
+  <meta name="twitter:description" content="8-week Communication & Confidence Program in Lahore. PKR 20,000 only.">
+  <meta name="description"
+    content="SpeakLab offers an intensive 8-week Communication & Confidence Program in Lahore at Punjab Tianjin University of Technology. Learn Spoken English, Public Speaking, and Interview Skills.">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
@@ -34,7 +54,8 @@
   <nav class="top-nav">
     <div class="nav-left">
       <div class="menu-wrapper" style="position: relative;">
-        <button class="menu-btn" aria-label="Menu" onclick="document.getElementById('mobile-dropdown').classList.toggle('show')">
+        <button class="menu-btn" aria-label="Menu"
+          onclick="document.getElementById('mobile-dropdown').classList.toggle('show')">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -51,7 +72,9 @@
             <li><a href="contact.html">Contact Us</a></li>
             <li><a href="venue.html">Venue</a></li>
           </ul>
-          <a href="login.html" class="speaklab-join-btn" style="padding: 6px 16px; font-size: 0.7rem; color: #ffffff !important; margin-top: 10px;">LOG IN / SIGN UP</a>
+          <a href="login.html" class="speaklab-join-btn"
+            style="padding: 6px 16px; font-size: 0.7rem; color: #ffffff !important; margin-top: 10px;">LOG IN / SIGN
+            UP</a>
         </div>
       </div>
       <a href="course-details.html#pricing" class="speaklab-join-btn"
@@ -74,16 +97,21 @@
 
   <div class="back-bar">
     <a href="index.html" class="back-btn">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
       Home
     </a>
   </div>
 
   <!-- Hero Section -->
-  <header class="hero-section" style="padding-top: 60px; padding-bottom: 60px;">
+  <header class="hero-section inner-page">
     <div class="hero-content">
       <h1 class="gradient-heading">Frequently Asked<br>Questions</h1>
-      <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto;">Everything you need to know about our Communication & Confidence Program.</p>
+      <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto;">Everything you need to know about our
+        Communication & Confidence Program.</p>
     </div>
   </header>
 
@@ -91,50 +119,102 @@
   <section class="faq-section" style="padding-top: 20px;">
     <div class="faq-card">
       <div class="faq-noise"></div>
-      
+
       <div class="faq-content">
         <div class="faq-accordion" id="faq-container">
           <div class="faq-item">
-            <button class="faq-question">What is the Communication & Confidence Program?<span class="faq-icon">+</span></button>
-            <div class="faq-answer"><p>It is an intensive 8-week English communication course held at Punjab Tianjin University of Technology, Lahore. Classes run Monday, Wednesday, and Friday from 5:00 PM to 6:45 PM — 24 total sessions designed to transform your spoken English and build real confidence.</p></div>
+            <button class="faq-question">What is the Communication & Confidence Program?<span
+                class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>It is an intensive 8-week English communication course held at Punjab Tianjin University of Technology,
+                Lahore. Classes run Flexible days (Regular & Weekend Batches) from 5:00 PM to 6:45 PM — 24 total sessions designed
+                to transform your spoken English and build real confidence.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-question">Who is this program designed for?<span class="faq-icon">+</span></button>
-            <div class="faq-answer"><p>This program is for students, fresh graduates, and young professionals in Pakistan who want to speak English confidently in interviews, workplaces, and everyday conversations.</p></div>
+            <div class="faq-answer">
+              <p>This program is for students, fresh graduates, and young professionals in Pakistan who want to speak
+                English confidently in interviews, workplaces, and everyday conversations.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-question">What will I learn in 8 weeks?<span class="faq-icon">+</span></button>
-            <div class="faq-answer"><p>You will master Spoken English, Professional Communication, Public Speaking, Interview Preparation, Critical Thinking, and Confidence Building — all through hands-on practice.</p></div>
+            <div class="faq-answer">
+              <p>You will master Spoken English, Professional Communication, Public Speaking, Interview Preparation,
+                Critical Thinking, and Confidence Building — all through hands-on practice.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-question">How much does the program cost?<span class="faq-icon">+</span></button>
-            <div class="faq-answer"><p>The Special June Batch fee is PKR 15,000 (regular fee PKR 20,000). You can secure your seat with just PKR 5,000 registration fee, with the remaining balance due by the 5th of next month.</p></div>
+            <div class="faq-answer">
+              <p>The Special June Batch fee is PKR 20,000 (regular fee PKR 25,000). You can secure your seat with just
+                PKR 10,000 registration fee, with the remaining balance due by the 5th of next month.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-question">How many seats are available?<span class="faq-icon">+</span></button>
-            <div class="faq-answer"><p>Only 20 seats are available for the June Batch. Once they are filled, registration will close.</p></div>
+            <div class="faq-answer">
+              <p>Only 20 seats are available for the June Batch. Once they are filled, registration will close.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-question">How do I enroll?<span class="faq-icon">+</span></button>
-            <div class="faq-answer"><p>Click the Enroll Now button, fill in your details, and our team will contact you on WhatsApp to confirm your seat and share payment details.</p></div>
+            <div class="faq-answer">
+              <p>Click the Enroll Now button, fill in your details, and our team will contact you on WhatsApp to confirm
+                your seat and share payment details.</p>
+            </div>
           </div>
           <div class="faq-item">
-            <button class="faq-question">Will this program help me in job interviews?<span class="faq-icon">+</span></button>
-            <div class="faq-answer"><p>Yes. Interview Preparation is a core module of this program. You will practice real interview scenarios, learn how to present yourself confidently, and develop the communication skills employers look for.</p></div>
+            <button class="faq-question">Will this program help me in job interviews?<span
+                class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>Yes. Interview Preparation is a core module of this program. You will practice real interview
+                scenarios, learn how to present yourself confidently, and develop the communication skills employers
+                look for.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-question">Is the class online or in-person?<span class="faq-icon">+</span></button>
-            <div class="faq-answer"><p>Classes are in-person at Punjab Tianjin University of Technology, Lahore.</p></div>
+            <div class="faq-answer">
+              <p>Classes are in-person at Punjab Tianjin University of Technology, Lahore.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-question">What is the contact email?<span class="faq-icon">+</span></button>
-            <div class="faq-answer"><p>You can reach us at support@speaklab.pk and our team will respond within 24 hours.</p></div>
+            <div class="faq-answer">
+              <p>You can reach us at info@speaklabbyshayan.com and our team will respond within 24 hours.</p>
+            </div>
           </div>
           <div class="faq-item">
             <button class="faq-question">Can I pay in installments?<span class="faq-icon">+</span></button>
-            <div class="faq-answer"><p>Yes. Pay PKR 5,000 to reserve your seat, and the remaining PKR 10,000 is due by the 5th of next month.</p></div>
+            <div class="faq-answer">
+              <p>Yes. Pay PKR 10,000 to reserve your seat, and the remaining PKR 10,000 is due by the 5th of next month.
+              </p>
+            </div>
+          </div>
+        
+          <div class="faq-item">
+            <button class="faq-question">Is this program worth it?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><p>Our students consistently say it's the best investment they've made in themselves. One session can change how you see yourself as a communicator.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Can I pay in installments?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><p>Yes — contact us on WhatsApp and we'll work something out: wa.me/923014497532</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">What's the class schedule?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><p>2 live sessions per week via Zoom. Schedule shared after enrollment.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Will I get a certificate?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><p>Yes — a SpeakLab Certificate of Completion is awarded after finishing the 8-week program.</p></div>
           </div>
         </div>
+        <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+          <a href="enroll.html" class="speaklab-join-btn" style="display: inline-block; padding: 15px 30px; font-size: 1rem;">READY TO JOIN? ENROLL NOW</a>
+        </div>
+
       </div>
     </div>
   </section>
@@ -146,7 +226,7 @@
         <div class="dtl-bottom-left">
           <h2>SPEAK WITH CONFIDENCE.<br>LEAD WITH IMPACT.</h2>
           <p>Join Pakistan's most practical English communication program.</p>
-          <a href="#" class="speaklab-join-btn">JOIN JULY BATCH</a>
+          <a href="enroll.html" class="speaklab-join-btn">JOIN JULY BATCH</a>
         </div>
         <div class="dtl-bottom-right">
           <div class="dtl-graphic">
@@ -188,7 +268,7 @@
             <li><a href="course-details.html#pricing">July Batch Details</a></li>
             <li><a href="course-details.html#pricing">Fee Structure</a></li>
             <li><a href="enroll.html">Enroll Now</a></li>
-            <li><a href="https://wa.me/" target="_blank">WhatsApp Us</a></li>
+            <li><a href="https://wa.me/923014497532" target="_blank">WhatsApp Us</a></li>
           </ul>
         </div>
         <div class="dtl-col">
@@ -207,7 +287,7 @@
             <p class="subtext">Register your interest and we'll contact you on WhatsApp!</p>
             <div class="dtl-input-group">
               <input type="text" placeholder="Enter your WhatsApp number...">
-              <button type="button">ENROLL</button>
+              <button type="button" onclick="window.open(\'https://wa.me/923014497532\', \'_blank\')">GET EARLY ACCESS</button>
             </div>
           </div>
         </div>
@@ -256,7 +336,7 @@
     </div>
   </footer>
 
-    <script>
+  <script>
     fetch('./data.json')
       .then(res => res.json())
       .then(data => {
@@ -300,8 +380,8 @@
         if (faqContainer && data.faqs) {
           const seeAllBtn = faqContainer.parentElement.querySelector('.faq-see-all');
           const isIndex = !!seeAllBtn;
-          
-          faqContainer.innerHTML = ''; 
+
+          faqContainer.innerHTML = '';
           data.faqs.forEach((faq, index) => {
             const isHidden = (isIndex && index >= 3) ? 'faq-hidden' : '';
             faqContainer.innerHTML += `
@@ -335,6 +415,24 @@
       .catch(err => console.error('Failed to load data.json', err));
   </script>
   <script src="script.js"></script>
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/923014497532" target="_blank" class="floating-whatsapp" style="position: fixed; bottom: 25px; right: 25px; z-index: 1000; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite; transition: transform 0.3s ease; background-color: #25D366; width: 65px; height: 65px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+  <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="white" viewBox="0 0 16 16">
+    <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+  </svg>
+</a>
+<style>
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+.floating-whatsapp:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 15px 35px rgba(37, 211, 102, 0.6), 0 5px 15px rgba(0,0,0,0.2) !important;
+}
+</style>
 </body>
 
 </html>

@@ -9,7 +9,7 @@ const metaTags = `
   <meta property="og:image" content="https://speaklab.pk/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SpeakLab - Speak English with Confidence">
-  <meta name="twitter:description" content="8-week Communication & Confidence Program in Lahore. PKR 15,000 only.">
+  <meta name="twitter:description" content="8-week Communication & Confidence Program in Lahore. PKR 20,000 only.">
   <meta name="description" content="SpeakLab offers an intensive 8-week Communication & Confidence Program in Lahore at Punjab Tianjin University of Technology. Learn Spoken English, Public Speaking, and Interview Skills.">
 `;
 
@@ -27,7 +27,7 @@ const schema1 = `{
   "duration": "P8W",
   "offers": {
     "@type": "Offer",
-    "price": "15000",
+    "price": "20000",
     "priceCurrency": "PKR",
     "availability": "https://schema.org/LimitedAvailability"
   },
@@ -53,7 +53,7 @@ const schema2 = `{
     "addressLocality": "Lahore",
     "addressCountry": "PK"
   },
-  "openingHours": "Mo,We,Fr 17:00-18:45",
+  "openingHours": "Flexible Days 17:00-18:45",
   "url": "https://speaklab.pk"
 }`;
 

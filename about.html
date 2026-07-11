@@ -1,37 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SpeakLabs - About Us</title>
+
+  <!-- Resource Hints for Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://wa.me" crossorigin>
+  <link rel="preconnect" href="https://maps.google.com" crossorigin>
+  
+  <!-- Prefetch critical pages -->
+  <link rel="prefetch" href="index.html" as="document">
+  <link rel="prefetch" href="enroll.html" as="document">
+  <link rel="prefetch" href="ai-tutor.html" as="document">
+  <link rel="prefetch" href="course-details.html" as="document">
+  <link rel="prefetch" href="contact.html" as="document">
+  
+  <!-- Preload critical fonts -->
+  <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/outfit/v14/QGYsz_wNahGAdqQ43Rh_fKDptfpM.woff2" crossorigin>
+  
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <style>
-    .about-cards { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin-top: 40px; }
-    .about-card { flex: 1; min-width: 300px; padding: 40px; border-radius: 30px; color: #000; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-    .about-card h3 { font-size: 2rem; margin-bottom: 15px; }
-    .about-card p { font-size: 1.1rem; line-height: 1.6; }
-    .gradient-orange { background: radial-gradient(circle at 10% 100%, rgba(225, 150, 60, 0.9) 0%, transparent 60%), linear-gradient(135deg, #d3cce3 0%, #e5ddd7 100%); }
-    .gradient-cyan { background: radial-gradient(circle at 30% 110%, #67e8f9 0%, transparent 50%), linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%); }
-    .gradient-green { background: radial-gradient(circle at 30% 110%, #bbf7d0 0%, transparent 50%), linear-gradient(135deg, #10b981 0%, #84cc16 100%); }
-    .team-section { padding: 60px 20px 80px 20px; max-width: 1200px; margin: 0 auto; text-align: center; }
-    .team-card { background: radial-gradient(circle at 10% 100%, rgba(225, 150, 60, 0.9) 0%, transparent 60%), linear-gradient(135deg, #d3cce3 0%, #e5ddd7 100%); border-radius: 40px; padding: 50px; display: flex; gap: 40px; align-items: center; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-    .team-photo { width: 250px; height: 300px; background: rgba(255,255,255,0.4); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #555; text-align: center; flex-shrink: 0;}
-    .team-info h2 { font-size: 2.5rem; margin-bottom: 15px; }
-    .team-info p { font-size: 1.1rem; line-height: 1.6; color: #333;}
-    .team-heading { font-size: 2.5rem; margin-bottom: 30px; }
-    @media (max-width: 768px) { .team-card { flex-direction: column-reverse; text-align: center; } .team-photo { width: 100%; height: 250px; } .team-heading { font-size: 2rem; } }
+    .about-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    .about-card {
+      flex: 1;
+      min-width: 300px;
+      padding: 40px;
+      border-radius: 30px;
+      color: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .about-card h3 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    .about-card p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .gradient-orange {
+      background: radial-gradient(circle at 10% 100%, rgba(225, 150, 60, 0.9) 0%, transparent 60%), linear-gradient(135deg, #d3cce3 0%, #e5ddd7 100%);
+    }
+
+    .gradient-cyan {
+      background: radial-gradient(circle at 30% 110%, #67e8f9 0%, transparent 50%), linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+    }
+
+    .gradient-green {
+      background: radial-gradient(circle at 30% 110%, #bbf7d0 0%, transparent 50%), linear-gradient(135deg, #10b981 0%, #84cc16 100%);
+    }
+
+    .team-section {
+      padding: 60px 20px 80px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .team-card {
+      background: radial-gradient(circle at 10% 100%, rgba(225, 150, 60, 0.9) 0%, transparent 60%), linear-gradient(135deg, #d3cce3 0%, #e5ddd7 100%);
+      border-radius: 40px;
+      padding: 50px;
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      text-align: left;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .team-photo {
+      width: 250px;
+      height: 300px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #555;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .team-info h2 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+    }
+
+    .team-info p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .team-heading {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .team-card {
+        flex-direction: column-reverse;
+        text-align: center;
+      }
+
+      .team-photo {
+        width: 100%;
+        height: 250px;
+      }
+
+      .team-heading {
+        font-size: 2rem;
+      }
+    }
   </style>
 
   <meta property="og:title" content="SpeakLab - Communication & Confidence Program">
-  <meta property="og:description" content="Master Spoken English in 8 weeks. In-person classes at Punjab Tianjin University of Technology, Lahore. Only 20 seats available.">
+  <meta property="og:description"
+    content="Master Spoken English in 8 weeks. In-person classes at Punjab Tianjin University of Technology, Lahore. Only 20 seats available.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://speaklab.pk">
   <meta property="og:image" content="https://speaklab.pk/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SpeakLab - Speak English with Confidence">
-  <meta name="twitter:description" content="8-week Communication & Confidence Program in Lahore. PKR 15,000 only.">
-  <meta name="description" content="SpeakLab offers an intensive 8-week Communication & Confidence Program in Lahore at Punjab Tianjin University of Technology. Learn Spoken English, Public Speaking, and Interview Skills.">
+  <meta name="twitter:description" content="8-week Communication & Confidence Program in Lahore. PKR 20,000 only.">
+  <meta name="description"
+    content="SpeakLab offers an intensive 8-week Communication & Confidence Program in Lahore at Punjab Tianjin University of Technology. Learn Spoken English, Public Speaking, and Interview Skills.">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
@@ -41,13 +154,15 @@
   </script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
 </head>
+
 <body>
 
   <!-- Top Navigation (Light Theme) -->
   <nav class="top-nav">
     <div class="nav-left">
       <div class="menu-wrapper" style="position: relative;">
-        <button class="menu-btn" aria-label="Menu" onclick="document.getElementById('mobile-dropdown').classList.toggle('show')">
+        <button class="menu-btn" aria-label="Menu"
+          onclick="document.getElementById('mobile-dropdown').classList.toggle('show')">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -64,10 +179,12 @@
             <li><a href="contact.html">Contact Us</a></li>
             <li><a href="venue.html">Venue</a></li>
           </ul>
-          <a href="login.html" class="speaklab-join-btn" style="padding: 6px 16px; font-size: 0.7rem; color: #ffffff !important; margin-top: 10px;">LOG IN / SIGN UP</a>
+          <a href="login.html" class="speaklab-join-btn"
+            style="padding: 6px 16px; font-size: 0.7rem; color: #ffffff !important; margin-top: 10px;">LOG IN / SIGN
+            UP</a>
         </div>
       </div>
-      <a href="#" class="speaklab-join-btn"
+      <a href="enroll.html" class="speaklab-join-btn"
         style="padding: 6px 16px; font-size: 0.7rem; color: #ffffff !important;">JOIN JULY BATCH</a>
     </div>
     <div class="nav-center">
@@ -81,31 +198,57 @@
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </button>
-      <a href="#" class="donate-btn">❤️ GET STARTED</a>
+      <a href="enroll.html" class="donate-btn">❤️ GET STARTED</a>
     </div>
   </nav>
 
   <div class="back-bar">
     <a href="index.html" class="back-btn">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
       Home
     </a>
   </div>
 
-  <header class="hero-section" style="padding-bottom: 40px; min-height: auto;">
+  <header class="hero-section inner-page">
     <div class="hero-content">
-      <h1 class="gradient-heading">About SpeakLab</h1>
-      <p>Pakistan's most practical English communication program</p>
+      <h1 class="gradient-heading" style="font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.2; margin-bottom: 20px;">We Started SpeakLab Because We Felt What You're Feeling</h1>
+      <p style="font-size: 1.1rem; max-width: 800px; margin: 0 auto; padding: 0 15px;">The frustration of knowing you're capable but not being able to prove it when it matters most.</p>
     </div>
   </header>
 
   <main>
+
+    <section class="team-section" style="padding-top: 20px;">
+      <div style="max-width: 800px; margin: 0 auto; text-align: left; background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); padding: 40px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+        
+        <h2 style="font-size: 2rem; margin-bottom: 20px;">Our Story</h2>
+        <p style="font-size: 1.1rem; line-height: 1.7; color: #444; margin-bottom: 40px;">SpeakLab was born from a simple but painful truth — thousands of talented Pakistani students and professionals are held back every single day, not by their intelligence or skills, but by their inability to communicate with confidence. We've seen brilliant minds lose jobs to less-qualified candidates. We've seen students stay silent in classrooms because fear won. We built SpeakLab to change that — one student at a time.</p>
+        
+        <h2 style="font-size: 2rem; margin-bottom: 20px;">Mission</h2>
+        <p style="font-size: 1.1rem; line-height: 1.7; color: #444; margin-bottom: 40px;">To make confident communication accessible to every Pakistani student and professional who has ever felt unheard.</p>
+        
+        <h2 style="font-size: 2rem; margin-bottom: 20px;">Vision</h2>
+        <p style="font-size: 1.1rem; line-height: 1.7; color: #444; margin-bottom: 40px;">A Pakistan where talent is never overlooked because of communication barriers.</p>
+        
+        <div style="text-align: center;">
+          <a href="enroll.html" class="speaklab-join-btn" style="display: inline-block; padding: 15px 30px; font-size: 1rem;">START YOUR JOURNEY</a>
+        </div>
+
+      </div>
+    </section>
+
     <section id="team" class="team-section">
       <h2 class="team-heading">Meet The Instructor</h2>
       <div class="team-card">
         <div class="team-info">
           <h2 id="inst-name">Sir Shayan</h2>
-          <p id="inst-bio">Sir Shayan is an experienced English communication coach with a passion for helping students unlock their true potential. His dynamic teaching style combines theory with real-world practice, making every class engaging and impactful.</p>
+          <p id="inst-bio">Sir Shayan is an experienced English communication coach with a passion for helping students
+            unlock their true potential. His dynamic teaching style combines theory with real-world practice, making
+            every class engaging and impactful.</p>
         </div>
         <div class="team-photo">Photo Coming Soon</div>
       </div>
@@ -137,7 +280,7 @@
         <div class="dtl-bottom-left">
           <h2>SPEAK WITH CONFIDENCE.<br>LEAD WITH IMPACT.</h2>
           <p>Join Pakistan's most practical English communication program.</p>
-          <a href="#" class="speaklab-join-btn">JOIN JULY BATCH</a>
+          <a href="enroll.html" class="speaklab-join-btn">JOIN JULY BATCH</a>
         </div>
         <div class="dtl-bottom-right">
           <div class="dtl-graphic">
@@ -179,7 +322,7 @@
             <li><a href="course-details.html#pricing">July Batch Details</a></li>
             <li><a href="course-details.html#pricing">Fee Structure</a></li>
             <li><a href="enroll.html">Enroll Now</a></li>
-            <li><a href="https://wa.me/" target="_blank">WhatsApp Us</a></li>
+            <li><a href="https://wa.me/923014497532" target="_blank">WhatsApp Us</a></li>
           </ul>
         </div>
         <div class="dtl-col">
@@ -198,7 +341,7 @@
             <p class="subtext">Register your interest and we'll contact you on WhatsApp!</p>
             <div class="dtl-input-group">
               <input type="text" placeholder="Enter your WhatsApp number...">
-              <button type="button">ENROLL</button>
+              <button type="button" onclick="window.open(\'https://wa.me/923014497532\', \'_blank\')">GET EARLY ACCESS</button>
             </div>
           </div>
         </div>
@@ -246,7 +389,7 @@
       </svg>
     </div>
   </footer>
-    <script>
+  <script>
     fetch('./data.json')
       .then(res => res.json())
       .then(data => {
@@ -290,8 +433,8 @@
         if (faqContainer && data.faqs) {
           const seeAllBtn = faqContainer.parentElement.querySelector('.faq-see-all');
           const isIndex = !!seeAllBtn;
-          
-          faqContainer.innerHTML = ''; 
+
+          faqContainer.innerHTML = '';
           data.faqs.forEach((faq, index) => {
             const isHidden = (isIndex && index >= 3) ? 'faq-hidden' : '';
             faqContainer.innerHTML += `
@@ -325,5 +468,24 @@
       .catch(err => console.error('Failed to load data.json', err));
   </script>
   <script src="script.js"></script>
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/923014497532" target="_blank" class="floating-whatsapp" style="position: fixed; bottom: 25px; right: 25px; z-index: 1000; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite; transition: transform 0.3s ease; background-color: #25D366; width: 65px; height: 65px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+  <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="white" viewBox="0 0 16 16">
+    <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+  </svg>
+</a>
+<style>
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+.floating-whatsapp:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 15px 35px rgba(37, 211, 102, 0.6), 0 5px 15px rgba(0,0,0,0.2) !important;
+}
+</style>
 </body>
+
 </html>

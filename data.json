@@ -2,7 +2,7 @@
   "site": {
     "name": "SpeakLab",
     "tagline": "Speak. Communicate. Succeed.",
-    "email": "support@speaklab.pk",
+    "email": "info@speaklabbyshayan.com",
     "whatsapp": "",
     "location": "Punjab Tianjin University of Technology, Lahore"
   },
@@ -10,11 +10,11 @@
     "name": "Communication & Confidence Program",
     "duration": "8 Weeks",
     "sessions": "24 Sessions",
-    "schedule": "Monday, Wednesday, Friday",
+    "schedule": "Flexible days (Regular & Weekend Batches)",
     "timing": "5:00 PM to 6:45 PM",
     "batch": "June Batch",
     "seats": 20,
-    "fee": 15000,
+    "fee": 20000,
     "regularFee": 20000,
     "registrationFee": 5000,
     "balanceDue": "5th of next month"
@@ -48,7 +48,7 @@
   "faqs": [
     {
       "q": "What is the Communication & Confidence Program?",
-      "a": "It is an intensive 8-week English communication course held at Punjab Tianjin University of Technology, Lahore. Classes run Monday, Wednesday, and Friday from 5:00 PM to 6:45 PM — 24 total sessions."
+      "a": "It is an intensive 8-week English communication course held at Punjab Tianjin University of Technology, Lahore. Classes run Flexible days (Regular & Weekend Batches) from 5:00 PM to 6:45 PM \u2014 24 total sessions."
     },
     {
       "q": "Who is this program designed for?",
@@ -60,7 +60,7 @@
     },
     {
       "q": "How much does the program cost?",
-      "a": "Special June Batch fee is PKR 15,000 (regular PKR 20,000). Secure your seat with PKR 5,000 registration fee, balance due by 5th of next month."
+      "a": "Special June Batch fee is PKR 20,000 (regular PKR 25,000). Secure your seat with PKR 10,000 registration fee, balance due by 5th of next month."
     },
     {
       "q": "How many seats are available?",
@@ -84,7 +84,23 @@
     },
     {
       "q": "Can I pay in installments?",
-      "a": "Yes. Pay PKR 5,000 to reserve your seat, remaining PKR 10,000 due by 5th of next month."
+      "a": "Yes. Pay PKR 10,000 to reserve your seat, remaining PKR 10,000 due by 5th of next month."
+    },
+    {
+      "q": "Is this program worth it?",
+      "a": "Our students consistently say it's the best investment they've made in themselves. One session can change how you see yourself as a communicator."
+    },
+    {
+      "q": "Can I pay in installments?",
+      "a": "Yes \u2014 contact us on WhatsApp and we'll work something out: wa.me/923014497532"
+    },
+    {
+      "q": "What's the class schedule?",
+      "a": "2 live sessions per week via Zoom. Schedule shared after enrollment."
+    },
+    {
+      "q": "Will I get a certificate?",
+      "a": "Yes \u2014 a SpeakLab Certificate of Completion is awarded after finishing the 8-week program."
     }
   ]
 }

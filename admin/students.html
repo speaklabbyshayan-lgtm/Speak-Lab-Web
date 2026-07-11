@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Student Journey Admin — SpeakLabs</title>
+
+  <!-- Resource Hints for Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  
+  <!-- Preload critical fonts -->
+  <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/poppins/v21/pxiEyp8kv8JHgFVrJJfecg.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/poppins/v21/pxiByp8kv8JHgFVrLCz7Z1xlFQ.woff2" crossorigin>
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../supabase-config.js?v=2"></script>
+
+  <style>
+    /* ─── Reset & Variables ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #FFD700;
+      --gold-dim: rgba(255,215,0,0.15);
+      --blue: #00D4FF;
+      --blue-dim: rgba(0,212,255,0.1);
+      --bg: #06080f;
+      --bg2: #0d1117;
+      --bg3: #161b27;
+      --glass: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --text: #ffffff;
+      --text2: rgba(255,255,255,0.6);
+      --text3: rgba(255,255,255,0.3);
+      --success: #00FF88;
+      --danger: #FF4567;
+      --radius: 16px;
+      --sidebar-w: 260px;
+      --header-h: 64px;
+      --transition: all 0.25s ease;
+    }
+
+    html, body { height: 100%; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ─── Sidebar ─── */
+    #sidebar {
+      width: var(--sidebar-w);
+      min-height: 100vh;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 0; top: 0; bottom: 0;
+      z-index: 100;
+      padding: 0 0 24px;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-logo {
+      padding: 22px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-logo .logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, #00D4FF, #FFD700);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+
+    .sidebar-logo h1 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff, #00D4FF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .sidebar-logo p {
+      font-size: 0.65rem;
+      color: var(--text3);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      color: var(--text2);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+    }
+
+    .nav-item:hover {
+      background: var(--glass);
+      color: var(--text);
+    }
+
+    .nav-item.active {
+      background: var(--blue-dim);
+      color: var(--blue);
+      border: 1px solid rgba(0,212,255,0.2);
+    }
+
+    .nav-item i { width: 16px; font-size: 0.85rem; }
+
+    .sidebar-footer {
+      padding: 16px 12px 0;
+      border-top: 1px solid var(--border);
+      margin-top: 12px;
+    }
+
+    /* ─── Main Content ─── */
+    #main-content {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ─── Top Bar ─── */
+    #topbar {
+      height: var(--header-h);
+      background: rgba(6,8,15,0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0; z-index: 50;
+    }
+
+    .topbar-title {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .topbar-actions { display: flex; align-items: center; gap: 10px; }
+
+    .btn {
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue), #0088ff);
+      color: #000;
+    }
+
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,212,255,0.3); }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold), #FFA500);
+      color: #000;
+    }
+
+    .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,215,0,0.3); }
+
+    .btn-ghost {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      color: var(--text2);
+    }
+
+    .btn-ghost:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+
+    .btn-success {
+      background: rgba(0,255,136,0.15);
+      border: 1px solid rgba(0,255,136,0.3);
+      color: var(--success);
+    }
+
+    .btn-success:hover { background: rgba(0,255,136,0.25); }
+
+    .btn-danger {
+      background: rgba(255,69,103,0.12);
+      border: 1px solid rgba(255,69,103,0.3);
+      color: var(--danger);
+    }
+
+    .btn-danger:hover { background: rgba(255,69,103,0.25); }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* ─── Page Body ─── */
+    .page-body {
+      padding: 28px;
+      flex: 1;
+    }
+
+    /* ─── Stats Row ─── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+
+    .stat-card.blue::before { background: linear-gradient(90deg, var(--blue), #0088ff); }
+    .stat-card.gold::before { background: linear-gradient(90deg, var(--gold), #FFA500); }
+    .stat-card.green::before { background: linear-gradient(90deg, var(--success), #00cc66); }
+    .stat-card.red::before { background: linear-gradient(90deg, var(--danger), #cc0033); }
+
+    .stat-card-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .stat-card-value {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .stat-card-sub {
+      font-size: 0.7rem;
+      color: var(--text2);
+      margin-top: 4px;
+    }
+
+    /* ─── Section ─── */
+    .section {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+    }
+
+    .section-title i { color: var(--blue); }
+
+    /* ─── Student Cards ─── */
+    .students-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+      padding: 20px;
+    }
+
+    .student-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .student-card:hover {
+      border-color: rgba(0,212,255,0.2);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    }
+
+    .student-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .student-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0a1a3a, #1a3a6e);
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--blue);
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .student-info { flex: 1; min-width: 0; }
+
+    .student-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .student-email {
+      font-size: 0.72rem;
+      color: var(--text3);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .student-week-badge {
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .student-week-badge.active {
+      background: var(--blue-dim);
+      border: 1px solid rgba(0,212,255,0.25);
+      color: var(--blue);
+    }
+
+    .student-week-badge.graduated {
+      background: var(--gold-dim);
+      border: 1px solid rgba(255,215,0,0.3);
+      color: var(--gold);
+    }
+
+    /* City progress in card */
+    .student-city-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .city-flag-big { font-size: 1.3rem; }
+
+    .student-city-info .city-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .student-city-info .city-sub {
+      font-size: 0.68rem;
+      color: var(--text2);
+    }
+
+    /* Mini progress bar */
+    .mini-progress {
+      height: 6px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 3px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .mini-progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--gold), #FFA500);
+      transition: width 0.6s ease;
+    }
+
+    .student-card-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .student-card-actions .btn {
+      flex: 1;
+      justify-content: center;
+      font-size: 0.72rem;
+      padding: 8px 12px;
+    }
+
+    /* ─── Tasks Manager ─── */
+    .tasks-manager {
+      padding: 20px;
+    }
+
+    .week-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .week-tab {
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid var(--border);
+      background: var(--glass);
+      color: var(--text2);
+    }
+
+    .week-tab:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+
+    .week-tab.active {
+      background: var(--blue-dim);
+      border-color: rgba(0,212,255,0.3);
+      color: var(--blue);
+    }
+
+    /* Task List in admin */
+    .admin-task-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+
+    .admin-task-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-task-item .task-drag { color: var(--text3); cursor: grab; font-size: 0.9rem; }
+
+    .admin-task-item .task-texts { flex: 1; min-width: 0; }
+
+    .admin-task-item .task-texts strong {
+      font-size: 0.83rem;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .admin-task-item .task-texts span {
+      font-size: 0.72rem;
+      color: var(--text2);
+      display: block;
+    }
+
+    /* Add Task Form */
+    .add-task-form {
+      background: var(--bg);
+      border: 1px dashed rgba(0,212,255,0.2);
+      border-radius: 12px;
+      padding: 16px;
+      display: none;
+    }
+
+    .add-task-form.open { display: block; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .form-field label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-field input, .form-field textarea, .form-field select {
+      width: 100%;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.82rem;
+      color: var(--text);
+      outline: none;
+      transition: var(--transition);
+      resize: vertical;
+    }
+
+    .form-field input:focus, .form-field textarea:focus, .form-field select:focus {
+      border-color: rgba(0,212,255,0.4);
+      background: rgba(0,212,255,0.03);
+    }
+
+    .form-field input::placeholder, .form-field textarea::placeholder {
+      color: var(--text3);
+    }
+
+    /* ─── Loader ─── */
+    .spinner {
+      display: inline-block;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.15);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── Empty State ─── */
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: var(--text3);
+    }
+
+    .empty-state i { font-size: 2rem; margin-bottom: 10px; display: block; }
+    .empty-state p { font-size: 0.82rem; }
+
+    /* ─── Toast ─── */
+    #admin-toasts {
+      position: fixed;
+      bottom: 20px; right: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .a-toast {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.8rem;
+      min-width: 260px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      animation: toastIn 0.3s ease;
+    }
+
+    .a-toast.success { border-color: rgba(0,255,136,0.3); }
+    .a-toast.error   { border-color: rgba(255,69,103,0.3); }
+
+    @keyframes toastIn {
+      from { opacity:0; transform:translateX(20px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
+
+    /* ─── Modal Overlay ─── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      max-width: 500px;
+      width: 100%;
+      transform: scale(0.95);
+      transition: transform 0.25s ease;
+    }
+
+    .modal-overlay.open .modal { transform: scale(1); }
+
+    .modal h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .modal p { font-size: 0.8rem; color: var(--text2); margin-bottom: 20px; }
+
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      #sidebar { width: 56px; }
+      #sidebar .sidebar-logo h1,
+      #sidebar .sidebar-logo p,
+      .nav-item span,
+      .sidebar-footer { display: none; }
+      #main-content { margin-left: 56px; }
+      .sidebar-logo { padding: 16px; justify-content: center; }
+      .nav-item { justify-content: center; padding: 12px; }
+    }
+
+    @media (max-width: 600px) {
+      .page-body { padding: 16px; }
+      .students-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🌍</div>
+    <div>
+      <h1>SpeakLabs</h1>
+      <p>Admin Panel</p>
+    </div>
+  </div>
+  <div class="sidebar-nav">
+    <button class="nav-item active" id="nav-students" onclick="showSection('students')">
+      <i class="fa-solid fa-users"></i> <span>Students</span>
+    </button>
+    <button class="nav-item" id="nav-tasks" onclick="showSection('tasks')">
+      <i class="fa-solid fa-list-check"></i> <span>Weekly Tasks</span>
+    </button>
+    <a href="../admin.html" class="nav-item">
+      <i class="fa-solid fa-file-invoice"></i> <span>Enrollments</span>
+    </a>
+    <a href="../student-portal.html" class="nav-item" target="_blank">
+      <i class="fa-solid fa-globe"></i> <span>View Portal</span>
+    </a>
+  </div>
+  <div class="sidebar-footer">
+    <button class="nav-item" onclick="window.location.href='../index.html'">
+      <i class="fa-solid fa-right-from-bracket"></i> <span>Exit Admin</span>
+    </button>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div id="main-content">
+
+  <!-- Top Bar -->
+  <header id="topbar">
+    <div class="topbar-title" id="page-title">
+      <i class="fa-solid fa-users" style="color: #00D4FF; margin-right: 6px;"></i>
+      Student Journeys
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost" onclick="loadData()">
+        <i class="fa-solid fa-arrows-rotate"></i> Refresh
+      </button>
+    </div>
+  </header>
+
+  <div class="page-body">
+
+    <!-- Stats Row -->
+    <div class="stats-row" id="stats-row">
+      <div class="stat-card blue">
+        <div class="stat-card-label">Total Students</div>
+        <div class="stat-card-value" id="stat-total">—</div>
+        <div class="stat-card-sub">Enrolled in portal</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-card-label">Avg Progress</div>
+        <div class="stat-card-value" id="stat-avg">—</div>
+        <div class="stat-card-sub">Average week</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-card-label">Graduated</div>
+        <div class="stat-card-value" id="stat-grads">—</div>
+        <div class="stat-card-sub">Completed all 8 weeks</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-card-label">In Progress</div>
+        <div class="stat-card-value" id="stat-active">—</div>
+        <div class="stat-card-sub">Actively learning</div>
+      </div>
+    </div>
+
+    <!-- Students Section -->
+    <div class="section" id="section-students">
+      <div class="section-header">
+        <div class="section-title">
+          <i class="fa-solid fa-users"></i>
+          All Students
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text2);" id="students-count">Loading...</div>
+      </div>
+      <div class="students-grid" id="students-grid">
+        <div class="empty-state" style="grid-column:1/-1;">
+          <div class="spinner"></div>
+          <p style="margin-top:12px;">Loading students...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tasks Manager Section -->
+    <div class="section" id="section-tasks" style="display:none;">
+      <div class="section-header">
+        <div class="section-title">
+          <i class="fa-solid fa-list-check"></i>
+          Weekly Tasks Manager
+        </div>
+        <button class="btn btn-primary" id="btn-add-task" onclick="toggleAddTaskForm()">
+          <i class="fa-solid fa-plus"></i> Add Task
+        </button>
+      </div>
+      <div class="tasks-manager">
+        <!-- Week Tabs -->
+        <div class="week-tabs" id="week-tabs">
+          <!-- Generated by JS -->
+        </div>
+        <!-- Task List -->
+        <div class="admin-task-list" id="admin-task-list"></div>
+        <!-- Add Form -->
+        <div class="add-task-form" id="add-task-form">
+          <div class="form-row">
+            <div class="form-field">
+              <label>Task Title *</label>
+              <input type="text" id="new-task-title" placeholder="e.g. Complete Speaking Exercise 1">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>Description (optional)</label>
+              <textarea id="new-task-desc" rows="2" placeholder="Short description of what the student needs to do..."></textarea>
+            </div>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-primary" onclick="saveTask()">
+              <i class="fa-solid fa-check"></i> Save Task
+            </button>
+            <button class="btn btn-ghost" onclick="toggleAddTaskForm()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+</div><!-- /main-content -->
+
+<!-- Approve Confirm Modal -->
+<div class="modal-overlay" id="approve-modal">
+  <div class="modal">
+    <h3>✈️ Approve Next Week?</h3>
+    <p id="approve-msg">This will unlock the next city for this student and trigger the airplane animation on their portal in real time.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeApproveModal()">Cancel</button>
+      <button class="btn btn-gold" id="confirm-approve-btn" onclick="confirmApprove()">
+        <i class="fa-solid fa-plane-departure"></i> Approve & Launch ✈️
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="admin-toasts"></div>
+
+<script>
+/* ─── State ─── */
+let allStudents  = [];
+let allAdminTasks = [];
+let activeWeekTab = 1;
+let pendingApproveStudentId = null;
+let pendingApproveNewWeek   = null;
+
+const CITIES = [
+  { week:1, name:'Lahore',   flag:'🇵🇰', emoji:'🕌' },
+  { week:2, name:'Dubai',    flag:'🇦🇪', emoji:'🏙️' },
+  { week:3, name:'Istanbul', flag:'🇹🇷', emoji:'🌉' },
+  { week:4, name:'London',   flag:'🇬🇧', emoji:'🎡' },
+  { week:5, name:'New York', flag:'🇺🇸', emoji:'🗽' },
+  { week:6, name:'Toronto',  flag:'🇨🇦', emoji:'🍁' },
+  { week:7, name:'Tokyo',    flag:'🇯🇵', emoji:'⛩️' },
+  { week:8, name:'Sydney',   flag:'🇦🇺', emoji:'🎓' },
+];
+
+/* ─── Auth Check ─── */
+async function checkAdminAuth() {
+  const pwd = prompt('🔐 Enter Admin Password:');
+  if (pwd !== 'speaklab2024') {
+    document.body.innerHTML = `<div style="display:flex;height:100vh;align-items:center;justify-content:center;background:#06080f;color:#ff4567;font-family:Poppins,sans-serif;font-size:1.2rem;font-weight:700;">❌ Access Denied</div>`;
+    return false;
+  }
+  return true;
+}
+
+/* ─── Toast ─── */
+function adminToast(msg, type = 'success') {
+  const el = document.createElement('div');
+  el.className = `a-toast ${type}`;
+  el.innerHTML = `<span>${type === 'success' ? '✅' : '❌'}</span> ${msg}`;
+  document.getElementById('admin-toasts').appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+/* ─── Section Switch ─── */
+function showSection(name) {
+  document.getElementById('section-students').style.display = name === 'students' ? '' : 'none';
+  document.getElementById('section-tasks').style.display    = name === 'tasks'    ? '' : 'none';
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.getElementById(`nav-${name}`)?.classList.add('active');
+  document.getElementById('page-title').innerHTML = name === 'students'
+    ? '<i class="fa-solid fa-users" style="color:#00D4FF;margin-right:6px;"></i>Student Journeys'
+    : '<i class="fa-solid fa-list-check" style="color:#00D4FF;margin-right:6px;"></i>Weekly Tasks Manager';
+
+  if (name === 'tasks') renderWeekTabs();
+}
+
+/* ─── Load All Data ─── */
+async function loadData() {
+  try {
+    // Load student progress
+    const { data: progress, error: pErr } = await supabase
+      .from('student_progress')
+      .select('*')
+      .order('current_week', { ascending: false });
+    if (pErr) throw pErr;
+
+    // Load all weekly tasks
+    const { data: tasks, error: tErr } = await supabase
+      .from('weekly_tasks')
+      .select('*')
+      .order('week_number')
+      .order('sort_order');
+    if (tErr) throw tErr;
+
+    // Load task completions grouped
+    const { data: completions, error: cErr } = await supabase
+      .from('task_completions')
+      .select('student_id, task_id');
+    if (cErr) throw cErr;
+
+    allAdminTasks = tasks || [];
+
+    // Group completions by student
+    const compByStudent = {};
+    (completions || []).forEach(c => {
+      if (!compByStudent[c.student_id]) compByStudent[c.student_id] = new Set();
+      compByStudent[c.student_id].add(c.task_id);
+    });
+
+    // We need user emails — use auth.users via Supabase. 
+    // Since we can't query auth.users directly from anon key,
+    // we'll show what we have from student_progress (student_id).
+    // You can add a 'profiles' table for names/emails in production.
+    allStudents = (progress || []).map(p => ({
+      ...p,
+      completions: compByStudent[p.student_id] || new Set(),
+    }));
+
+    updateStats();
+    renderStudents();
+    renderWeekTabs();
+
+  } catch (err) {
+    console.error('Load error:', err);
+    adminToast('Error loading data: ' + err.message, 'error');
+  }
+}
+
+/* ─── Stats ─── */
+function updateStats() {
+  const total  = allStudents.length;
+  const grads  = allStudents.filter(s => s.current_week >= 8).length;
+  const active = allStudents.filter(s => s.current_week > 0 && s.current_week < 8).length;
+  const avgWk  = total ? (allStudents.reduce((sum, s) => sum + (s.current_week || 1), 0) / total).toFixed(1) : '—';
+
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-grads').textContent = grads;
+  document.getElementById('stat-active').textContent = active;
+  document.getElementById('stat-avg').textContent = avgWk;
+}
+
+/* ─── Render Students ─── */
+function renderStudents() {
+  const grid = document.getElementById('students-grid');
+  document.getElementById('students-count').textContent = `${allStudents.length} student${allStudents.length !== 1 ? 's' : ''}`;
+
+  if (allStudents.length === 0) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">
+      <i class="fa-solid fa-user-slash"></i>
+      <p>No students have accessed the portal yet.<br>Once a student logs in, they appear here.</p>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = '';
+  allStudents.forEach(s => {
+    const city    = CITIES[Math.min((s.current_week || 1) - 1, 7)];
+    const isGrad  = (s.current_week || 1) >= 8;
+    const progress = ((s.current_week || 1) / 8) * 100;
+    const canApprove = (s.current_week || 1) < 8;
+
+    // Get initials from student_id (first 2 chars of UUID)
+    const initials = s.student_id?.substring(0, 2)?.toUpperCase() || 'ST';
+    const shortId  = s.student_id?.substring(0, 8) || 'Unknown';
+
+    const card = document.createElement('div');
+    card.className = 'student-card';
+    card.innerHTML = `
+      <div class="student-card-header">
+        <div class="student-avatar">${initials}</div>
+        <div class="student-info">
+          <div class="student-name">Student ${shortId}...</div>
+          <div class="student-email">ID: ${s.student_id?.substring(0,20)}...</div>
+        </div>
+        <span class="student-week-badge ${isGrad ? 'graduated' : 'active'}">
+          ${isGrad ? '🎓 Graduated' : `Week ${s.current_week || 1}`}
+        </span>
+      </div>
+
+      <div class="student-city-row">
+        <div class="city-flag-big">${city.flag}</div>
+        <div class="student-city-info">
+          <div class="city-name">${city.emoji} ${city.name}</div>
+          <div class="city-sub">Current destination • ${s.completions?.size || 0} tasks done</div>
+        </div>
+      </div>
+
+      <div class="mini-progress">
+        <div class="mini-progress-fill" style="width:${progress}%"></div>
+      </div>
+
+      <div class="student-card-actions">
+        <button class="btn btn-gold" 
+          ${canApprove ? '' : 'disabled'} 
+          onclick="openApproveModal('${s.student_id}', ${(s.current_week || 1) + 1})">
+          <i class="fa-solid fa-plane-departure"></i>
+          ${canApprove ? `Approve Week ${(s.current_week || 1) + 1}` : 'Graduated 🎓'}
+        </button>
+      </div>`;
+
+    grid.appendChild(card);
+  });
+}
+
+/* ─── Approve Modal ─── */
+function openApproveModal(studentId, newWeek) {
+  pendingApproveStudentId = studentId;
+  pendingApproveNewWeek   = newWeek;
+  const city = CITIES[Math.min(newWeek - 1, 7)];
+  document.getElementById('approve-msg').textContent =
+    `This will move the student to Week ${newWeek} — ${city.flag} ${city.name}. The airplane animation will trigger live on their portal.`;
+  document.getElementById('approve-modal').classList.add('open');
+}
+
+window.closeApproveModal = function() {
+  document.getElementById('approve-modal').classList.remove('open');
+  pendingApproveStudentId = null;
+  pendingApproveNewWeek   = null;
+};
+
+window.confirmApprove = async function() {
+  if (!pendingApproveStudentId || !pendingApproveNewWeek) return;
+
+  const btn = document.getElementById('confirm-approve-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Sending...';
+
+  try {
+    const { error } = await supabase
+      .from('student_progress')
+      .update({ current_week: pendingApproveNewWeek, unlocked_at: new Date().toISOString() })
+      .eq('student_id', pendingApproveStudentId);
+
+    if (error) throw error;
+
+    const city = CITIES[Math.min(pendingApproveNewWeek - 1, 7)];
+    adminToast(`✈️ Week ${pendingApproveNewWeek} approved! Flying to ${city.name}...`, 'success');
+    closeApproveModal();
+    loadData();
+
+  } catch (err) {
+    console.error('Approve error:', err);
+    adminToast('Failed to approve: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-plane-departure"></i> Approve & Launch ✈️';
+  }
+};
+
+/* ─── Week Tabs (Tasks Manager) ─── */
+function renderWeekTabs() {
+  const container = document.getElementById('week-tabs');
+  container.innerHTML = '';
+  for (let w = 1; w <= 8; w++) {
+    const city = CITIES[w - 1];
+    const count = allAdminTasks.filter(t => t.week_number === w).length;
+    const btn = document.createElement('button');
+    btn.className = `week-tab ${activeWeekTab === w ? 'active' : ''}`;
+    btn.textContent = `W${w}: ${city.name} (${count})`;
+    btn.onclick = () => { activeWeekTab = w; renderWeekTabs(); renderAdminTasks(); };
+    container.appendChild(btn);
+  }
+  renderAdminTasks();
+}
+
+/* ─── Render Tasks in Admin ─── */
+function renderAdminTasks() {
+  const list = document.getElementById('admin-task-list');
+  const city = CITIES[activeWeekTab - 1];
+  const weekTasks = allAdminTasks.filter(t => t.week_number === activeWeekTab);
+
+  if (weekTasks.length === 0) {
+    list.innerHTML = `<div class="empty-state">
+      <i class="fa-solid fa-clipboard"></i>
+      <p>No tasks for Week ${activeWeekTab} (${city.flag} ${city.name}) yet.<br>Click "Add Task" to create one.</p>
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = '';
+  weekTasks.forEach(t => {
+    const item = document.createElement('div');
+    item.className = 'admin-task-item';
+    item.innerHTML = `
+      <span class="task-drag"><i class="fa-solid fa-grip-vertical"></i></span>
+      <div class="task-texts">
+        <strong>${t.task_title}</strong>
+        <span>${t.task_description || 'No description'}</span>
+      </div>
+      <button class="btn btn-danger" style="padding:6px 12px; font-size:0.7rem;" onclick="deleteTask('${t.id}')">
+        <i class="fa-solid fa-trash"></i>
+      </button>`;
+    list.appendChild(item);
+  });
+}
+
+/* ─── Toggle Add Task Form ─── */
+window.toggleAddTaskForm = function() {
+  const form = document.getElementById('add-task-form');
+  form.classList.toggle('open');
+  if (form.classList.contains('open')) {
+    document.getElementById('new-task-title').focus();
+  }
+};
+
+/* ─── Save Task ─── */
+window.saveTask = async function() {
+  const title = document.getElementById('new-task-title').value.trim();
+  const desc  = document.getElementById('new-task-desc').value.trim();
+
+  if (!title) { adminToast('Task title is required', 'error'); return; }
+
+  const existingCount = allAdminTasks.filter(t => t.week_number === activeWeekTab).length;
+
+  try {
+    const { error } = await window.supabaseClient.from('weekly_tasks').insert({
+      week_number:       activeWeekTab,
+      task_title:        title,
+      task_description:  desc || null,
+      sort_order:        existingCount,
+    });
+
+    if (error) throw error;
+
+    document.getElementById('new-task-title').value = '';
+    document.getElementById('new-task-desc').value  = '';
+    document.getElementById('add-task-form').classList.remove('open');
+    adminToast(`Task added to Week ${activeWeekTab}!`, 'success');
+    loadData();
+
+  } catch (err) {
+    adminToast('Error saving task: ' + err.message, 'error');
+  }
+};
+
+/* ─── Delete Task ─── */
+window.deleteTask = async function(id) {
+  if (!confirm('Delete this task? This will also remove all student completions for it.')) return;
+  try {
+    const { error } = await window.supabaseClient.from('weekly_tasks').delete().eq('id', id);
+    if (error) throw error;
+    adminToast('Task deleted', 'success');
+    loadData();
+  } catch (err) {
+    adminToast('Error: ' + err.message, 'error');
+  }
+};
+
+/* ─── Boot ─── */
+(async () => {
+  const ok = await checkAdminAuth();
+  if (!ok) return;
+  await loadData();
+})();
+</script>
+
+</body>
+</html>
