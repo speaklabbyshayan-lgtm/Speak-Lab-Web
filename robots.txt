@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /admin.html
+Disallow: /student-portal.html
+Disallow: /wb.html
 
-Sitemap: https://speaklab.pk/sitemap.xml
+Sitemap: https://www.speaklabbyshayan.com/sitemap.xml

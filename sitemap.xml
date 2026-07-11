@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://speaklab.pk/index.html</loc>
-    <lastmod>2026-07-04</lastmod>
+    <loc>https://www.speaklabbyshayan.com/</loc>
     <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://speaklab.pk/course-details.html</loc>
-    <lastmod>2026-07-04</lastmod>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://speaklab.pk/enroll.html</loc>
-    <lastmod>2026-07-04</lastmod>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://speaklab.pk/faq.html</loc>
-    <lastmod>2026-07-04</lastmod>
+    <loc>https://www.speaklabbyshayan.com/about.html</loc>
     <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://speaklab.pk/about.html</loc>
-    <lastmod>2026-07-04</lastmod>
+    <loc>https://www.speaklabbyshayan.com/course-details.html</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.speaklabbyshayan.com/contact.html</loc>
     <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://speaklab.pk/contact.html</loc>
-    <lastmod>2026-07-04</lastmod>
-    <priority>0.7</priority>
+    <loc>https://www.speaklabbyshayan.com/faq.html</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://speaklab.pk/venue.html</loc>
-    <lastmod>2026-07-04</lastmod>
+    <loc>https://www.speaklabbyshayan.com/enroll.html</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.speaklabbyshayan.com/venue.html</loc>
     <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://www.speaklabbyshayan.com/ai-tutor.html</loc>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
   </url>
 </urlset>

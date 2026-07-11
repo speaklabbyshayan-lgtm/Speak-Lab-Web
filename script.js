@@ -243,4 +243,193 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // 9. SMART GOOGLE REVIEW POPUP
+  function initSmartReviewPopup() {
+    if (localStorage.getItem('speaklab_review_shown')) return;
+
+    const path = window.location.pathname;
+    const isIndex = path === '/' || path.endsWith('index.html');
+    const isContact = path.endsWith('contact.html');
+    const isThankYou = path.endsWith('thank-you.html');
+    const isFaq = path.endsWith('faq.html');
+
+    if (!isIndex && !isContact && !isThankYou && !isFaq) return;
+
+    // Create popup HTML
+    const overlay = document.createElement('div');
+    overlay.id = 'smart-review-overlay';
+    overlay.innerHTML = `
+      <div id="smart-review-popup">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <h3>Enjoying SpeakLab?</h3>
+        <p>Your Google review takes 30 seconds and helps hundreds of students find the confidence they need.</p>
+        <div class="buttons">
+          <a href="https://g.page/r/CdPtj9VpwqqKEBM/review" target="_blank" rel="noopener noreferrer" class="review-btn" onclick="dismissSmartReviewPopup(true)">⭐ LEAVE A REVIEW</a>
+          <button class="later-btn" onclick="dismissSmartReviewPopup(false)">Maybe Later</button>
+        </div>
+      </div>
+    `;
+
+    // Inject CSS
+    const style = document.createElement('style');
+    style.textContent = `
+      #smart-review-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(0,0,0,0.8);
+        backdrop-filter: blur(5px);
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+      }
+      #smart-review-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      #smart-review-popup {
+        background: radial-gradient(circle at top right, #3b82f6 0%, transparent 70%), linear-gradient(135deg, #1e1e38 0%, #0f0f1a 100%);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 40px;
+        border-radius: 30px;
+        text-align: center;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        max-width: 500px;
+        width: 90%;
+        transform: translateY(20px) scale(0.95);
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      #smart-review-overlay.active #smart-review-popup {
+        transform: translateY(0) scale(1);
+      }
+      #smart-review-popup .stars {
+        font-size: 1.5rem;
+        letter-spacing: 5px;
+        margin-bottom: 15px;
+      }
+      #smart-review-popup h3 {
+        font-size: 1.8rem;
+        color: #fff;
+        margin-bottom: 15px;
+      }
+      #smart-review-popup p {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: #cbd5e1;
+        margin-bottom: 25px;
+      }
+      #smart-review-popup .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      #smart-review-popup .review-btn {
+        background: linear-gradient(90deg, #f59e0b, #d97706);
+        color: #fff;
+        text-decoration: none;
+        padding: 15px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        border: none;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #smart-review-popup .later-btn {
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.2);
+        color: #94a3b8;
+        padding: 12px;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 1rem;
+        min-height: 44px;
+      }
+      @media(min-width: 480px) {
+        #smart-review-popup .buttons {
+          flex-direction: row;
+        }
+        #smart-review-popup .review-btn { flex: 2; }
+        #smart-review-popup .later-btn { flex: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+    document.body.appendChild(overlay);
+
+    window.showSmartReviewPopup = function() {
+      if (localStorage.getItem('speaklab_review_shown')) return;
+      overlay.classList.add('active');
+    };
+
+    window.dismissSmartReviewPopup = function(clickedReview) {
+      overlay.classList.remove('active');
+      localStorage.setItem('speaklab_review_shown', 'true');
+    };
+
+    // Close on outside click
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) dismissSmartReviewPopup(false);
+    });
+    
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('active')) {
+        dismissSmartReviewPopup(false);
+      }
+    });
+
+    // TRIGGERS
+    if (isIndex) {
+      let scrolledPast50 = false;
+      let timeSpent45s = false;
+      
+      setTimeout(() => {
+        timeSpent45s = true;
+        if (scrolledPast50) showSmartReviewPopup();
+      }, 45000);
+
+      window.addEventListener('scroll', () => {
+        if (scrolledPast50) return;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        if (docHeight > 0 && (window.scrollY / docHeight) > 0.5) {
+          scrolledPast50 = true;
+          if (timeSpent45s) showSmartReviewPopup();
+        }
+      });
+    }
+    
+    if (isContact) {
+      document.addEventListener('mouseleave', (e) => {
+        if (e.clientY <= 0) showSmartReviewPopup();
+      });
+    }
+
+    if (isThankYou) {
+      setTimeout(() => {
+        showSmartReviewPopup();
+      }, 3000);
+    }
+
+    if (isFaq) {
+      let faqsOpened = new Set();
+      document.addEventListener('click', (e) => {
+        const faqBtn = e.target.closest('.faq-question');
+        if (faqBtn) {
+          const index = Array.from(document.querySelectorAll('.faq-question')).indexOf(faqBtn);
+          faqsOpened.add(index);
+          if (faqsOpened.size >= 3) {
+            setTimeout(showSmartReviewPopup, 500);
+          }
+        }
+      });
+    }
+  }
+
+  initSmartReviewPopup();
 });

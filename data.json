@@ -15,8 +15,8 @@
     "batch": "June Batch",
     "seats": 20,
     "fee": 20000,
-    "regularFee": 20000,
-    "registrationFee": 5000,
+    "regularFee": 25000,
+    "registrationFee": 10000,
     "balanceDue": "5th of next month"
   },
   "instructor": {
