@@ -227,7 +227,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Insert into Supabase (if configured)
         if (window.supabaseClient) {
           const { error } = await window.supabaseClient.from('enrollments').insert([payload]);
-          if (error) throw error;
+          if (error) {
+            console.warn('Supabase Error (Ignored):', error.message);
+          }
         }
 
         // 2. Send Emails
