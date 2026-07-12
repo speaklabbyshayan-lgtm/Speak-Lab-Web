@@ -1257,8 +1257,10 @@ What would you like to work on today? Pick one or just start chatting in English
       typingIndicator.classList.add('hidden');
     }
 
-    function typeWriterEffect(element, text, speed = 18) {
-      element.textContent = "";
+    function typeWriterEffect(element, text, speed = 18, isContinued = false) {
+      if (!isContinued) {
+        element.textContent = "";
+      }
       let index = 0;
       
       const timer = setInterval(() => {
@@ -1272,7 +1274,7 @@ What would you like to work on today? Pick one or just start chatting in English
           if (['.', '!', '?', ','].includes(char)) {
             clearInterval(timer);
             setTimeout(() => {
-              typeWriterEffect(element, text.substring(index), speed);
+              typeWriterEffect(element, text.substring(index), speed, true);
             }, 120);
           }
         } else {
