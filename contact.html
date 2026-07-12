@@ -277,7 +277,7 @@
 
       <div class="contact-form">
         <h3>Send us a message</h3>
-        <form action="mailto:info@speaklabbyshayan.com" method="post" enctype="text/plain">
+        <form id="contactForm">
           <div class="form-group">
             <label>Full Name</label>
             <input type="text" name="name" required>
@@ -294,8 +294,46 @@
             <label>Message</label>
             <textarea name="message" rows="4" required></textarea>
           </div>
-          <button type="submit">Send Message</button>
+          <button type="submit" id="contactSubmitBtn">Send Message</button>
         </form>
+
+        <script>
+          document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('contactSubmitBtn');
+            const originalText = btn.textContent;
+            btn.textContent = "Sending...";
+            btn.disabled = true;
+
+            const formData = {
+              name: this.name.value,
+              email: this.email.value,
+              whatsapp: this.whatsapp.value,
+              message: this.message.value
+            };
+
+            try {
+              const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+              });
+              
+              if (response.ok) {
+                alert("Message sent successfully! Check your email for confirmation.");
+                this.reset();
+              } else {
+                alert("There was a problem sending your message. Please try again or message us on WhatsApp.");
+              }
+            } catch (error) {
+              console.error('Error:', error);
+              alert("Could not connect to the server. Please message us on WhatsApp instead.");
+            } finally {
+              btn.textContent = originalText;
+              btn.disabled = false;
+            }
+          });
+        </script>
       </div>
     </div>
     

@@ -142,7 +142,7 @@
       </div>
       
       <div class="enroll-form">
-        <form action="thank-you.html" method="get">
+        <form id="enrollForm">
           <div class="form-group">
             <label>Full Name</label>
             <input type="text" name="name" required>
@@ -173,9 +173,48 @@
               <option value="Other">Other</option>
             </select>
           </div>
-          <button type="submit">ENROLL NOW</button>
+          <button type="submit" id="enrollSubmitBtn">ENROLL NOW</button>
           <p class="form-note">After submitting, our team will contact you on WhatsApp to confirm your seat and share payment details.</p>
         </form>
+
+        <script>
+          document.getElementById('enrollForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('enrollSubmitBtn');
+            const originalText = btn.textContent;
+            btn.textContent = "Processing...";
+            btn.disabled = true;
+
+            const formData = {
+              name: this.name.value,
+              whatsapp: this.whatsapp.value,
+              email: this.email.value,
+              city: this.city.value,
+              source: this.source.value
+            };
+
+            try {
+              const response = await fetch('/api/enroll', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+              });
+              
+              if (response.ok) {
+                window.location.href = "thank-you.html";
+              } else {
+                alert("There was a problem with your enrollment. Please try again or message us on WhatsApp.");
+                btn.textContent = originalText;
+                btn.disabled = false;
+              }
+            } catch (error) {
+              console.error('Error:', error);
+              alert("Could not connect to the server. Please message us on WhatsApp instead.");
+              btn.textContent = originalText;
+              btn.disabled = false;
+            }
+          });
+        </script>
       </div>
     </div>
   </main>
