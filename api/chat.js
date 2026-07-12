@@ -24,7 +24,7 @@ export default async function handler(req, res) {
         messages: messages,
         temperature: 0.7,
         max_tokens: 1024,
-        stream: true
+        stream: false
       })
     });
 
@@ -32,23 +32,8 @@ export default async function handler(req, res) {
       throw new Error(`NVIDIA API error: ${response.statusText}`);
     }
 
-    // Set headers for SSE (Server-Sent Events)
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-
-    // Pipe the response body stream to Vercel's response stream
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder("utf-8");
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) {
-        res.end();
-        break;
-      }
-      res.write(decoder.decode(value, { stream: true }));
-    }
+    const data = await response.json();
+    return res.status(200).json(data);
   } catch (error) {
     console.error('Chat API Error:', error);
     res.status(500).json({ message: error.message });

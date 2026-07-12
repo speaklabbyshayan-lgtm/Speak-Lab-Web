@@ -745,7 +745,36 @@
         transition-duration: 0.01ms !important;
       }
     }
-  </style>
+  
+    /* Added for Typewriter */
+    .message-bubble {
+      white-space: pre-wrap;
+    }
+    
+    #typing-indicator {
+      display: none; /* Controlled by JS */
+      align-items: center;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+    }
+    #typing-indicator span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      margin: 0 2px;
+      animation: typingBounce 1.2s infinite;
+    }
+    #typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    #typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-8px); }
+    }
+
+</style>
 </head>
 <body>
   <!-- Top Navigation (Light Theme) - Matches index.html for mobile consistency -->
@@ -1229,11 +1258,38 @@ What would you like to work on today? Pick one or just start chatting in English
       typingIndicator.classList.add('hidden');
     }
 
+    function typeWriterEffect(element, text, speed = 18) {
+      element.textContent = "";
+      let index = 0;
+      
+      const timer = setInterval(() => {
+        if (index < text.length) {
+          const char = text.charAt(index);
+          element.textContent += char;
+          index++;
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+
+          // Pause slightly longer after punctuation
+          if (['.', '!', '?', ','].includes(char)) {
+            clearInterval(timer);
+            setTimeout(() => {
+              typeWriterEffect(element, text.substring(index), speed);
+            }, 120);
+          }
+        } else {
+          clearInterval(timer);
+          // Enable inputs when done typing
+          chatInput.disabled = false;
+          sendBtn.disabled = false;
+          chatInput.focus();
+        }
+      }, speed);
+    }
+
     async function sendMessage() {
       const text = chatInput.value.trim();
       if (!text || chatState.isTyping) return;
       
-      // User Message UI
       addMessageUI('user', text);
       chatState.messages.push({ role: "user", content: text });
       
@@ -1244,8 +1300,6 @@ What would you like to work on today? Pick one or just start chatting in English
       sendBtn.disabled = true;
       showTyping();
       
-      
-
       try {
         const response = await fetch("/api/chat", {
           method: "POST",
@@ -1263,61 +1317,36 @@ What would you like to work on today? Pick one or just start chatting in English
           throw new Error('API request failed');
         }
 
-        // Create empty AI message UI
+        const data = await response.json();
+        const reply = data.choices[0].message.content;
+        
+        chatState.messages.push({ role: "assistant", content: reply });
+
         const aiMessageDiv = addMessageUI('ai', "");
         const bubble = aiMessageDiv.querySelector('.message-bubble');
+        bubble.innerHTML = ''; // Clear the bubble for typewriter
         
-        // Remove the time element momentarily to append text cleanly
-        bubble.innerHTML = '';
-        
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder("utf-8");
-        let accumulatedResponse = "";
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          
-          const chunk = decoder.decode(value, { stream: true });
-          const lines = chunk.split('
-').filter(line => line.trim() !== '');
-          
-          for (const line of lines) {
-            if (line.replace(/^data: /, '').trim() === '[DONE]') {
-              continue;
-            }
-            if (line.startsWith('data: ')) {
-              try {
-                const data = JSON.parse(line.replace(/^data: /, ''));
-                if (data.choices[0].delta && data.choices[0].delta.content) {
-                  accumulatedResponse += data.choices[0].delta.content;
-                  let formattedText = accumulatedResponse.replace(/
-/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                  bubble.innerHTML = formattedText;
-                  scrollToBottom();
-                }
-              } catch (e) {
-                console.error("Error parsing stream data", e, line);
-              }
-            }
-          }
-        }
-        
-        // Add time back
+        // Add time element that will stay at the bottom
         const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        bubble.innerHTML += `<div class="message-time">${time}</div>`;
         
-        chatState.messages.push({ role: "assistant", content: accumulatedResponse });
+        // Create a span for the text so time stays outside the typewriter loop
+        const textSpan = document.createElement('span');
+        bubble.appendChild(textSpan);
+        
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'message-time';
+        timeDiv.textContent = time;
+        bubble.appendChild(timeDiv);
+
+        typeWriterEffect(textSpan, reply);
 
       } catch (error) {
-        console.error('NVIDIA API Error:', error);
+        console.error('Chat API Error:', error);
         hideTyping();
         addMessageUI('ai', "Sara is taking a short break — please try again in a moment! 🙏");
+        chatInput.disabled = false;
+        sendBtn.disabled = false;
       }
-
-      chatInput.disabled = false;
-      sendBtn.disabled = false;
-      chatInput.focus();
     }
 
     function autoResizeTextarea() {
