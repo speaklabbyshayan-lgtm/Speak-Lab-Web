@@ -1257,7 +1257,7 @@ What would you like to work on today? Pick one or just start chatting in English
       typingIndicator.classList.add('hidden');
     }
 
-    function typeWriterEffect(element, text, speed = 18, isContinued = false) {
+    function typeWriterEffect(element, text, speed = 8, isContinued = false) {
       if (!isContinued) {
         element.textContent = "";
       }
@@ -1275,7 +1275,7 @@ What would you like to work on today? Pick one or just start chatting in English
             clearInterval(timer);
             setTimeout(() => {
               typeWriterEffect(element, text.substring(index), speed, true);
-            }, 120);
+            }, 60);
           }
         } else {
           clearInterval(timer);
