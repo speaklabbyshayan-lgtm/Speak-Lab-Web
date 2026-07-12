@@ -1196,11 +1196,11 @@ IMPORTANT:
     ];
 
     // Initial AI Welcome Message
-    const welcomeMessage = "Hi! I'm Sara, your personal English coach at SpeakLab! 👋
+    const welcomeMessage = `Hi! I'm Sara, your personal English coach at SpeakLab! 👋
 
 I'm here to help you master everything about English — grammar, vocabulary, pronunciation, fluency, writing, and speaking confidence.
 
-What would you like to work on today? Pick one or just start chatting in English and I'll guide you from there! 😊";
+What would you like to work on today? Pick one or just start chatting in English and I'll guide you from there! 😊`;
 
     // Add Message to Chat UI
     function addMessageUI(role, text) {
@@ -1210,8 +1210,7 @@ What would you like to work on today? Pick one or just start chatting in English
       const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       
       // Basic markdown to HTML
-      let formattedText = text.replace(/
-/g, '<br/>');
+      let formattedText = text.replace(/\n/g, '<br/>');
       formattedText = formattedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
       
       if (role === 'ai') {
