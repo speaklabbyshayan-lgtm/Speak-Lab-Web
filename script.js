@@ -244,7 +244,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (!emailResponse.ok) {
-          throw new Error('Failed to send emails');
+          const errData = await emailResponse.json().catch(() => ({}));
+          throw new Error(errData.message || 'Failed to send emails. Please check your Resend configuration.');
         }
         
         window.location.href = 'thank-you.html';
@@ -256,7 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
           msgEl.id = 'enroll-msg';
           enrollForm.appendChild(msgEl);
         }
-        msgEl.textContent = 'Something went wrong, please try again or WhatsApp us';
+        // Show the actual error message instead of generic text
+        msgEl.textContent = `Error: ${err.message}. Please try again or WhatsApp us.`;
         msgEl.style.color = 'red';
         msgEl.style.marginTop = '10px';
         btn.textContent = originalText;
