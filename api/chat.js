@@ -4,7 +4,8 @@ export default async function handler(req, res) {
   }
 
   const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
-  const NVIDIA_MODEL = "nvidia/llama-3.1-nemotron-70b-instruct";
+  // Updated model to latest available on user's NVIDIA account
+  const NVIDIA_MODEL = "meta/llama-3.3-70b-instruct";
 
   if (!NVIDIA_API_KEY) {
     return res.status(500).json({ message: 'NVIDIA API key not configured on server' });
