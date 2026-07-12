@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     const { name, whatsapp, email, city, source } = req.body;
 
     // Email 1: To Owner
-    await resend.emails.send({
+    const { error: ownerError } = await resend.emails.send({
       from: SENDER_EMAIL,
       to: OWNER_EMAIL,
       subject: `New Enrollment Request from ${name}`,
@@ -27,8 +27,12 @@ export default async function handler(req, res) {
       `
     });
 
+    if (ownerError) {
+      throw new Error(`Owner Email Error: ${ownerError.message}`);
+    }
+
     // Email 2: To Student
-    await resend.emails.send({
+    const { error: studentError } = await resend.emails.send({
       from: SENDER_EMAIL,
       to: email,
       subject: 'Enrollment Confirmed | SpeakLab',
@@ -40,6 +44,12 @@ export default async function handler(req, res) {
         <p>Best regards,<br/>The SpeakLab Team</p>
       `
     });
+
+    if (studentError) {
+      console.warn(`Student Email Error: ${studentError.message}`);
+      // Not throwing for student so the enrollment can still succeed if Resend free tier blocks it.
+      // But we log it.
+    }
 
     res.status(200).json({ status: 'success', message: 'Emails sent successfully' });
   } catch (error) {
