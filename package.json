@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/speaklabbyshayan-lgtm/Speak-Lab-Web#readme",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "resend": "^6.17.2"
   }
 }

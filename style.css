@@ -1777,3 +1777,28 @@ body {
   text-align: center;
   margin-top: 15px;
 }
+
+
+/* Google Rate Us Button in Footer */
+.google-rate-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 18px;
+  background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+  color: #1e3a8a !important;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none !important;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.google-rate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
+  background: #ffffff;
+  color: #0f766e !important;
+}
+
