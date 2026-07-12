@@ -1476,13 +1476,19 @@ body {
 }
 
 .faq-answer {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease, padding 0.4s ease;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease-out, padding 0.3s ease-out;
   padding: 0 18px;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.9);
   line-height: 1.6;
+}
+
+.faq-answer > * {
+  overflow: hidden;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .faq-item.active {
@@ -1491,7 +1497,7 @@ body {
 }
 
 .faq-item.active .faq-answer {
-  max-height: 300px;
+  grid-template-rows: 1fr;
   padding: 0 18px 18px;
 }
 

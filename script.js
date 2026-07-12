@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 8. ENROLL FORM
   const enrollForm = document.querySelector('.enroll-form form');
-  if (enrollForm && window.supabase) {
+  if (enrollForm) {
     enrollForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = enrollForm.querySelector('button[type="submit"]');
@@ -223,8 +223,29 @@ document.addEventListener('DOMContentLoaded', () => {
           city: formData.get('city'),
           heard_from: formData.get('source')
         };
-        const { error } = await supabase.from('enrollments').insert([payload]);
-        if (error) throw error;
+        
+        // 1. Insert into Supabase (if configured)
+        if (window.supabaseClient) {
+          const { error } = await window.supabaseClient.from('enrollments').insert([payload]);
+          if (error) throw error;
+        }
+
+        // 2. Send Emails
+        const emailResponse = await fetch('/api/enroll', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: payload.full_name,
+            whatsapp: payload.whatsapp,
+            email: payload.email,
+            city: payload.city,
+            source: payload.heard_from
+          })
+        });
+
+        if (!emailResponse.ok) {
+          throw new Error('Failed to send emails');
+        }
         
         window.location.href = 'thank-you.html';
       } catch (err) {
