@@ -31,11 +31,11 @@ export default async function handler(req, res) {
     await resend.emails.send({
       from: SENDER_EMAIL,
       to: email,
-      subject: 'Enrollment Received | SpeakLab',
+      subject: 'Enrollment Confirmed | SpeakLab',
       html: `
         <h2>Hi ${name},</h2>
-        <p>Thank you for your interest in joining SpeakLab!</p>
-        <p>We have received your enrollment details. Our team will contact you on WhatsApp (${whatsapp}) shortly to confirm your seat for the upcoming batch.</p>
+        <p>Thank you for enrolling in SpeakLab!</p>
+        <p>We have successfully received your details. Our team will contact you very soon on your WhatsApp number (<strong>${whatsapp}</strong>) to share the <strong>payment details</strong> and confirm your seat for the batch.</p>
         <br/>
         <p>Best regards,<br/>The SpeakLab Team</p>
       `
