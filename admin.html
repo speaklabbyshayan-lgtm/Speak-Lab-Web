@@ -279,11 +279,11 @@
     };
 
     const loadDashboard = async () => {
-      if (!window.supabase) return;
+      if (!window.supabaseClient) return;
       
       try {
         // Fetch enrollments
-        const { data: enrollments, error: eErr } = await supabase
+        const { data: enrollments, error: eErr } = await window.supabaseClient
           .from('enrollments')
           .select('*')
           .order('created_at', { ascending: false });
@@ -291,7 +291,7 @@
         if (eErr) throw eErr;
 
         // Fetch messages
-        const { data: messages, error: mErr } = await supabase
+        const { data: messages, error: mErr } = await window.supabaseClient
           .from('contact_submissions')
           .select('*')
           .order('created_at', { ascending: false });
@@ -374,7 +374,7 @@
 
     window.updatePayment = async (id, status, selectEl) => {
       try {
-        const { error } = await supabase.from('enrollments').update({ payment_status: status }).eq('id', id);
+        const { error } = await window.supabaseClient.from('enrollments').update({ payment_status: status }).eq('id', id);
         if (error) throw error;
         // Update color
         selectEl.className = status === 'paid' ? 'status-paid' : (status === 'partial' ? 'status-partial' : 'status-unpaid');
@@ -387,7 +387,7 @@
 
     window.updateSeat = async (id, confirmed) => {
       try {
-        const { error } = await supabase.from('enrollments').update({ seat_confirmed: confirmed }).eq('id', id);
+        const { error } = await window.supabaseClient.from('enrollments').update({ seat_confirmed: confirmed }).eq('id', id);
         if (error) throw error;
         loadDashboard(); // refresh stats
       } catch(err) {
@@ -398,7 +398,7 @@
 
     window.markRead = async (id) => {
       try {
-        const { error } = await supabase.from('contact_submissions').update({ is_read: true }).eq('id', id);
+        const { error } = await window.supabaseClient.from('contact_submissions').update({ is_read: true }).eq('id', id);
         if (error) throw error;
         loadDashboard(); // refresh UI
       } catch(err) {
@@ -425,7 +425,7 @@
       body.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
       try {
         // Get all student progress
-        const { data: progresses, error } = await supabase
+        const { data: progresses, error } = await window.supabaseClient
           .from('student_progress')
           .select('*')
           .order('created_at', { ascending: false });
@@ -474,7 +474,7 @@
       btn.textContent = 'Unlocking...';
 
       try {
-        const { error } = await supabase
+        const { error } = await window.supabaseClient
           .from('student_progress')
           .update({ current_gate: nextGate, unlocked_at: new Date().toISOString() })
           .eq('student_id', studentId);
@@ -482,7 +482,7 @@
         if (error) throw error;
 
         // Also award a badge for the completed gate
-        await supabase.from('student_badges').upsert({
+        await window.supabaseClient.from('student_badges').upsert({
           student_id: studentId,
           gate_number: currentGate,
           badge_name: GATE_NAMES[currentGate]
