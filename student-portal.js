@@ -34,6 +34,12 @@ async function init() {
     return;
   }
 
+  // Redirect admin to admin panel
+  if (session.user && session.user.email === 'speaklabbyshayan@gmail.com') {
+    window.location.href = 'admin.html';
+    return;
+  }
+
   currentUser = session.user;
   await loadPortalData();
   renderPortal();

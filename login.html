@@ -459,6 +459,12 @@
         const { data, error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
         if (error) throw error;
 
+        // Redirect Admin
+        if (data.user && data.user.email === 'speaklabbyshayan@gmail.com') {
+          window.location.href = 'admin.html';
+          return;
+        }
+
         // Redirect — check for ?redirect param
         const params = new URLSearchParams(window.location.search);
         const redirect = params.get('redirect') || 'student-portal.html';
@@ -509,6 +515,10 @@
       if (typeof supabase === 'undefined') return;
       const { data: { session } } = await window.supabaseClient.auth.getSession();
       if (session) {
+        if (session.user && session.user.email === 'speaklabbyshayan@gmail.com') {
+          window.location.href = 'admin.html';
+          return;
+        }
         const params = new URLSearchParams(window.location.search);
         window.location.href = params.get('redirect') || 'student-portal.html';
       }
