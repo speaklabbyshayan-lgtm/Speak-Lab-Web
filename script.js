@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 7. CONTACT FORM
   const contactForm = document.querySelector('.contact-form form');
-  if (contactForm && window.supabase) {
+  if (contactForm && window.supabaseClient) {
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = contactForm.querySelector('button[type="submit"]');
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
           whatsapp: formData.get('whatsapp'),
           message: formData.get('message')
         };
-        const { error } = await supabase.from('contact_submissions').insert([payload]);
+        const { error } = await window.supabaseClient.from('contact_submissions').insert([payload]);
         if (error) throw error;
         
         let msgEl = document.getElementById('contact-msg');
