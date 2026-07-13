@@ -49,6 +49,9 @@ async function init() {
 
 // ─── LOAD ALL DATA FROM SUPABASE ──────────────────────────────────────────────
 async function loadPortalData() {
+  const name = currentUser?.user_metadata?.full_name || currentUser?.email?.split('@')[0] || 'Student';
+  const email = currentUser?.email || '';
+
   // 1. Get or create student_progress
   let { data: progress, error: progressErr } = await window.supabaseClient
     .from('student_progress')
@@ -60,7 +63,12 @@ async function loadPortalData() {
     // Create a new row for this student
     const { data: newProgress, error: createErr } = await window.supabaseClient
       .from('student_progress')
-      .insert({ student_id: currentUser.id, current_gate: 1 })
+      .insert({ 
+        student_id: currentUser.id, 
+        current_gate: 1,
+        student_name: name,
+        student_email: email
+      })
       .select()
       .single();
 
@@ -70,6 +78,15 @@ async function loadPortalData() {
       return;
     }
     progress = newProgress;
+  } else if (!progress.student_email || !progress.student_name || progress.student_name === 'Student') {
+    // Auto-update missing name/email for existing records
+    await window.supabaseClient
+      .from('student_progress')
+      .update({ student_name: name, student_email: email })
+      .eq('id', progress.id);
+      
+    progress.student_name = name;
+    progress.student_email = email;
   }
 
   currentGate = progress.current_gate || 1;
