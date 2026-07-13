@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Journey — SpeakLabs Student Portal</title>
-  <meta name="description" content="Track your SpeakLabs 8-week journey on an interactive 3D globe. Fly from city to city as you complete each week.">
+  <title>My Flight — SpeakLab Airways</title>
+  <meta name="description" content="Your SpeakLab journey — 8 gates to English Mastery. Track your progress like a boarding pass.">
   <meta name="robots" content="noindex, nofollow">
 
   <!-- Fonts -->
@@ -15,15 +15,12 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- Our CSS -->
+  <!-- Portal CSS -->
   <link rel="stylesheet" href="student-portal.css">
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-
-  <!-- Three.js + Globe.gl -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/globe.gl@2.30.0/dist/globe.gl.min.js"></script>
+  <script src="supabase-config.js?v=3"></script>
 
   <!-- Vercel Speed Insights -->
   <script>window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };</script>
@@ -31,28 +28,42 @@
 </head>
 <body>
 
-<!-- Auth Check (prevents flash) -->
-<div id="auth-check"></div>
-
-<!-- Loading Screen -->
-<div id="loading-screen">
-  <div class="loader-globe"></div>
-  <p>Plotting your flight path...</p>
-</div>
-
-<!-- Stars Canvas -->
-<canvas id="stars-canvas"></canvas>
-
 <!-- Confetti Canvas -->
 <canvas id="confetti-canvas"></canvas>
 
-<!-- Celebration Overlay -->
-<div id="celebration-overlay">
-  <div class="celebration-card">
-    <span class="celeb-emoji" id="celeb-emoji">✈️</span>
-    <div class="celeb-city" id="celeb-city">Dubai</div>
-    <p class="celeb-msg" id="celeb-msg">You've landed in <strong id="celeb-city-inline">Dubai</strong>! Your next week of adventure awaits. Keep flying! 🚀</p>
-    <button class="btn-celeb-close" id="celeb-close-btn" onclick="closeCelebration()">Continue My Journey ✈️</button>
+<!-- Clouds Background -->
+<div id="clouds-bg">
+  <div class="cloud cloud-1"></div>
+  <div class="cloud cloud-2"></div>
+  <div class="cloud cloud-3"></div>
+  <div class="cloud cloud-4"></div>
+  <div class="cloud cloud-5"></div>
+</div>
+
+<!-- Loading Screen -->
+<div id="loading-screen">
+  <div class="loading-plane">✈️</div>
+  <p>Preparing your boarding pass...</p>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+</div>
+
+<!-- Gate Unlock Overlay -->
+<div id="gate-unlock-overlay">
+  <div class="unlock-card">
+    <div class="unlock-stamp">
+      <div class="stamp-text" id="unlock-stamp-text">GATE 2<br>UNLOCKED</div>
+    </div>
+    <div class="unlock-emoji" id="unlock-emoji">🌤️</div>
+    <h2 id="unlock-title">Takeoff!</h2>
+    <p id="unlock-msg">Week 2 has been unlocked. Your journey continues!</p>
+    <button class="btn-unlock-close" onclick="closeUnlockOverlay()">Continue My Journey ✈️</button>
+  </div>
+</div>
+
+<!-- Gate Task Modal -->
+<div id="gate-modal-overlay" onclick="closeGateModal(event)">
+  <div class="gate-modal" id="gate-modal">
+    <!-- Rendered by JS -->
   </div>
 </div>
 
@@ -65,91 +76,199 @@
   <!-- Header -->
   <header id="portal-header">
     <a href="index.html" class="header-logo">
-      <div class="logo-icon">🌍</div>
-      <span class="logo-text">SpeakLabs</span>
+      <span class="logo-plane">✈️</span>
+      <span class="logo-text">SpeakLab Airways</span>
     </a>
-    <div class="header-welcome">
-      <h2 id="header-greeting">Welcome back, Explorer! ✈️</h2>
-      <span id="header-status">Loading your journey...</span>
-    </div>
     <div class="header-actions">
-      <a href="live-class.html" class="btn-logout" style="background: #2D8CFF; color: white; border: none; margin-right: 10px;">
+      <a href="live-class.html" class="btn-action btn-live">
         <i class="fa-solid fa-video"></i> Live Class
       </a>
-      <button class="btn-logout" id="btn-logout" onclick="handleLogout()">
+      <button class="btn-action btn-logout" id="btn-logout" onclick="handleLogout()">
         <i class="fa-solid fa-right-from-bracket"></i> Logout
       </button>
     </div>
   </header>
 
-  <!-- Status Strip -->
-  <div id="status-strip">
-    <div class="status-info">
-      <div class="status-city">
-        <span class="city-flag" id="status-flag">🌍</span>
-        <span id="status-city-name">Loading...</span>
+  <!-- ====== BOARDING PASS SECTION ====== -->
+  <section id="boarding-pass-section">
+    <div class="boarding-pass-card" id="boarding-pass-card">
+      <!-- Left: Main Info -->
+      <div class="bp-left">
+        <div class="bp-airline">
+          <span class="bp-airline-logo">✈️</span>
+          <div>
+            <div class="bp-airline-name">SPEAKLAB AIRWAYS</div>
+            <div class="bp-airline-sub">Student Boarding Pass</div>
+          </div>
+        </div>
+
+        <div class="bp-route">
+          <div class="bp-city">
+            <div class="bp-city-code">BEG</div>
+            <div class="bp-city-name">Beginner</div>
+          </div>
+          <div class="bp-route-arrow">
+            <div class="bp-plane-line">✈️</div>
+            <div class="bp-dashes">- - - - - - - -</div>
+          </div>
+          <div class="bp-city bp-city-right">
+            <div class="bp-city-code">PRO</div>
+            <div class="bp-city-name">Confident Pro</div>
+          </div>
+        </div>
+
+        <div class="bp-details">
+          <div class="bp-detail-item">
+            <div class="bp-detail-label">PASSENGER</div>
+            <div class="bp-detail-value" id="bp-passenger">Loading...</div>
+          </div>
+          <div class="bp-detail-item">
+            <div class="bp-detail-label">FLIGHT</div>
+            <div class="bp-detail-value">SL-2026</div>
+          </div>
+          <div class="bp-detail-item">
+            <div class="bp-detail-label">SEAT</div>
+            <div class="bp-detail-value" id="bp-seat">Gate 1 of 8</div>
+          </div>
+          <div class="bp-detail-item">
+            <div class="bp-detail-label">CLASS</div>
+            <div class="bp-detail-value">SPEAKING PRO</div>
+          </div>
+        </div>
+
+        <div class="bp-status-bar">
+          <div class="bp-status-badge" id="bp-status-badge">
+            <span class="status-dot"></span>
+            <span id="bp-status-text">In Progress</span>
+          </div>
+          <div class="bp-progress-info" id="bp-progress-info">0/8 Gates Complete</div>
+        </div>
       </div>
-      <div class="status-week">Week <strong id="status-week-num">1</strong> of 8 — <span id="status-week-label">Departing Lahore</span></div>
-    </div>
-    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-      <div class="progress-segments" id="progress-segments">
-        <!-- Generated by JS -->
+
+      <!-- Torn Edge Divider -->
+      <div class="bp-tear">
+        <svg viewBox="0 0 20 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10,0 Q5,15 10,30 Q15,45 10,60 Q5,75 10,90 Q15,105 10,120 Q5,135 10,150 Q15,165 10,180 Q5,195 10,210 Q15,225 10,240 Q5,255 10,270 Q15,285 10,300" stroke="#e2e8f0" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+        </svg>
       </div>
-      <span class="progress-label" id="progress-label">0/8 ✅</span>
+
+      <!-- Right: Stub -->
+      <div class="bp-right">
+        <div class="bp-stub-title">BOARDING STUB</div>
+        <div class="bp-stub-gate" id="bp-stub-gate">
+          <div class="stub-gate-label">GATE</div>
+          <div class="stub-gate-num" id="stub-gate-num">1</div>
+        </div>
+        <div class="bp-stub-week" id="bp-stub-week">Week 1 of 8</div>
+        <div class="bp-stub-topic" id="bp-stub-topic">Breaking The Fear Barrier</div>
+        <div class="bp-barcode">
+          <div class="barcode-bars" id="barcode-bars"></div>
+          <div class="barcode-text">SL2026-W<span id="barcode-week">01</span></div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Journey Map (horizontal scroll) -->
-  <div id="journey-map">
-    <div class="journey-track" id="journey-track">
-      <!-- Generated by JS -->
+  <!-- ====== JOURNEY MAP ====== -->
+  <section id="journey-section">
+    <div class="journey-header">
+      <h2 class="section-title">🗺️ Your Flight Route</h2>
+      <p class="section-subtitle">Click any unlocked gate to see your missions</p>
     </div>
-  </div>
 
-  <div class="section-divider"></div>
+    <div class="journey-map-wrapper">
+      <!-- Sky background strip -->
+      <div class="runway-sky"></div>
 
-  <!-- Globe Section -->
-  <div id="globe-section">
-    <div id="globe-container"></div>
-    <!-- Plane overlay -->
-    <div id="plane-tracker"></div>
-  </div>
+      <!-- Runway / path -->
+      <div class="runway-track" id="runway-track">
+        <!-- Gate nodes rendered by JS -->
+      </div>
 
-  <div class="section-divider"></div>
+      <!-- Moving plane indicator -->
+      <div class="runway-plane" id="runway-plane">✈️</div>
+    </div>
+  </section>
 
-  <!-- Tasks Section -->
+  <!-- ====== STATS BAR ====== -->
+  <section id="stats-bar">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-icon">✈️</div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-gates">0/8</div>
+          <div class="stat-label">Gates Complete</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">📍</div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-current-gate">Gate 1</div>
+          <div class="stat-label">Current Gate</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-tasks">0/0</div>
+          <div class="stat-label">Tasks This Week</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">🏅</div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-badges">0</div>
+          <div class="stat-label">Stamps Earned</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== CURRENT GATE TASKS ====== -->
   <section id="tasks-section">
     <div class="tasks-header">
-      <div class="tasks-title">
-        <i class="fa-solid fa-list-check" style="color: var(--electric-blue);"></i>
-        <span id="tasks-week-title">Week 1 Missions</span>
-        <span class="week-badge" id="tasks-city-badge">Lahore</span>
+      <div class="tasks-title-row">
+        <span id="tasks-gate-emoji">🛫</span>
+        <h2 id="tasks-title">Gate 1 — Departure Lounge</h2>
       </div>
-      <div class="tasks-subtitle" id="tasks-completion-text">0 of 0 tasks completed</div>
+      <p id="tasks-subtitle" class="tasks-subtitle">Week 1: Breaking The Fear Barrier</p>
+      <div class="tasks-progress-bar">
+        <div class="tasks-progress-fill" id="tasks-progress-fill" style="width:0%"></div>
+      </div>
+      <p class="tasks-progress-text" id="tasks-progress-text">0 of 0 tasks completed</p>
     </div>
     <div class="tasks-grid" id="tasks-grid">
       <div class="tasks-empty">
-        <span class="empty-icon">⏳</span>
+        <span>⏳</span>
         <p>Loading your missions...</p>
       </div>
+    </div>
+  </section>
+
+  <!-- ====== PASSPORT STAMPS ====== -->
+  <section id="stamps-section">
+    <div class="stamps-header">
+      <h2 class="section-title">🛂 Passport Stamps</h2>
+      <p class="section-subtitle">Collect all 8 to graduate!</p>
+    </div>
+    <div class="stamps-grid" id="stamps-grid">
+      <!-- Rendered by JS -->
     </div>
   </section>
 
 </div><!-- end #main-portal -->
 
 <!-- Main JS -->
-<script src="supabase-config.js?v=2"></script>
 <script src="student-portal.js"></script>
 
-
 <!-- Floating WhatsApp Button -->
-<a href="https://wa.me/923014497532" target="_blank" class="floating-whatsapp" style="position: fixed; bottom: 25px; right: 25px; z-index: 1000; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite; transition: transform 0.3s ease; background-color: #25D366; width: 65px; height: 65px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+<a href="https://wa.me/923014497532" target="_blank" class="floating-whatsapp" style="position: fixed; bottom: 25px; right: 25px; z-index: 1000; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: wa-pulse 2s infinite; transition: transform 0.3s ease; background-color: #25D366; width: 65px; height: 65px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
   <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="white" viewBox="0 0 16 16">
     <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
   </svg>
 </a>
 <style>
-@keyframes pulse {
+@keyframes wa-pulse {
   0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
   70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
   100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }

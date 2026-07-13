@@ -110,16 +110,8 @@
       text-align: center;
       border-top: 5px solid #000;
     }
-    .stat-card h3 {
-      font-size: 1.2rem;
-      color: #666;
-      margin-bottom: 10px;
-    }
-    .stat-card .stat-val {
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: #000;
-    }
+    .stat-card h3 { font-size: 1.2rem; color: #666; margin-bottom: 10px; }
+    .stat-card .stat-val { font-size: 2.5rem; font-weight: bold; color: #000; }
     .admin-section {
       background: #fff;
       padding: 20px;
@@ -127,74 +119,61 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       margin-bottom: 40px;
     }
-    .admin-section h2 {
-      margin-bottom: 20px;
-      font-size: 1.8rem;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-    }
-    th, td {
-      padding: 12px 15px;
-      border-bottom: 1px solid #ddd;
-    }
-    th {
-      background-color: #f8f9fa;
-      font-weight: bold;
-    }
+    .admin-section h2 { margin-bottom: 20px; font-size: 1.8rem; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th, td { padding: 12px 15px; border-bottom: 1px solid #ddd; }
+    th { background-color: #f8f9fa; font-weight: bold; }
     .status-paid { color: #10b981; font-weight: bold; }
     .status-partial { color: #eab308; font-weight: bold; }
     .status-unpaid { color: #ef4444; font-weight: bold; }
-    .unread-row {
-      background-color: #e0f2fe;
-    }
-    select {
-      padding: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    button.mark-read-btn {
-      padding: 5px 10px;
-      background: #3b82f6;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+    .unread-row { background-color: #e0f2fe; }
+    select { padding: 5px; border-radius: 5px; border: 1px solid #ccc; }
+    button.mark-read-btn { padding: 5px 10px; background: #3b82f6; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
     button.mark-read-btn:hover { background: #2563eb; }
-    
-    /* Toggle switch */
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 40px;
-      height: 20px;
-    }
+    .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
     .switch input { opacity: 0; width: 0; height: 0; }
-    .slider {
-      position: absolute;
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 20px; }
+    .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
+    input:checked + .slider { background-color: #10b981; }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    /* ─── STUDENT JOURNEY STYLES ─────────────────────── */
+    .gate-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eff6ff;
+      color: #1e3a8a;
+      border: 1px solid #bfdbfe;
+      border-radius: 100px;
+      padding: 4px 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .takeoff-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #1e3a8a, #0f766e);
+      color: white;
+      border: none;
+      border-radius: 100px;
+      padding: 8px 16px;
+      font-size: 0.8rem;
+      font-weight: 700;
       cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #ccc;
-      transition: .4s;
-      border-radius: 20px;
+      transition: all 0.2s ease;
+      font-family: inherit;
     }
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 16px; width: 16px;
-      left: 2px; bottom: 2px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
-    }
-    input:checked + .slider {
-      background-color: #10b981;
-    }
-    input:checked + .slider:before {
-      transform: translateX(20px);
+    .takeoff-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(30,58,138,0.3); }
+    .takeoff-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .journey-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
     }
   </style>
 
@@ -256,6 +235,30 @@
           </thead>
           <tbody id="messages-body">
             <tr><td colspan="6">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Student Journey Management Section -->
+    <div class="admin-section">
+      <div class="journey-section-header">
+        <h2>✈️ Student Journey Control</h2>
+        <button onclick="loadStudentJourney()" style="padding:8px 16px;border-radius:8px;border:1px solid #ccc;cursor:pointer;font-family:inherit;">🔄 Refresh</button>
+      </div>
+      <p style="color:#64748b;margin-bottom:20px;font-size:0.9rem;">Click <strong>"Clear for Takeoff"</strong> to unlock a student's next gate. This triggers a live animation on their screen!</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Student Email</th>
+              <th>Student Name</th>
+              <th>Current Gate</th>
+              <th>Gate Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="journey-body">
+            <tr><td colspan="5">Loading student journeys...</td></tr>
           </tbody>
         </table>
       </div>
@@ -404,9 +407,100 @@
       }
     };
 
+    // ─── STUDENT JOURNEY FUNCTIONS ───────────────────────────────────────────
+    const GATE_NAMES = [
+      '', // index 0 unused
+      '🛫 Departure Lounge',
+      '🌤️ Takeoff',
+      '☁️ Cruising Altitude',
+      '🌍 Mid-Flight',
+      '⚡ Turbulence Zone',
+      '🌅 Descending',
+      '🛬 Final Approach',
+      '🏆 Destination Reached!',
+    ];
+
+    window.loadStudentJourney = async () => {
+      const body = document.getElementById('journey-body');
+      body.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
+      try {
+        // Get all student progress
+        const { data: progresses, error } = await supabase
+          .from('student_progress')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!progresses || progresses.length === 0) {
+          body.innerHTML = '<tr><td colspan="5" style="color:#64748b;">No students have logged in yet. Students need to visit the portal first.</td></tr>';
+          return;
+        }
+
+        body.innerHTML = '';
+        for (const p of progresses) {
+          // Fetch user email from auth (using admin API - might need to store email in student_progress)
+          const gateNum    = p.current_gate || 1;
+          const gateName   = GATE_NAMES[gateNum] || `Gate ${gateNum}`;
+          const canUnlock  = gateNum < 8;
+          const nextGate   = gateNum + 1;
+
+          body.innerHTML += `
+            <tr>
+              <td style="font-size:0.8rem;color:#475569;">${p.student_id.substring(0,8)}...</td>
+              <td><strong>${p.student_name || 'Student'}</strong></td>
+              <td><span class="gate-badge">Gate ${gateNum}</span></td>
+              <td>${gateName}</td>
+              <td>
+                ${canUnlock
+                  ? `<button class="takeoff-btn" onclick="clearForTakeoff('${p.student_id}', ${gateNum}, ${nextGate}, this)">
+                       🛫 Clear for Takeoff → Gate ${nextGate}
+                     </button>`
+                  : '<span style="color:#16a34a;font-weight:600;">🏆 Graduated!</span>'}
+                <a href="https://wa.me/?text=" target="_blank" style="margin-left:10px;color:#25D366;font-weight:600;text-decoration:none;font-size:0.8rem;">💬 WhatsApp</a>
+              </td>
+            </tr>`;
+        }
+      } catch (err) {
+        body.innerHTML = `<tr><td colspan="5" style="color:red;">Error: ${err.message}</td></tr>`;
+        console.error('Journey load error:', err);
+      }
+    };
+
+    window.clearForTakeoff = async (studentId, currentGate, nextGate, btn) => {
+      if (!confirm(`🛫 Unlock Gate ${nextGate} for this student? This will trigger a live animation on their screen!`)) return;
+
+      btn.disabled = true;
+      btn.textContent = 'Unlocking...';
+
+      try {
+        const { error } = await supabase
+          .from('student_progress')
+          .update({ current_gate: nextGate, unlocked_at: new Date().toISOString() })
+          .eq('student_id', studentId);
+
+        if (error) throw error;
+
+        // Also award a badge for the completed gate
+        await supabase.from('student_badges').upsert({
+          student_id: studentId,
+          gate_number: currentGate,
+          badge_name: GATE_NAMES[currentGate]
+        }, { onConflict: 'student_id,gate_number' });
+
+        alert(`✅ Gate ${nextGate} unlocked! The student will see the animation live.`);
+        loadStudentJourney(); // Refresh table
+      } catch (err) {
+        alert('Error: ' + err.message);
+        btn.disabled = false;
+        btn.textContent = `🛫 Clear for Takeoff → Gate ${nextGate}`;
+      }
+    };
+
     // Initial Load & Auto Refresh
     setTimeout(() => {
       loadDashboard();
+      loadStudentJourney();
       setInterval(loadDashboard, 30000);
     }, 1000);
   </script>
