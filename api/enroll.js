@@ -1,7 +1,7 @@
 const { Resend } = require('resend');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const SENDER_EMAIL = process.env.RESEND_SENDER_EMAIL || 'onboarding@resend.dev';
+const SENDER_EMAIL = process.env.RESEND_SENDER_EMAIL === 'onboarding@resend.dev' ? 'info@speaklabbyshayan.com' : (process.env.RESEND_SENDER_EMAIL || 'info@speaklabbyshayan.com');
 const OWNER_EMAIL = process.env.OWNER_EMAIL || 'info@speaklabbyshayan.com';
 
 export default async function handler(req, res) {
@@ -47,11 +47,15 @@ export default async function handler(req, res) {
 
     if (studentError) {
       console.warn(`Student Email Error: ${studentError.message}`);
-      // Not throwing for student so the enrollment can still succeed if Resend free tier blocks it.
-      // But we log it.
+      return res.status(200).json({ 
+        status: 'partial_success', 
+        message: 'Admin email sent, but student email failed',
+        student_error: studentError.message,
+        sender_used: SENDER_EMAIL
+      });
     }
 
-    res.status(200).json({ status: 'success', message: 'Emails sent successfully' });
+    res.status(200).json({ status: 'success', message: 'Emails sent successfully', sender_used: SENDER_EMAIL });
   } catch (error) {
     console.error('Resend Error (Enroll):', error);
     res.status(500).json({ status: 'error', message: error.message });
