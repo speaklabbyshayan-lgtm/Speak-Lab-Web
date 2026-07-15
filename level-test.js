@@ -452,13 +452,36 @@
       durationSeconds: state.startedAt ? Math.round((Date.now() - state.startedAt) / 1000) : null,
     };
 
+    // Backstop: the server bounds its own work, but a dead connection or a
+    // platform hiccup must never leave a student on a spinner forever.
+    var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    var timedOut = false;
+    var abortTimer = controller && setTimeout(function () {
+      timedOut = true;
+      controller.abort();
+    }, 45000);
+
     fetch('/api/level-test', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
+      signal: controller ? controller.signal : undefined,
     })
       .then(function (r) {
-        return r.json().then(function (body) {
+        if (abortTimer) clearTimeout(abortTimer);
+        // A 500/504 from the platform is an HTML page, not JSON — reading it as
+        // JSON would surface "Unexpected token '<'" to the student.
+        return r.text().then(function (text) {
+          var body;
+          try {
+            body = JSON.parse(text);
+          } catch (e) {
+            throw new Error(
+              r.ok
+                ? 'The server sent a response we could not read. Please try again.'
+                : 'The grading service is unavailable right now (HTTP ' + r.status + '). Your answers are saved — please try again in a moment.'
+            );
+          }
           if (!r.ok) throw new Error(body.message || 'Grading failed (HTTP ' + r.status + ').');
           return body;
         });
@@ -470,7 +493,10 @@
       })
       .catch(function (err) {
         clearInterval(rotator);
-        $('error-message').textContent = err.message;
+        if (abortTimer) clearTimeout(abortTimer);
+        $('error-message').textContent = timedOut
+          ? 'Grading is taking longer than expected and timed out. Your answers are still here — press Try Again.'
+          : err.message;
         show('screen-error');
       });
   }

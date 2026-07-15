@@ -455,7 +455,20 @@
     </div>
 
     <div class="admin-section">
-      <h2>Enrollments</h2>
+      <div class="journey-section-header">
+        <h2 style="margin-bottom:0;">Enrollments</h2>
+        <select id="enroll-filter-batch" onchange="loadDashboard()" style="padding:8px 12px;border-radius:8px;border:1px solid #ccc;font-family:inherit;font-size:0.9rem;min-height:38px;">
+          <option value="">All batches</option>
+          <option value="weekday">Weekday (Mon–Fri)</option>
+          <option value="weekend">Weekend (Sat–Sun)</option>
+          <option value="flexible">Either / flexible</option>
+          <option value="none">Not specified</option>
+        </select>
+      </div>
+
+      <!-- Batch demand: what you need to know before scheduling a batch. -->
+      <div class="dist-grid" id="batch-demand" style="grid-template-columns:repeat(4,1fr);"></div>
+
       <div style="overflow-x:auto;">
         <table>
           <thead>
@@ -465,12 +478,14 @@
               <th>WhatsApp</th>
               <th>Email</th>
               <th>City</th>
+              <th>Preferred Batch</th>
+              <th>Account</th>
               <th>Payment Status</th>
               <th>Confirmed</th>
             </tr>
           </thead>
           <tbody id="enrollments-body">
-            <tr><td colspan="7">Loading...</td></tr>
+            <tr><td colspan="9">Loading...</td></tr>
           </tbody>
         </table>
       </div>
@@ -698,21 +713,58 @@
         )];
         renderLevelStats();
 
+        // Batch demand — counted across every enrollment, before filtering.
+        const demand = { weekday: 0, weekend: 0, flexible: 0, none: 0 };
+        enrollments.forEach(en => {
+          const k = en.batch_preference;
+          if (k === 'weekday' || k === 'weekend' || k === 'flexible') demand[k]++;
+          else demand.none++;
+        });
+        document.getElementById('batch-demand').innerHTML = [
+          ['weekday', 'Weekday'], ['weekend', 'Weekend'],
+          ['flexible', 'Either'], ['none', 'Not asked'],
+        ].map(([k, label]) => `
+          <div class="dist-cell">
+            <div class="dist-count" style="color:${demand[k] ? '#1e3a8a' : '#cbd5e1'};">${demand[k]}</div>
+            <div class="dist-label">${label}</div>
+          </div>
+        `).join('');
+
         // Populate Enrollments Table
+        const batchFilter = document.getElementById('enroll-filter-batch').value;
+        const visible = !batchFilter ? enrollments : enrollments.filter(en =>
+          batchFilter === 'none' ? !en.batch_preference : en.batch_preference === batchFilter
+        );
+
+        const BATCH_LABELS = {
+          weekday: 'Weekday (Mon–Fri)',
+          weekend: 'Weekend (Sat–Sun)',
+          flexible: 'Either',
+        };
+
         const eBody = document.getElementById('enrollments-body');
         eBody.innerHTML = '';
-        enrollments.forEach(en => {
+        visible.forEach(en => {
           const selectColor = en.payment_status === 'paid' ? 'status-paid' : (en.payment_status === 'partial' ? 'status-partial' : 'status-unpaid');
-          
+          const batch = en.batch_preference
+            ? `<span class="gate-badge">${esc(BATCH_LABELS[en.batch_preference] || en.batch_preference)}</span>`
+            : '<span style="color:#94a3b8;font-size:0.85rem;">Not specified</span>';
+          // Enrollments predating the login requirement have no linked account.
+          const account = en.student_id
+            ? '<span style="color:#10b981;font-weight:700;" title="Linked to a SpeakLab account">✓</span>'
+            : '<span style="color:#94a3b8;" title="No account — enrolled before login was required">—</span>';
+
           eBody.innerHTML += `
             <tr>
               <td>${formatDate(en.created_at)}</td>
-              <td><strong>${en.full_name || ''}</strong></td>
-              <td>${en.whatsapp || ''}</td>
-              <td>${en.email || ''}</td>
-              <td>${en.city || ''}</td>
+              <td><strong>${esc(en.full_name)}</strong></td>
+              <td>${esc(en.whatsapp)}</td>
+              <td>${esc(en.email)}</td>
+              <td>${esc(en.city)}</td>
+              <td>${batch}</td>
+              <td style="text-align:center;">${account}</td>
               <td>
-                <select class="${selectColor}" onchange="updatePayment('${en.id}', this.value, this)">
+                <select class="${selectColor}" onchange="updatePayment('${esc(en.id)}', this.value, this)">
                   <option value="unpaid" ${en.payment_status === 'unpaid' ? 'selected' : ''}>Unpaid</option>
                   <option value="partial" ${en.payment_status === 'partial' ? 'selected' : ''}>Partial</option>
                   <option value="paid" ${en.payment_status === 'paid' ? 'selected' : ''}>Paid</option>
@@ -720,14 +772,16 @@
               </td>
               <td>
                 <label class="switch">
-                  <input type="checkbox" ${en.seat_confirmed ? 'checked' : ''} onchange="updateSeat('${en.id}', this.checked)">
+                  <input type="checkbox" ${en.seat_confirmed ? 'checked' : ''} onchange="updateSeat('${esc(en.id)}', this.checked)">
                   <span class="slider"></span>
                 </label>
               </td>
             </tr>
           `;
         });
-        if(enrollments.length === 0) eBody.innerHTML = '<tr><td colspan="7">No enrollments yet.</td></tr>';
+        if (visible.length === 0) {
+          eBody.innerHTML = `<tr><td colspan="9">${enrollments.length ? 'No enrollments match this filter.' : 'No enrollments yet.'}</td></tr>`;
+        }
 
         // Populate Messages Table
         const mBody = document.getElementById('messages-body');

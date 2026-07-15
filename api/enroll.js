@@ -10,19 +10,27 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { name, whatsapp, email, city, source } = req.body;
+    const { name, whatsapp, email, city, source, batch_preference } = req.body;
+
+    const BATCH_LABELS = {
+      weekday: 'Weekday Batch (Mon–Fri), 5:00–6:45 PM',
+      weekend: 'Weekend Batch (Sat–Sun), 5:00–6:45 PM',
+      flexible: 'Either batch works for them',
+    };
+    const batchLabel = BATCH_LABELS[batch_preference] || 'Not specified';
 
     // Email 1: To Owner
     const { error: ownerError } = await resend.emails.send({
       from: SENDER_EMAIL,
       to: OWNER_EMAIL,
-      subject: `New Enrollment Request from ${name}`,
+      subject: `New Enrollment: ${name} — ${batchLabel.split(',')[0]}`,
       html: `
         <h2>New Enrollment Request</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>WhatsApp:</strong> ${whatsapp}</p>
         <p><strong>City:</strong> ${city}</p>
+        <p><strong>Preferred batch:</strong> ${batchLabel}</p>
         <p><strong>Source:</strong> ${source}</p>
       `
     });
@@ -40,6 +48,7 @@ export default async function handler(req, res) {
         <h2>Hi ${name},</h2>
         <p>Thank you for enrolling in SpeakLab!</p>
         <p>We have successfully received your details. Our team will contact you very soon on your WhatsApp number (<strong>${whatsapp}</strong>) to share the <strong>payment details</strong> and confirm your seat for the batch.</p>
+        ${batch_preference ? `<p><strong>Your preferred batch:</strong> ${batchLabel}. We will confirm your final schedule on WhatsApp.</p>` : ''}
         <br/>
         <p>Best regards,<br/>The SpeakLab Team</p>
       `

@@ -18,8 +18,39 @@ const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABA
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-3.5-flash';
-const NVIDIA_MODEL = 'meta/llama-3.3-70b-instruct';
+
+// 'gemini-3.5-flash' (copied from api/chat.js) does not resolve — the endpoint
+// accepts the request and then never responds. 'gemini-2.0-flash' answers in
+// well under a second. Override with the GEMINI_MODEL env var.
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+const NVIDIA_MODEL = process.env.NVIDIA_MODEL || 'meta/llama-3.3-70b-instruct';
+
+// Total wall-clock the speaking grader may spend on LLMs before giving up and
+// scoring heuristically. Both providers share this budget, so a hung upstream
+// costs the student a few seconds, not their result. Must stay comfortably
+// under maxDuration below.
+const LLM_BUDGET_MS = Number(process.env.LEVEL_TEST_LLM_BUDGET_MS || 7000);
+const SUPABASE_TIMEOUT_MS = 6000;
+
+// Vercel's default is 10s, which a slow-but-working provider could exceed.
+export const config = { maxDuration: 30 };
+
+/**
+ * fetch with a hard deadline.
+ *
+ * Without this a provider that accepts the connection and never replies pins
+ * the function until the platform kills it — which is exactly what left the
+ * test stuck on "Grading your test…".
+ */
+async function fetchWithTimeout(url, options, ms) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ms);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
@@ -157,43 +188,61 @@ Reply with ONLY this JSON, no markdown fence:
   };
 }
 
-/** Gemini first, NVIDIA second — mirrors api/chat.js. Returns null if both fail. */
+/**
+ * Gemini first, NVIDIA second. Returns null if both fail or run out of budget,
+ * which sends the caller to the heuristic scorer.
+ *
+ * Every attempt is bounded and shares one deadline, so the worst case for the
+ * student is LLM_BUDGET_MS — not "forever".
+ */
 async function callLLM(messages) {
-  if (GEMINI_API_KEY) {
-    try {
-      const r = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${GEMINI_API_KEY}` },
-        body: JSON.stringify({ model: GEMINI_MODEL, messages, temperature: 0.2, max_tokens: 600 }),
-      });
-      if (r.ok) {
-        const data = await r.json();
-        const text = data?.choices?.[0]?.message?.content;
-        if (text) return text;
-      } else {
-        console.error('Gemini grading error:', r.status, await r.text());
-      }
-    } catch (err) {
-      console.error('Gemini grading fetch failed:', err.message);
-    }
-  }
+  const deadline = Date.now() + LLM_BUDGET_MS;
+  const body = JSON.stringify({ model: null, messages, temperature: 0.2, max_tokens: 600 });
 
-  if (NVIDIA_API_KEY) {
+  const providers = [
+    {
+      name: 'Gemini',
+      key: GEMINI_API_KEY,
+      url: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
+      model: GEMINI_MODEL,
+    },
+    {
+      name: 'NVIDIA',
+      key: NVIDIA_API_KEY,
+      url: 'https://integrate.api.nvidia.com/v1/chat/completions',
+      model: NVIDIA_MODEL,
+    },
+  ];
+
+  for (const p of providers) {
+    if (!p.key) continue;
+
+    const remaining = deadline - Date.now();
+    // Not enough time left to be worth the round trip.
+    if (remaining < 1200) {
+      console.warn(`${p.name}: skipped, LLM budget exhausted.`);
+      break;
+    }
+
     try {
-      const r = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
+      const r = await fetchWithTimeout(p.url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${NVIDIA_API_KEY}` },
-        body: JSON.stringify({ model: NVIDIA_MODEL, messages, temperature: 0.2, max_tokens: 600 }),
-      });
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${p.key}` },
+        body: JSON.stringify({ ...JSON.parse(body), model: p.model }),
+      }, remaining);
+
       if (r.ok) {
         const data = await r.json();
         const text = data?.choices?.[0]?.message?.content;
         if (text) return text;
+        console.error(`${p.name}: 200 but no content in the response.`);
       } else {
-        console.error('NVIDIA grading error:', r.status, await r.text());
+        // 429 here means the provider's quota is spent — worth seeing in logs.
+        console.error(`${p.name} grading error:`, r.status, (await r.text()).slice(0, 300));
       }
     } catch (err) {
-      console.error('NVIDIA grading fetch failed:', err.message);
+      const hung = err.name === 'AbortError';
+      console.error(`${p.name} grading ${hung ? `timed out after ${remaining}ms` : 'failed'}:`, err.message);
     }
   }
 
@@ -244,7 +293,7 @@ async function persist(result, student) {
   };
 
   try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/level_tests`, {
+    const r = await fetchWithTimeout(`${SUPABASE_URL}/rest/v1/level_tests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -253,7 +302,7 @@ async function persist(result, student) {
         Prefer: 'return=minimal',
       },
       body: JSON.stringify(row),
-    });
+    }, SUPABASE_TIMEOUT_MS);
     if (!r.ok) {
       const body = await r.text();
       console.error('Supabase insert failed:', r.status, body);

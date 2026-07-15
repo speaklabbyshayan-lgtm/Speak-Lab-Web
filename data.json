@@ -17,7 +17,24 @@
     "fee": 20000,
     "regularFee": 25000,
     "registrationFee": 10000,
-    "balanceDue": "5th of next month"
+    "balanceDue": "5th of next month",
+    "batchOptions": [
+      {
+        "value": "weekday",
+        "label": "Weekday Batch (Mon–Fri)",
+        "desc": "5:00 PM – 6:45 PM"
+      },
+      {
+        "value": "weekend",
+        "label": "Weekend Batch (Sat–Sun)",
+        "desc": "5:00 PM – 6:45 PM"
+      },
+      {
+        "value": "flexible",
+        "label": "Either works for me",
+        "desc": "Most flexible — best chance of a seat"
+      }
+    ]
   },
   "instructor": {
     "name": "Sir Shayan",

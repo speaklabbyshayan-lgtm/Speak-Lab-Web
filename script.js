@@ -216,21 +216,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
       try {
         const formData = new FormData(enrollForm);
+
+        // Enrolling requires a signed-in account (see the gate in enroll.html),
+        // and RLS requires student_id to match the caller.
+        let session = null;
+        if (window.supabaseClient) {
+          ({ data: { session } } = await window.supabaseClient.auth.getSession());
+        }
+        if (!session) {
+          window.location.href = 'login.html?redirect=enroll.html';
+          return;
+        }
+
         const payload = {
           full_name: formData.get('name'),
           whatsapp: formData.get('whatsapp'),
           email: formData.get('email'),
           city: formData.get('city'),
-          heard_from: formData.get('source')
+          heard_from: formData.get('source'),
+          batch_preference: formData.get('batch_preference'),
+          student_id: session.user.id
         };
-        
-        // 1. Insert into Supabase (if configured)
-        if (window.supabaseClient) {
-          const { error } = await window.supabaseClient.from('enrollments').insert([payload]);
-          if (error) {
-            console.warn('Supabase Error (Ignored):', error.message);
-          }
-        }
+
+        // 1. Insert into Supabase. This is no longer "best effort": if the seat
+        // is not recorded, the confirmation email would be a lie.
+        const { error: insertError } = await window.supabaseClient
+          .from('enrollments')
+          .insert([payload]);
+        if (insertError) throw new Error(insertError.message);
 
         // 2. Send Emails
         const emailResponse = await fetch('/api/enroll', {
@@ -241,7 +254,8 @@ document.addEventListener('DOMContentLoaded', () => {
             whatsapp: payload.whatsapp,
             email: payload.email,
             city: payload.city,
-            source: payload.heard_from
+            source: payload.heard_from,
+            batch_preference: payload.batch_preference
           })
         });
 
