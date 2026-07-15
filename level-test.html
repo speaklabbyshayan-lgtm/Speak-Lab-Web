@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free English Level Test | SpeakLab</title>
+  <meta name="description" content="Take SpeakLab's free English level test. Auto-graded grammar and speaking assessment with your CEFR level (A1–C2) and a personalised report — instantly.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.speaklabbyshayan.com/level-test.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.speaklabbyshayan.com/level-test.html">
+  <meta property="og:title" content="Free English Level Test | SpeakLab">
+  <meta property="og:description" content="Find out your English level in 15 minutes. Grammar + speaking, auto-graded, instant CEFR result.">
+  <meta property="og:site_name" content="SpeakLab">
+
+  <meta name="theme-color" content="#1e3a8a">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="level-test.css">
+</head>
+<body>
+
+  <header class="lt-topbar">
+    <a href="index.html" class="lt-back" aria-label="Back to home">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Home
+    </a>
+    <h2 class="lt-brand">Speak Lab</h2>
+    <span class="lt-topbar-tag">Level Test</span>
+  </header>
+
+  <main class="lt-main">
+
+    <!-- ─── SCREEN 1: INTRO + IDENTITY ─────────────────────────────────── -->
+    <section class="lt-screen is-active" id="screen-intro">
+      <div class="lt-card lt-card-wide">
+        <span class="lt-eyebrow">Free · 15 minutes · Instant result</span>
+        <h1 class="lt-title">What's your English level?</h1>
+        <p class="lt-lede">Answer 24 grammar questions and speak for three short prompts. You'll get your CEFR level (A1–C2), a score breakdown and a personalised report the moment you finish.</p>
+
+        <div class="lt-steps">
+          <div class="lt-step">
+            <span class="lt-step-num">1</span>
+            <div>
+              <h4>Grammar</h4>
+              <p>24 questions, from basics to advanced. No time limit per question.</p>
+            </div>
+          </div>
+          <div class="lt-step">
+            <span class="lt-step-num">2</span>
+            <div>
+              <h4>Speaking</h4>
+              <p>3 prompts. Speak into your mic — we transcribe it. Typing works too.</p>
+            </div>
+          </div>
+          <div class="lt-step">
+            <span class="lt-step-num">3</span>
+            <div>
+              <h4>Your result</h4>
+              <p>Level, scores and the SpeakLab class that fits you. Instantly.</p>
+            </div>
+          </div>
+        </div>
+
+        <form id="identity-form" class="lt-form" novalidate>
+          <div class="lt-field">
+            <label for="f-name">Full name</label>
+            <input type="text" id="f-name" name="name" autocomplete="name" required>
+            <span class="lt-error" data-for="f-name"></span>
+          </div>
+          <div class="lt-field">
+            <label for="f-email">Email</label>
+            <input type="email" id="f-email" name="email" autocomplete="email" required>
+            <span class="lt-error" data-for="f-email"></span>
+          </div>
+          <div class="lt-field">
+            <label for="f-whatsapp">WhatsApp number <span class="lt-optional">(optional)</span></label>
+            <input type="tel" id="f-whatsapp" name="whatsapp" autocomplete="tel">
+          </div>
+          <button type="submit" class="lt-btn lt-btn-primary lt-btn-block" id="start-btn">START THE TEST</button>
+          <p class="lt-note">Your result is saved to your SpeakLab profile so your teacher can place you in the right group.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ─── SCREEN 2: GRAMMAR ──────────────────────────────────────────── -->
+    <section class="lt-screen" id="screen-grammar">
+      <div class="lt-progress-wrap">
+        <div class="lt-progress-meta">
+          <span class="lt-section-tag">Section 1 · Grammar</span>
+          <span id="grammar-counter">Question 1 of 24</span>
+        </div>
+        <div class="lt-progress"><div class="lt-progress-bar" id="grammar-progress"></div></div>
+      </div>
+
+      <div class="lt-card">
+        <p class="lt-question" id="grammar-question">Loading…</p>
+        <div class="lt-options" id="grammar-options" role="radiogroup" aria-label="Answer options"></div>
+        <div class="lt-nav">
+          <button type="button" class="lt-btn lt-btn-ghost" id="grammar-prev">Back</button>
+          <button type="button" class="lt-btn lt-btn-primary" id="grammar-next" disabled>Next</button>
+        </div>
+      </div>
+      <p class="lt-hint-line">Pick the option that sounds most natural. If you're unsure, guess — a wrong answer only affects your level, not your place in the class.</p>
+    </section>
+
+    <!-- ─── SCREEN 3: SPEAKING ─────────────────────────────────────────── -->
+    <section class="lt-screen" id="screen-speaking">
+      <div class="lt-progress-wrap">
+        <div class="lt-progress-meta">
+          <span class="lt-section-tag">Section 2 · Speaking</span>
+          <span id="speaking-counter">Prompt 1 of 3</span>
+        </div>
+        <div class="lt-progress"><div class="lt-progress-bar" id="speaking-progress"></div></div>
+      </div>
+
+      <div class="lt-card">
+        <p class="lt-prompt" id="speaking-prompt">Loading…</p>
+        <p class="lt-prompt-hint" id="speaking-hint"></p>
+
+        <div class="lt-mic-zone" id="mic-zone">
+          <button type="button" class="lt-mic" id="mic-btn" aria-label="Start recording">
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+              <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+          </button>
+          <div class="lt-mic-meta">
+            <span class="lt-mic-status" id="mic-status">Tap to start speaking</span>
+            <span class="lt-timer" id="speaking-timer">0:00</span>
+          </div>
+        </div>
+
+        <div class="lt-transcript-wrap">
+          <label for="transcript" class="lt-transcript-label">
+            <span id="transcript-label-text">Your answer</span>
+            <span class="lt-wordcount" id="word-count">0 words</span>
+          </label>
+          <textarea id="transcript" rows="6" placeholder="Tap the mic and start talking — your words appear here. You can also type your answer, or fix anything the mic got wrong."></textarea>
+        </div>
+
+        <div class="lt-unsupported" id="mic-unsupported" hidden>
+          Your browser doesn't support voice input. Please type your answer instead — it's graded the same way. For voice, try Chrome or Edge.
+        </div>
+
+        <div class="lt-nav">
+          <button type="button" class="lt-btn lt-btn-ghost" id="speaking-prev">Back</button>
+          <button type="button" class="lt-btn lt-btn-primary" id="speaking-next">Next</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── SCREEN 4: GRADING ──────────────────────────────────────────── -->
+    <section class="lt-screen" id="screen-grading">
+      <div class="lt-card lt-card-center">
+        <div class="lt-spinner" aria-hidden="true"></div>
+        <h2 class="lt-grading-title">Grading your test…</h2>
+        <p class="lt-grading-sub" id="grading-status">Checking your grammar answers</p>
+      </div>
+    </section>
+
+    <!-- ─── SCREEN 5: RESULT ───────────────────────────────────────────── -->
+    <section class="lt-screen" id="screen-result">
+      <div class="lt-card lt-card-wide lt-result">
+        <p class="lt-result-eyebrow">Your English level</p>
+        <div class="lt-level-badge" id="result-level">B1</div>
+        <h2 class="lt-result-label" id="result-label">Intermediate</h2>
+        <p class="lt-result-summary" id="result-summary"></p>
+
+        <div class="lt-scores">
+          <div class="lt-score">
+            <span class="lt-score-value" id="result-overall">0%</span>
+            <span class="lt-score-label">Overall</span>
+          </div>
+          <div class="lt-score">
+            <span class="lt-score-value" id="result-grammar">0%</span>
+            <span class="lt-score-label">Grammar</span>
+          </div>
+          <div class="lt-score">
+            <span class="lt-score-value" id="result-speaking">0%</span>
+            <span class="lt-score-label">Speaking</span>
+          </div>
+        </div>
+
+        <div class="lt-scale" aria-hidden="true">
+          <div class="lt-scale-track">
+            <span class="lt-scale-marker" id="scale-marker"></span>
+          </div>
+          <div class="lt-scale-labels">
+            <span>A1</span><span>A2</span><span>B1</span><span>B2</span><span>C1</span><span>C2</span>
+          </div>
+        </div>
+
+        <div class="lt-report">
+          <div class="lt-report-block">
+            <h3>What you do well</h3>
+            <ul id="result-strengths"></ul>
+          </div>
+          <div class="lt-report-block">
+            <h3>What to work on</h3>
+            <ul id="result-focus"></ul>
+          </div>
+        </div>
+
+        <div class="lt-report-block lt-feedback-block" id="speaking-feedback-block" hidden>
+          <h3>Examiner's note on your speaking</h3>
+          <p id="result-speaking-feedback"></p>
+        </div>
+
+        <div class="lt-placement">
+          <span class="lt-placement-label">Recommended class</span>
+          <strong id="result-placement"></strong>
+        </div>
+
+        <p class="lt-save-warning" id="cap-note" hidden></p>
+        <p class="lt-save-warning" id="save-warning" hidden></p>
+
+        <div class="lt-result-actions">
+          <a href="enroll.html" class="lt-btn lt-btn-primary lt-btn-block" id="result-cta">SECURE MY SEAT</a>
+          <a href="https://wa.me/923014497532" target="_blank" rel="noopener" class="lt-btn lt-btn-ghost lt-btn-block">Discuss my result on WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── ERROR ──────────────────────────────────────────────────────── -->
+    <section class="lt-screen" id="screen-error">
+      <div class="lt-card lt-card-center">
+        <div class="lt-error-icon">!</div>
+        <h2 class="lt-grading-title">We couldn't grade your test</h2>
+        <p class="lt-grading-sub" id="error-message"></p>
+        <button type="button" class="lt-btn lt-btn-primary" id="retry-btn">TRY AGAIN</button>
+        <p class="lt-note">Your answers are still here — retrying won't make you start over.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="level-test.js"></script>
+</body>
+</html>

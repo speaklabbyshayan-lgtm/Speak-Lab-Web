@@ -1,3 +1,24 @@
+// ⚠ DO NOT RUN THIS SCRIPT — IT IS STALE AND DESTRUCTIVE ⚠
+//
+// It overwrites admin.html wholesale from the template below (see the
+// writeFileSync at the bottom). That template predates several features, so
+// running it silently deletes them:
+//   • Student Journey Control (gate unlocking)
+//   • Level Test Results (scores, levels, reports, CSV export)
+//   • The Supabase Auth admin gate — it would restore the old hardcoded
+//     "speaklab2024" prompt() password.
+//
+// admin.html is hand-maintained now. Edit that file directly. If you ever want
+// a generator again, rebuild this from the current admin.html rather than the
+// other way round.
+//
+// Guard: remove this block only if you have rewritten the template above.
+if (!process.env.I_KNOW_THIS_OVERWRITES_ADMIN) {
+  console.error('build-admin.js is stale and would overwrite admin.html, deleting the Student Journey, Level Test and auth-gate features.');
+  console.error('Edit admin.html directly. To override anyway: I_KNOW_THIS_OVERWRITES_ADMIN=1 node build-admin.js');
+  process.exit(1);
+}
+
 const fs = require('fs');
 let html = fs.readFileSync('404.html', 'utf8');
 const headerEnd = html.indexOf('</nav>') + 6;

@@ -249,8 +249,24 @@ document.addEventListener('DOMContentLoaded', () => {
           const errData = await emailResponse.json().catch(() => ({}));
           throw new Error(errData.message || 'Failed to send emails. Please check your Resend configuration.');
         }
-        
-        window.location.href = 'thank-you.html';
+
+        // Carry the student straight into the level test so we can place them
+        // in the right group before their first class.
+        try {
+          localStorage.setItem('speaklab_student', JSON.stringify({
+            name: payload.full_name,
+            email: payload.email,
+            whatsapp: payload.whatsapp
+          }));
+        } catch (storageErr) { /* private mode — the query string still carries it */ }
+
+        const params = new URLSearchParams({
+          from: 'enroll',
+          name: payload.full_name,
+          email: payload.email,
+          whatsapp: payload.whatsapp
+        });
+        window.location.href = `level-test.html?${params.toString()}`;
       } catch (err) {
         console.error(err);
         let msgEl = document.getElementById('enroll-msg');

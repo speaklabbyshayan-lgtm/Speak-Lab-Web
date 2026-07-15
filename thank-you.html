@@ -121,6 +121,14 @@
   </header>
 
   <main style="max-width: 1100px; margin: 0 auto; padding: 20px 20px 80px;">
+    <!-- Level test CTA: shown to anyone who hasn't been placed yet -->
+    <div id="level-test-cta" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); padding: 40px; border-radius: 30px; color: #fff; box-shadow: 0 10px 30px rgba(30, 58, 138, 0.25); margin-bottom: 30px; text-align: center;">
+      <span style="display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: rgba(255,255,255,0.18); padding: 6px 12px; border-radius: 999px; margin-bottom: 16px;">Next step · 15 minutes</span>
+      <h2 style="font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; margin-bottom: 12px; line-height: 1.2;">Take your free level test</h2>
+      <p style="font-size: 1.05rem; line-height: 1.6; max-width: 540px; margin: 0 auto 24px; color: rgba(255,255,255,0.9);">Grammar and speaking, graded instantly. It tells us which group to put you in — so your very first class is at the right level.</p>
+      <a href="level-test.html" id="level-test-cta-link" style="display: inline-flex; align-items: center; justify-content: center; min-height: 46px; background: #fff; color: #1e3a8a; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.04em; padding: 14px 32px; border-radius: 10px; text-decoration: none;">START MY LEVEL TEST</a>
+    </div>
+
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
       
       <div style="background: radial-gradient(circle at 10% 100%, rgba(225, 150, 60, 0.9) 0%, transparent 60%), linear-gradient(135deg, #d3cce3 0%, #e5ddd7 100%); padding: 40px; border-radius: 30px; color: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
@@ -140,6 +148,19 @@
 
     </div>
 
+    <script>
+      // Prefill the test with the details captured at enrollment so the student
+      // doesn't retype them.
+      (function () {
+        try {
+          var s = JSON.parse(localStorage.getItem('speaklab_student') || '{}');
+          if (s.email) {
+            var params = new URLSearchParams({ name: s.name || '', email: s.email, whatsapp: s.whatsapp || '' });
+            document.getElementById('level-test-cta-link').href = 'level-test.html?' + params.toString();
+          }
+        } catch (e) { /* fall back to the plain link */ }
+      })();
+    </script>
 
   </main>
 

@@ -175,9 +175,254 @@
       flex-wrap: wrap;
       gap: 12px;
     }
+
+    /* ─── ACCESS GATE ────────────────────────────────── */
+    #admin-gate {
+      position: fixed;
+      inset: 0;
+      background: #f8fafc;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    #admin-gate .gate-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 460px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(15,23,42,0.08);
+    }
+    #admin-gate h2 { font-size: 1.3rem; margin-bottom: 8px; }
+    #admin-gate p { color: #64748b; font-size: 0.92rem; line-height: 1.6; }
+    #gate-actions { display: flex; gap: 10px; justify-content: center; margin-top: 22px; flex-wrap: wrap; }
+    .gate-spinner {
+      width: 36px; height: 36px;
+      margin: 0 auto 20px;
+      border: 3px solid #e8edf5;
+      border-top-color: #3b82f6;
+      border-radius: 50%;
+      animation: gate-spin 0.9s linear infinite;
+    }
+    @keyframes gate-spin { to { transform: rotate(360deg); } }
+
+    #admin-identity-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-bottom: 20px;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    /* An ID selector's `display` beats the UA rule for [hidden], so these
+       would render despite the attribute. Re-assert it at higher specificity. */
+    #admin-identity-bar[hidden], #gate-actions[hidden] { display: none; }
+
+    /* ─── LEVEL TEST STYLES ──────────────────────────── */
+    .level-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 38px;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .level-A1 { background: #94a3b8; }
+    .level-A2 { background: #60a5fa; }
+    .level-B1 { background: #3b82f6; }
+    .level-B2 { background: #2563eb; }
+    .level-C1 { background: #1e3a8a; }
+    .level-C2 { background: #4c1d95; }
+
+    .score-bar {
+      position: relative;
+      height: 8px;
+      width: 90px;
+      background: #e8edf5;
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .score-bar span {
+      position: absolute;
+      inset: 0 auto 0 0;
+      background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+      border-radius: 100px;
+    }
+    .score-cell { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .score-num { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+    .lt-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .lt-toolbar input[type="search"], .lt-toolbar select {
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      min-height: 38px;
+    }
+    /* Scoped to the search box: a bare `input` rule would stretch the
+       "latest attempt only" checkbox to 180px. */
+    .lt-toolbar input[type="search"] { flex: 1; min-width: 180px; }
+    .lt-admin-btn {
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #fff;
+      cursor: pointer;
+      min-height: 38px;
+    }
+    .lt-admin-btn:hover { background: #f8fafc; }
+
+    .dist-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .dist-cell {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 12px 8px;
+      text-align: center;
+    }
+    .dist-cell .dist-count { font-size: 1.5rem; font-weight: 800; }
+    .dist-cell .dist-label { font-size: 0.7rem; font-weight: 700; color: #64748b; letter-spacing: 0.05em; }
+    @media (max-width: 640px) { .dist-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .view-report-btn {
+      padding: 5px 12px;
+      background: #1e3a8a;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .view-report-btn:hover { background: #172554; }
+
+    /* Report modal */
+    .lt-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .lt-modal.open { display: flex; }
+    .lt-modal-card {
+      background: #fff;
+      border-radius: 16px;
+      max-width: 640px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 28px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+    }
+    .lt-modal-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 6px;
+    }
+    .lt-modal-head h3 { font-size: 1.4rem; margin: 0; }
+    .lt-modal-close {
+      background: none;
+      border: none;
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+      color: #94a3b8;
+      padding: 0 4px;
+    }
+    .lt-modal-sub { color: #64748b; font-size: 0.9rem; margin-bottom: 20px; }
+    .lt-modal-scores {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .lt-modal-scores div {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 14px 10px;
+      text-align: center;
+    }
+    .lt-modal-scores strong { display: block; font-size: 1.4rem; color: #1e3a8a; }
+    .lt-modal-scores span { font-size: 0.7rem; text-transform: uppercase; color: #64748b; font-weight: 600; letter-spacing: 0.05em; }
+    .lt-modal h4 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #64748b;
+      margin: 18px 0 8px;
+    }
+    .lt-modal ul { margin: 0; padding-left: 18px; }
+    .lt-modal li { font-size: 0.92rem; line-height: 1.6; }
+    .lt-modal-transcript {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+    .lt-modal-transcript p:first-child {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-bottom: 6px;
+    }
+    .lt-modal-transcript p:last-child {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #334155;
+      white-space: pre-wrap;
+    }
   </style>
 
+  <!-- Covers the page until the admin check passes. Removed on success; on
+       failure it stays put and explains why. -->
+  <div id="admin-gate">
+    <div class="gate-card">
+      <div class="gate-spinner"></div>
+      <h2 id="gate-msg">Checking access…</h2>
+      <p id="gate-sub"></p>
+      <div id="gate-actions" hidden>
+        <button class="lt-admin-btn" onclick="adminSignOut()">Sign in as someone else</button>
+        <a class="lt-admin-btn" href="index.html" style="text-decoration:none;display:inline-flex;align-items:center;">Back to site</a>
+      </div>
+    </div>
+  </div>
+
   <main class="admin-container">
+    <div id="admin-identity-bar" hidden>
+      <span>Signed in as <strong id="admin-identity"></strong></span>
+      <button class="lt-admin-btn" onclick="adminSignOut()">Sign out</button>
+    </div>
+
     <div class="admin-stats">
       <div class="stat-card">
         <h3>Total Enrollments</h3>
@@ -194,6 +439,18 @@
       <div class="stat-card">
         <h3>Unread Messages</h3>
         <div class="stat-val" id="stat-messages">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Tests Taken</h3>
+        <div class="stat-val" id="stat-tests">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Awaiting Test</h3>
+        <div class="stat-val" id="stat-untested">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Average Score</h3>
+        <div class="stat-val" id="stat-avg-score">—</div>
       </div>
     </div>
 
@@ -214,6 +471,62 @@
           </thead>
           <tbody id="enrollments-body">
             <tr><td colspan="7">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Level Test Results -->
+    <div class="admin-section">
+      <div class="journey-section-header">
+        <h2 style="margin-bottom:0;">🎯 Level Test Results</h2>
+        <div style="display:flex;gap:8px;">
+          <button class="lt-admin-btn" onclick="exportLevelTestsCSV()">⬇ Export CSV</button>
+          <button class="lt-admin-btn" onclick="loadLevelTests()">🔄 Refresh</button>
+        </div>
+      </div>
+
+      <div class="dist-grid" id="level-distribution"></div>
+
+      <div class="lt-toolbar">
+        <input type="search" id="lt-search" placeholder="Search by name or email…" oninput="renderLevelTests()">
+        <select id="lt-filter-level" onchange="renderLevelTests()">
+          <option value="">All levels</option>
+          <option value="A1">A1 — Beginner</option>
+          <option value="A2">A2 — Elementary</option>
+          <option value="B1">B1 — Intermediate</option>
+          <option value="B2">B2 — Upper-Intermediate</option>
+          <option value="C1">C1 — Advanced</option>
+          <option value="C2">C2 — Proficient</option>
+        </select>
+        <select id="lt-sort" onchange="renderLevelTests()">
+          <option value="recent">Newest first</option>
+          <option value="score-desc">Highest score</option>
+          <option value="score-asc">Lowest score</option>
+          <option value="name">Name A–Z</option>
+        </select>
+        <label style="display:flex;align-items:center;gap:6px;font-size:0.85rem;white-space:nowrap;">
+          <input type="checkbox" id="lt-latest-only" checked onchange="renderLevelTests()">
+          Latest attempt only
+        </label>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Student</th>
+              <th>Level</th>
+              <th>Overall</th>
+              <th>Grammar</th>
+              <th>Speaking</th>
+              <th>Recommended Class</th>
+              <th>Report</th>
+            </tr>
+          </thead>
+          <tbody id="level-tests-body">
+            <tr><td colspan="8">Loading test results…</td></tr>
           </tbody>
         </table>
       </div>
@@ -265,11 +578,74 @@
     </div>
   </main>
 
+  <!-- Level test report modal -->
+  <div class="lt-modal" id="report-modal" onclick="if (event.target === this) closeReport()">
+    <div class="lt-modal-card" role="dialog" aria-modal="true" aria-labelledby="report-name">
+      <div class="lt-modal-head">
+        <div>
+          <h3 id="report-name"></h3>
+          <p class="lt-modal-sub" id="report-meta"></p>
+        </div>
+        <button class="lt-modal-close" onclick="closeReport()" aria-label="Close">&times;</button>
+      </div>
+      <div id="report-body"></div>
+    </div>
+  </div>
+
   <script>
-    // Password protection
-    if (prompt("Enter Admin Password:") !== "speaklab2024") {
-      window.location.href = "index.html";
+    // ─── ACCESS CONTROL ──────────────────────────────────────────────────────
+    // Was: prompt() against a hardcoded password, with the database open to
+    // anyone holding the (public) anon key. Now: a real Supabase Auth session,
+    // checked against public.admin_users via the is_admin() RPC. The database
+    // enforces this too — RLS is what actually protects the data; this gate
+    // just keeps the UI honest. See supabase-admin-auth.sql.
+    const gate = {
+      show(msg, sub) {
+        document.getElementById('gate-msg').textContent = msg;
+        document.getElementById('gate-sub').textContent = sub || '';
+      },
+      hide() { document.getElementById('admin-gate').remove(); }
+    };
+
+    async function requireAdmin() {
+      if (!window.supabaseClient) {
+        gate.show('Cannot reach Supabase', 'The client failed to load. Check your connection and refresh.');
+        return false;
+      }
+
+      const { data: { session } } = await window.supabaseClient.auth.getSession();
+      if (!session) {
+        gate.show('Redirecting to login…', 'You need to sign in to view this page.');
+        window.location.replace('login.html?redirect=admin.html');
+        return false;
+      }
+
+      // Ask the database, not the browser. A tampered client can skip this
+      // check, but RLS will still return nothing.
+      const { data: isAdmin, error } = await window.supabaseClient.rpc('is_admin');
+
+      if (error) {
+        // Most likely cause: supabase-admin-auth.sql hasn't been run yet.
+        gate.show('Access check failed', `${error.message}. If you have not run supabase-admin-auth.sql in the Supabase SQL editor yet, do that first.`);
+        return false;
+      }
+
+      if (!isAdmin) {
+        gate.show('Not an admin account', `${session.user.email} is not on the admin list. Add it to public.admin_users in the Supabase SQL editor, or sign in with a different account.`);
+        document.getElementById('gate-actions').hidden = false;
+        return false;
+      }
+
+      document.getElementById('admin-identity').textContent = session.user.email;
+      document.getElementById('admin-identity-bar').hidden = false;
+      gate.hide();
+      return true;
     }
+
+    window.adminSignOut = async () => {
+      await window.supabaseClient.auth.signOut();
+      window.location.replace('login.html');
+    };
 
     // Helper to format date
     const formatDate = (ds) => {
@@ -315,6 +691,12 @@
         document.getElementById('stat-confirmed').textContent = confirmed;
         document.getElementById('stat-pending').textContent = pending;
         document.getElementById('stat-messages').textContent = unread;
+
+        // Feeds the "Awaiting Test" stat.
+        enrolledEmails = [...new Set(
+          enrollments.map(en => (en.email || '').toLowerCase()).filter(Boolean)
+        )];
+        renderLevelStats();
 
         // Populate Enrollments Table
         const eBody = document.getElementById('enrollments-body');
@@ -407,6 +789,261 @@
       }
     };
 
+    // ─── LEVEL TEST RESULTS ──────────────────────────────────────────────────
+    let levelTests = [];      // every attempt, newest first
+    let enrolledEmails = [];  // to work out who still owes us a test
+
+    // Student-supplied text (names, transcripts) goes into innerHTML below, so
+    // it has to be escaped.
+    const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+
+    window.loadLevelTests = async () => {
+      if (!window.supabaseClient) return;
+      const body = document.getElementById('level-tests-body');
+      try {
+        const { data, error } = await window.supabaseClient
+          .from('level_tests')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        levelTests = data || [];
+        renderLevelTests();
+        renderDistribution();
+        renderLevelStats();
+      } catch (err) {
+        console.error('Error loading level tests:', err);
+        // A missing table is the most likely cause on a fresh deploy — say so
+        // rather than leaving a spinner forever.
+        const hint = /relation|does not exist|schema cache/i.test(err.message || '')
+          ? 'The <code>level_tests</code> table does not exist yet. Run <code>supabase-level-test-schema.sql</code> in the Supabase SQL editor.'
+          : esc(err.message);
+        body.innerHTML = `<tr><td colspan="8" style="color:#b91c1c;">Could not load results: ${hint}</td></tr>`;
+      }
+    };
+
+    /** Newest attempt per email, since students may retake the test. */
+    const latestPerStudent = (rows) => {
+      const seen = new Set();
+      return rows.filter(r => {
+        const key = (r.student_email || '').toLowerCase();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    };
+
+    const visibleTests = () => {
+      const q = document.getElementById('lt-search').value.trim().toLowerCase();
+      const level = document.getElementById('lt-filter-level').value;
+      const sort = document.getElementById('lt-sort').value;
+      const latestOnly = document.getElementById('lt-latest-only').checked;
+
+      let rows = latestOnly ? latestPerStudent(levelTests) : [...levelTests];
+
+      if (q) {
+        rows = rows.filter(r =>
+          (r.student_name || '').toLowerCase().includes(q) ||
+          (r.student_email || '').toLowerCase().includes(q)
+        );
+      }
+      if (level) rows = rows.filter(r => r.cefr_level === level);
+
+      if (sort === 'score-desc') rows.sort((a, b) => b.overall_percent - a.overall_percent);
+      else if (sort === 'score-asc') rows.sort((a, b) => a.overall_percent - b.overall_percent);
+      else if (sort === 'name') rows.sort((a, b) => (a.student_name || '').localeCompare(b.student_name || ''));
+
+      return rows;
+    };
+
+    window.renderLevelTests = () => {
+      const body = document.getElementById('level-tests-body');
+      const rows = visibleTests();
+
+      if (!rows.length) {
+        body.innerHTML = levelTests.length
+          ? '<tr><td colspan="8">No results match this filter.</td></tr>'
+          : '<tr><td colspan="8">No tests taken yet. Share <strong>level-test.html</strong> with your students.</td></tr>';
+        return;
+      }
+
+      body.innerHTML = rows.map(r => {
+        const grammarPct = r.grammar_total ? Math.round((r.grammar_score / r.grammar_total) * 100) : 0;
+        const speakingPct = r.speaking_total ? Math.round((r.speaking_score / r.speaking_total) * 100) : 0;
+        const overall = Math.round(r.overall_percent || 0);
+        return `
+          <tr>
+            <td>${formatDate(r.created_at)}</td>
+            <td>
+              <strong>${esc(r.student_name)}</strong><br>
+              <span style="color:#64748b;font-size:0.85rem;">${esc(r.student_email)}</span>
+            </td>
+            <td><span class="level-pill level-${esc(r.cefr_level)}">${esc(r.cefr_level)}</span></td>
+            <td>
+              <div class="score-cell">
+                <span class="score-num">${overall}%</span>
+                <div class="score-bar"><span style="width:${overall}%"></span></div>
+              </div>
+            </td>
+            <td>${grammarPct}% <span style="color:#94a3b8;font-size:0.8rem;">(${r.grammar_score}/${r.grammar_total})</span></td>
+            <td>${speakingPct}% <span style="color:#94a3b8;font-size:0.8rem;">${r.graded_by === 'ai' ? '· AI' : '· auto'}</span></td>
+            <td style="font-size:0.85rem;">${esc(r.placement || '—')}</td>
+            <td><button class="view-report-btn" onclick="openReport('${esc(r.id)}')">View</button></td>
+          </tr>
+        `;
+      }).join('');
+    };
+
+    const renderDistribution = () => {
+      const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+      const rows = latestPerStudent(levelTests);
+      const counts = Object.fromEntries(levels.map(l => [l, 0]));
+      rows.forEach(r => { if (counts[r.cefr_level] !== undefined) counts[r.cefr_level]++; });
+
+      document.getElementById('level-distribution').innerHTML = levels.map(l => `
+        <div class="dist-cell">
+          <div class="dist-count" style="color:${counts[l] ? '#1e3a8a' : '#cbd5e1'};">${counts[l]}</div>
+          <div class="dist-label">${l}</div>
+        </div>
+      `).join('');
+    };
+
+    const renderLevelStats = () => {
+      const rows = latestPerStudent(levelTests);
+      document.getElementById('stat-tests').textContent = rows.length;
+
+      const avg = rows.length
+        ? Math.round(rows.reduce((sum, r) => sum + Number(r.overall_percent || 0), 0) / rows.length)
+        : null;
+      document.getElementById('stat-avg-score').textContent = avg === null ? '—' : avg + '%';
+
+      const tested = new Set(rows.map(r => (r.student_email || '').toLowerCase()));
+      const untested = enrolledEmails.filter(e => !tested.has(e)).length;
+      document.getElementById('stat-untested').textContent = untested;
+    };
+
+    window.openReport = (id) => {
+      const r = levelTests.find(t => t.id === id);
+      if (!r) return;
+      const report = r.report || {};
+
+      document.getElementById('report-name').textContent = r.student_name || '';
+      document.getElementById('report-meta').textContent =
+        `${r.student_email || ''} · ${formatDate(r.created_at)}` +
+        (r.duration_seconds ? ` · took ${Math.round(r.duration_seconds / 60)} min` : '');
+
+      const grammarPct = Math.round((report.grammar && report.grammar.percent) || 0);
+      const speakingPct = Math.round((report.speaking && report.speaking.percent) || 0);
+
+      const list = (items, empty) => (items && items.length)
+        ? `<ul>${items.map(i => `<li>${esc(i)}</li>`).join('')}</ul>`
+        : `<p style="color:#94a3b8;font-size:0.9rem;">${empty}</p>`;
+
+      const perBand = (report.grammar && report.grammar.perBand) || {};
+      const bandRows = Object.keys(perBand).length
+        ? `<table style="margin-top:6px;">
+             <thead><tr><th>Band</th><th>Correct</th></tr></thead>
+             <tbody>${Object.entries(perBand).map(([band, v]) =>
+               `<tr><td><span class="level-pill level-${esc(band)}">${esc(band)}</span></td><td>${v.correct} / ${v.total}</td></tr>`
+             ).join('')}</tbody>
+           </table>`
+        : '';
+
+      // Transcripts are the most useful thing here: they let a teacher sanity-check
+      // the machine's speaking score before placing the student.
+      const speaking = (r.answers && r.answers.speaking) || [];
+      const transcripts = speaking.length
+        ? speaking.map((s, i) => `
+            <div class="lt-modal-transcript">
+              <p>Prompt ${i + 1}</p>
+              <p>${esc(s.transcript) || '<em style="color:#94a3b8;">No answer recorded</em>'}</p>
+            </div>
+          `).join('')
+        : '<p style="color:#94a3b8;font-size:0.9rem;">No transcripts stored.</p>';
+
+      // Flag capped results so a teacher knows the level is provisional.
+      const capNote = report.capped_reason
+        ? `<p style="background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:10px;padding:12px 14px;font-size:0.88rem;line-height:1.5;margin-bottom:16px;">
+             <strong>Provisional level.</strong> ${esc(report.capped_reason)}
+           </p>`
+        : '';
+
+      document.getElementById('report-body').innerHTML = `
+        ${capNote}
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+          <span class="level-pill level-${esc(r.cefr_level)}" style="font-size:1rem;padding:8px 16px;">${esc(r.cefr_level)}</span>
+          <div>
+            <strong style="font-size:1.05rem;">${esc(r.level_label || '')}</strong>
+            <div style="color:#64748b;font-size:0.85rem;">${esc(report.summary || '')}</div>
+          </div>
+        </div>
+
+        <div class="lt-modal-scores">
+          <div><strong>${Math.round(r.overall_percent || 0)}%</strong><span>Overall</span></div>
+          <div><strong>${grammarPct}%</strong><span>Grammar</span></div>
+          <div><strong>${speakingPct}%</strong><span>Speaking</span></div>
+        </div>
+
+        <h4>Recommended class</h4>
+        <p style="font-weight:600;color:#1e3a8a;">${esc(r.placement || '—')}</p>
+
+        <h4>Strengths</h4>
+        ${list(report.strengths, 'None recorded.')}
+
+        <h4>Focus areas</h4>
+        ${list(report.focus_areas, 'Nothing flagged.')}
+
+        <h4>Grammar by band</h4>
+        ${bandRows}
+
+        <h4>Speaking feedback ${r.graded_by === 'ai' ? '(AI examiner)' : '(automatic)'}</h4>
+        <p style="font-size:0.92rem;line-height:1.6;">${esc((report.speaking && report.speaking.feedback) || '—')}</p>
+
+        <h4>Spoken answers</h4>
+        ${transcripts}
+      `;
+
+      document.getElementById('report-modal').classList.add('open');
+    };
+
+    window.closeReport = () => document.getElementById('report-modal').classList.remove('open');
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeReport(); });
+
+    window.exportLevelTestsCSV = () => {
+      const rows = visibleTests();
+      if (!rows.length) return alert('Nothing to export.');
+
+      const headers = ['Date', 'Name', 'Email', 'WhatsApp', 'Level', 'Label', 'Overall %', 'Grammar', 'Speaking', 'Recommended Class', 'Graded By'];
+      // Escape quotes, and guard against spreadsheet formula injection.
+      const cell = (v) => {
+        let s = String(v ?? '');
+        if (/^[=+\-@]/.test(s)) s = "'" + s;
+        return `"${s.replace(/"/g, '""')}"`;
+      };
+
+      const csv = [
+        headers.join(','),
+        ...rows.map(r => [
+          new Date(r.created_at).toISOString(),
+          r.student_name, r.student_email, r.whatsapp || '',
+          r.cefr_level, r.level_label || '',
+          Math.round(r.overall_percent || 0),
+          `${r.grammar_score}/${r.grammar_total}`,
+          `${r.speaking_score}/${r.speaking_total}`,
+          r.placement || '', r.graded_by || ''
+        ].map(cell).join(','))
+      ].join('\r\n');
+
+      const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `speaklab-level-tests-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+
     // ─── STUDENT JOURNEY FUNCTIONS ───────────────────────────────────────────
     const GATE_NAMES = [
       '', // index 0 unused
@@ -497,12 +1134,23 @@
       }
     };
 
-    // Initial Load & Auto Refresh
-    setTimeout(() => {
+    // Initial Load & Auto Refresh — only ever after the admin check passes, so
+    // a non-admin never even fires the queries.
+    requireAdmin().then((ok) => {
+      if (!ok) return;
       loadDashboard();
       loadStudentJourney();
+      loadLevelTests();
       setInterval(loadDashboard, 30000);
-    }, 1000);
+      setInterval(loadLevelTests, 30000);
+    });
+
+    // Signing out in another tab should not leave this one showing data.
+    if (window.supabaseClient) {
+      window.supabaseClient.auth.onAuthStateChange((event) => {
+        if (event === 'SIGNED_OUT') window.location.replace('login.html');
+      });
+    }
   </script>
 <footer class="dtl-footer">
     <div class="dtl-footer-inner">
