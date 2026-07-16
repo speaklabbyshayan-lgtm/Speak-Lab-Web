@@ -15,7 +15,7 @@
  *   Meta Pixel: business.facebook.com → Events Manager → Data Sources
  */
 const ANALYTICS = {
-  GA4_ID: '',   // e.g. 'G-XXXXXXXXXX'
+  GA4_ID: 'G-K83DWRBSRF',
   PIXEL_ID: '', // e.g. '1234567890123456'
 };
 

@@ -5,7 +5,9 @@
       "Bash(node --check security-utils.js)",
       "Bash(node -e ' *)",
       "Bash(pkill -f \"http.server 8899\")",
-      "Bash(node add_back_buttons.js)"
+      "Bash(node add_back_buttons.js)",
+      "Bash(node --check analytics.js)",
+      "Bash(node ga4-live-test.js)"
     ]
   }
 }
