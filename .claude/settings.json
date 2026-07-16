@@ -7,7 +7,9 @@
       "Bash(pkill -f \"http.server 8899\")",
       "Bash(node add_back_buttons.js)",
       "Bash(node --check analytics.js)",
-      "Bash(node ga4-live-test.js)"
+      "Bash(node ga4-live-test.js)",
+      "Bash(node --check maps-config.js)",
+      "Bash(python -c ' *)"
     ]
   }
 }

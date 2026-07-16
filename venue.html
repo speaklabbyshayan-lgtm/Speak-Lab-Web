@@ -45,8 +45,144 @@
 
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <style>
+    /* Commute widget — matches the existing .venue-card look */
+    .commute-widget {
+      background: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .commute-widget h3 {
+      font-size: 1.4rem;
+      margin: 0 0 6px 0;
+      color: #111;
+    }
+
+    .commute-widget .commute-sub {
+      color: #555;
+      font-size: 0.95rem;
+      margin: 0 0 18px 0;
+    }
+
+    #commute-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    #commute-origin {
+      flex: 1 1 240px;
+      padding: 13px 16px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    .commute-modes {
+      display: flex;
+      border: 1px solid #dadce0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .commute-modes input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .commute-modes label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      fill: #5f6368;
+      background: #fff;
+      transition: background 0.2s, fill 0.2s;
+      border-right: 1px solid #dadce0;
+    }
+
+    .commute-modes label:last-of-type {
+      border-right: none;
+    }
+
+    .commute-modes label:hover {
+      background: #f1f3f4;
+    }
+
+    .commute-modes input[type="radio"]:checked + label {
+      background: #e8f0fe;
+      fill: #1967d2;
+    }
+
+    .commute-modes svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    #commute-form button {
+      padding: 13px 26px;
+      border-radius: 30px;
+      background: #111;
+      color: #fff;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+
+    #commute-form button:hover {
+      background: #333;
+      transform: translateY(-2px);
+    }
+
+    #commute-form button:disabled {
+      opacity: 0.6;
+      cursor: default;
+      transform: none;
+    }
+
+    .commute-result {
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      background: #f1f5f9;
+      color: #111;
+      font-size: 0.98rem;
+    }
+
+    .commute-map {
+      margin-top: 16px;
+      width: 100%;
+      height: 320px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    @media (max-width: 560px) {
+      #commute-form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .commute-modes {
+        align-self: center;
+      }
+    }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
+  <script src="maps-config.js"></script>
   <!-- Vercel Speed Insights -->
   <script>
     window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
@@ -126,7 +262,33 @@
       </div>
       
       <a href="https://maps.google.com/?q=Punjab+Tianjin+University+of+Technology+Lahore" target="_blank" class="venue-btn">VIEW ON GOOGLE MAPS</a>
-      
+
+      <!-- Hidden until maps-config.js has a real key — see the comment there. -->
+      <div class="commute-widget" id="commute-widget" style="display: none;">
+        <h3>How long is your commute?</h3>
+        <p class="commute-sub">Enter your area to see driving, transit, or walking time to our venue.</p>
+        <form id="commute-form" autocomplete="off">
+          <input type="text" id="commute-origin" placeholder="Your area or address in Lahore" required>
+          <div class="commute-modes">
+            <input type="radio" name="commute-mode" id="mode-driving" value="DRIVING" checked>
+            <label for="mode-driving" title="Driving">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.85 7h10.29l1.08 3.11H5.77L6.85 7zM19 17H5v-5h14v5z"/><circle cx="7.5" cy="14.5" r="1.5"/><circle cx="16.5" cy="14.5" r="1.5"/></svg>
+            </label>
+            <input type="radio" name="commute-mode" id="mode-transit" value="TRANSIT">
+            <label for="mode-transit" title="Public transit">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-4 0-8 .5-8 4v9.5C4 17.43 5.57 19 7.5 19L6 20.5v.5h12v-.5L16.5 19c1.93 0 3.5-1.57 3.5-3.5V6c0-3.5-3.58-4-8-4zm5.66 3H6.43c.61-.52 2.06-1 5.57-1 3.71 0 5.12.46 5.66 1zM11 7v3H6V7h5zm2 0h5v3h-5V7zm3.5 10h-9c-.83 0-1.5-.67-1.5-1.5V12h12v3.5c0 .83-.67 1.5-1.5 1.5z"/><circle cx="8.5" cy="14.5" r="1.5"/><circle cx="15.5" cy="14.5" r="1.5"/></svg>
+            </label>
+            <input type="radio" name="commute-mode" id="mode-walking" value="WALKING">
+            <label for="mode-walking" title="Walking">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.56-.89-1.68-1.25-2.65-.84L6 8.3V13h2V9.6l1.8-.7"/></svg>
+            </label>
+          </div>
+          <button type="submit">Check Commute Time</button>
+        </form>
+        <div id="commute-result" class="commute-result" style="display: none;"></div>
+        <div id="commute-map" class="commute-map" style="display: none;"></div>
+      </div>
+
       <div class="map-container">
         <iframe src="https://maps.google.com/maps?q=Punjab%20Tianjin%20University%20of%20Technology%20Lahore&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy"></iframe>
       </div>
@@ -330,6 +492,116 @@
       .catch(err => console.error('Failed to load data.json', err));
   </script>
   <script src="script.js"></script>
+
+  <script>
+    // Commute widget. Scoped down from Google's general-purpose multi-
+    // destination "commutes" sample to what this page actually needs: one
+    // fixed destination (the venue), one address the visitor types in, one
+    // route. The full sample's add/edit/delete destination list and modal
+    // are built for comparing several places and don't apply here.
+    (function () {
+      const widget = document.getElementById('commute-widget');
+      const KEY = window.GOOGLE_MAPS_API_KEY;
+
+      // No key configured yet (see maps-config.js) — stay hidden. The static
+      // map link above still works with no dependency on this at all.
+      if (!widget || !KEY) return;
+
+      const VENUE_ADDRESS = 'Punjab Tianjin University of Technology, Lahore, Pakistan';
+      let venueLocation = null; // Geocoded once, then cached for every request.
+      let map, directionsRenderer, geocoder, autocomplete;
+
+      function resolveVenue() {
+        if (venueLocation) return Promise.resolve(venueLocation);
+        return new Promise((resolve, reject) => {
+          geocoder.geocode({ address: VENUE_ADDRESS }, (results, status) => {
+            if (status === 'OK' && results[0]) {
+              venueLocation = results[0].geometry.location;
+              resolve(venueLocation);
+            } else {
+              reject(new Error('Could not locate the venue (' + status + ')'));
+            }
+          });
+        });
+      }
+
+      async function handleSubmit(e) {
+        e.preventDefault();
+        const resultEl = document.getElementById('commute-result');
+        const mapEl = document.getElementById('commute-map');
+        const btn = e.target.querySelector('button[type="submit"]');
+        const originalText = btn.textContent;
+        btn.textContent = 'Checking…';
+        btn.disabled = true;
+        resultEl.style.display = 'none';
+
+        try {
+          const place = autocomplete.getPlace();
+          const typed = document.getElementById('commute-origin').value.trim();
+          if (!typed) throw new Error('empty');
+
+          // If the visitor picked a suggestion, route by place_id (more
+          // accurate); otherwise fall back to the raw text they typed.
+          const origin = place && place.geometry ? { placeId: place.place_id } : typed;
+          const destination = await resolveVenue();
+          const travelMode = document.querySelector('input[name="commute-mode"]:checked').value;
+
+          const directionsService = new google.maps.DirectionsService();
+          const response = await directionsService.route({
+            origin,
+            destination,
+            travelMode: google.maps.TravelMode[travelMode],
+          });
+
+          const leg = response.routes[0].legs[0];
+          resultEl.innerHTML = `<strong>${leg.duration.text}</strong> (${leg.distance.text}) to reach the venue`;
+          resultEl.style.display = 'block';
+          mapEl.style.display = 'block';
+          directionsRenderer.setDirections(response);
+
+          if (window.slTrack) window.slTrack('commute_check', { travel_mode: travelMode });
+        } catch (err) {
+          resultEl.textContent = 'Could not calculate that route — try a more specific address, or use "View on Google Maps" above.';
+          resultEl.style.display = 'block';
+          console.error('Commute widget error:', err);
+        } finally {
+          btn.textContent = originalText;
+          btn.disabled = false;
+        }
+      }
+
+      // Called by the Maps JS API once it finishes loading (see the script
+      // tag appended below).
+      window.initCommuteWidget = function () {
+        widget.style.display = 'block';
+        geocoder = new google.maps.Geocoder();
+
+        map = new google.maps.Map(document.getElementById('commute-map'), {
+          zoom: 13,
+          center: { lat: 31.5204, lng: 74.3587 }, // Lahore center; recentres once the venue resolves.
+          disableDefaultUI: true,
+          zoomControl: true,
+        });
+        directionsRenderer = new google.maps.DirectionsRenderer({ map });
+
+        // google.maps.places.Autocomplete is on Google's deprecation path in
+        // favor of the PlaceAutocompleteElement web component, but it's still
+        // fully supported and far better documented — worth revisiting if
+        // Google sets a firm retirement date.
+        autocomplete = new google.maps.places.Autocomplete(
+          document.getElementById('commute-origin'),
+          { componentRestrictions: { country: 'pk' }, fields: ['place_id', 'geometry', 'name'] }
+        );
+
+        document.getElementById('commute-form').addEventListener('submit', handleSubmit);
+      };
+
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${KEY}&libraries=places&callback=initCommuteWidget&loading=async`;
+      document.head.appendChild(script);
+    })();
+  </script>
 
 <!-- Floating WhatsApp Button -->
 <a href="https://wa.me/923014497532" target="_blank" class="floating-whatsapp" style="position: fixed; bottom: 25px; right: 25px; z-index: 1000; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite; transition: transform 0.3s ease; background-color: #25D366; width: 65px; height: 65px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
