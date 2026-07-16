@@ -5,9 +5,26 @@ document.addEventListener('DOMContentLoaded', () => {
 async function fetchRecordings() {
   const grid = document.getElementById('recordings-grid');
   const liveBtn = document.getElementById('join-live-btn');
-  
+
   try {
-    const response = await fetch('/api/zoom-recordings');
+    // The API verifies this token — recordings are paid course content.
+    let token = null;
+    if (window.supabaseClient) {
+      const { data: { session } } = await window.supabaseClient.auth.getSession();
+      token = session?.access_token || null;
+    }
+    if (!token) {
+      window.location.replace('login.html?redirect=live-class.html');
+      return;
+    }
+
+    const response = await fetch('/api/zoom-recordings', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (response.status === 401) {
+      window.location.replace('login.html?redirect=live-class.html');
+      return;
+    }
     const data = await response.json();
     
     if (data.success) {

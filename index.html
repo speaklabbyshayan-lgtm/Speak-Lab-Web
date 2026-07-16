@@ -19,7 +19,7 @@ SEO CHECKLIST — Complete after deployment:
   <title>SpeakLab | Speak English With Confidence — Lahore</title>
   <meta name="title" content="SpeakLab | Speak English With Confidence — Lahore">
   <meta name="description" content="SpeakLab is Lahore's #1 English Communication & Confidence Program. 8 weeks, in-person sessions at Punjab Tianjin University, small batches. Transform how you speak. Join July batch — PKR 10,000 advance secures your seat.">
-  <meta name="keywords" content="English speaking course Lahore, communication skills Pakistan, confidence building program, spoken English classes, SpeakLab, English course online Pakistan, interview preparation Lahore, public speaking course Lahore">
+  <meta name="keywords" content="SpeakLab, Speak Lab, Speak Lab Lahore, SpeakLab by Shayan, English speaking course Lahore, communication skills Pakistan, confidence building program, spoken English classes, free trial English classes Lahore, English course Pakistan, interview preparation Lahore, public speaking course Lahore">
   <meta name="robots" content="index, follow">
   <meta name="language" content="English">
   <meta name="author" content="SpeakLab by Shayan">
@@ -66,7 +66,6 @@ SEO CHECKLIST — Complete after deployment:
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="dns-prefetch" href="https://api.anthropic.com">
 
   <!-- Prefetch critical pages -->
   <link rel="prefetch" href="enroll.html" as="document">
@@ -94,7 +93,7 @@ SEO CHECKLIST — Complete after deployment:
         "@type": "Organization",
         "@id": "https://www.speaklabbyshayan.com/#organization",
         "name": "SpeakLab",
-        "alternateName": "SpeakLab by Shayan",
+        "alternateName": ["Speak Lab", "SpeakLab by Shayan", "Speak Lab by Shayan"],
         "url": "https://www.speaklabbyshayan.com",
         "logo": "https://www.speaklabbyshayan.com/assets/logo.png",
         "contactPoint": {
@@ -105,8 +104,6 @@ SEO CHECKLIST — Complete after deployment:
           "areaServed": "PK"
         },
         "sameAs": [
-          "https://www.instagram.com/speaklab",
-          "https://www.facebook.com/speaklab",
           "https://wa.me/923014497532"
         ],
         "email": "info@speaklabbyshayan.com",
@@ -196,7 +193,15 @@ SEO CHECKLIST — Complete after deployment:
             "name": "What is SpeakLab?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "SpeakLab is an 8-week English Communication and Confidence Program in Lahore, Pakistan, helping students and professionals speak English fluently and confidently."
+              "text": "SpeakLab (also written Speak Lab) is an 8-week English Communication and Confidence Program in Lahore, Pakistan, helping students and professionals speak English fluently and confidently."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I attend SpeakLab classes before paying?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. SpeakLab offers Free Trial Classes — attend 3 full sessions at no cost and with no obligation before deciding to enroll. Book at speaklabbyshayan.com/trial-classes.html."
             }
           },
           {
@@ -229,14 +234,9 @@ SEO CHECKLIST — Complete after deployment:
   }
   </script>
 
-  <!-- Security: Content Security Policy (Report-Only mode for testing) -->
-  <meta http-equiv="Content-Security-Policy-Report-Only" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com https://fonts.gstatic.com https://wa.me https://maps.google.com /_vercel/speed-insights; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co https://*.supabase.io wss://*.supabase.co wss://*.supabase.io https://wa.me https://maps.google.com /_vercel/speed-insights; frame-src https://wa.me https://maps.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://wa.me;">
-  
-  <!-- Security Headers -->
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta http-equiv="X-Frame-Options" content="DENY">
-  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
+  <!-- Security headers are enforced sitewide in vercel.json — the old
+       report-only CSP meta lived here and predated GA4/Meta Pixel, so it
+       would flood the console with false violations. -->
   
   <!-- Security Utilities -->
   <script src="security-utils.js"></script>
@@ -250,7 +250,7 @@ SEO CHECKLIST — Complete after deployment:
     window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
   </script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
-  <script src="analytics.js"></script>
+  <script defer src="analytics.js"></script>
 </head>
 
 <body>
@@ -273,6 +273,7 @@ SEO CHECKLIST — Complete after deployment:
           <ul class="dropdown-links">
             <li><a href="about.html">About Us</a></li>
             <li><a href="course-details.html">Our Program</a></li>
+            <li><a href="trial-classes.html">Free Trial Classes</a></li>
             <li><a href="about.html#team">Meet The Team</a></li>
             <li><a href="contact.html">Contact Us</a></li>
             <li><a href="venue.html">Venue</a></li>
@@ -382,6 +383,8 @@ SEO CHECKLIST — Complete after deployment:
           <span class="tag">DISCOUNTED FEE</span>
         </div>
         <a href="course-details.html#pricing" class="card-btn">ENROLL NOW</a>
+        <p style="margin-top: 14px; font-size: 0.95rem;">Not sure yet? <a href="trial-classes.html"
+            style="color: #111; font-weight: 700; text-decoration: underline;">Attend 3 classes free first →</a></p>
       </div>
       <div class="card-right">
         <img src="card4.webp" alt="Pricing and Registration" width="800" height="800" loading="lazy" decoding="async">
@@ -640,6 +643,7 @@ SEO CHECKLIST — Complete after deployment:
           <ul>
             <li><a href="about.html">About Us</a></li>
             <li><a href="course-details.html">Our Program</a></li>
+            <li><a href="trial-classes.html">Free Trial Classes</a></li>
             <li><a href="about.html#team">Meet The Team</a></li>
             <li><a href="contact.html">Contact Us</a></li>
             <li><a href="venue.html">Venue</a></li>

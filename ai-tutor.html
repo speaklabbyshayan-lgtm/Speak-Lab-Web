@@ -54,7 +54,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet"
     media="print" onload="this.media='all'">
-  <link rel="dns-prefetch" href="https://api.anthropic.com">
 
   <!-- Schema.org JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -835,7 +834,7 @@
       }
     }
   </style>
-  <script src="analytics.js"></script>
+  <script defer src="analytics.js"></script>
 </head>
 
 <body>
@@ -857,6 +856,7 @@
           <ul class="dropdown-links">
             <li><a href="about.html">About Us</a></li>
             <li><a href="course-details.html">Our Program</a></li>
+            <li><a href="trial-classes.html">Free Trial Classes</a></li>
             <li><a href="about.html#team">Meet The Team</a></li>
             <li><a href="contact.html">Contact Us</a></li>
             <li><a href="venue.html">Venue</a></li>
@@ -887,13 +887,14 @@
 
   <!-- Back Button Bar -->
   <div class="back-bar">
-    <a href="index.html" class="back-btn">
+    <a href="index.html" class="back-btn"
+      onclick="if (history.length > 1 && document.referrer.indexOf(location.origin) === 0) { history.back(); return false; }">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
         stroke-linecap="round" stroke-linejoin="round">
         <line x1="19" y1="12" x2="5" y2="12"></line>
         <polyline points="12 19 5 12 12 5"></polyline>
       </svg>
-      Home
+      Back
     </a>
   </div>
 
@@ -1045,6 +1046,7 @@
           <ul>
             <li><a href="about.html">About Us</a></li>
             <li><a href="course-details.html">Our Program</a></li>
+            <li><a href="trial-classes.html">Free Trial Classes</a></li>
             <li><a href="about.html#team">Meet The Team</a></li>
             <li><a href="contact.html">Contact Us</a></li>
             <li><a href="venue.html">Venue</a></li>

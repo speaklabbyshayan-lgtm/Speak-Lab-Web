@@ -79,6 +79,7 @@ const ANALYTICS = {
     index: 'Hi! I saw the SpeakLab homepage and want to know more about the July batch.',
     'course-details': 'Hi! I was reading the SpeakLab course details and have a question.',
     enroll: 'Hi! I was enrolling for SpeakLab and need help with my registration.',
+    'trial-classes': 'Hi! I want to book my 3 Free Trial Classes at SpeakLab.',
     'thank-you': 'Hi! I just registered for SpeakLab and want to confirm my payment.',
     'level-test': 'Hi! I just took the SpeakLab level test and want to discuss my result.',
     'ai-tutor': 'Hi! I was using Sara AI on SpeakLab and want to ask about the course.',

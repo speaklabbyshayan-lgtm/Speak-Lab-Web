@@ -1202,3 +1202,45 @@ body {
   to   { stroke-dashoffset: 0; }
 }
 
+
+
+/* Back bar — same pattern as style.css so app pages match the site. */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: #111;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 100px;
+  padding: 7px 14px 7px 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.back-btn:hover {
+  background: #fff;
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateX(-2px);
+}
+
+.back-btn svg {
+  flex-shrink: 0;
+}
+
+.back-bar {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  max-width: 1300px;
+  margin: 0 auto;
+}

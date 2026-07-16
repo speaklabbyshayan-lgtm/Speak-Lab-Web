@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Trial Classes | SpeakLab — Attend 3 Classes Free in Lahore</title>
+
+  <!-- Resource Hints for Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <!-- Prefetch critical pages -->
+  <link rel="prefetch" href="enroll.html" as="document">
+  <link rel="prefetch" href="course-details.html" as="document">
+
+  <!-- Preload critical fonts -->
+  <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/outfit/v14/QGYsz_wNahGAdqQ43Rh_fKDptfpM.woff2" crossorigin>
+
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <style>
+    .trial-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px 80px 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .trial-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .trial-card {
+      background: radial-gradient(circle at 10% 100%, rgba(225, 150, 60, 0.9) 0%, transparent 60%), linear-gradient(135deg, #d3cce3 0%, #e5ddd7 100%);
+      border-radius: 30px;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .trial-point {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 1.05rem;
+      color: #222;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .trial-point .tick {
+      background: #000;
+      color: #fff;
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      margin-top: 2px;
+    }
+
+    .trial-steps {
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 20px;
+      padding: 22px 25px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .trial-steps h4 {
+      font-weight: 800;
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .trial-steps ol {
+      margin: 0;
+      padding-left: 20px;
+      color: #222;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    .trial-form {
+      background: #fff;
+      padding: 40px;
+      border-radius: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .trial-form h3 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .trial-form .form-sub {
+      color: #555;
+      margin-bottom: 22px;
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 1rem;
+      background: #fff;
+    }
+
+    .trial-form button {
+      padding: 14px 34px;
+      border-radius: 40px;
+      background-color: #000;
+      color: #c0f4f9;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1.1rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.2);
+    }
+
+    .trial-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 255, 255, 0.3);
+    }
+
+    #trial-msg {
+      margin-top: 14px;
+      font-weight: 600;
+      display: none;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+    }
+
+    .wa-cta {
+      text-align: center;
+      margin-top: 10px;
+      padding-bottom: 80px;
+    }
+
+    .wa-cta p {
+      color: #555;
+      margin-bottom: 14px;
+    }
+
+    .btn-whatsapp {
+      display: inline-block;
+      padding: 16px 40px;
+      background: #25D366;
+      color: #fff;
+      font-weight: 700;
+      border-radius: 40px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+      transition: transform 0.2s;
+    }
+
+    .btn-whatsapp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
+    }
+  </style>
+
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="Free Trial Classes | SpeakLab — Attend 3 Classes Free in Lahore">
+  <meta name="description" content="Not sure yet? Attend 3 full SpeakLab classes free before you decide. Experience Lahore's English Communication & Confidence Program in person — no payment, no obligation. Book your Free Trial Classes today.">
+  <meta name="keywords" content="free trial English classes Lahore, free English speaking class, SpeakLab trial, Speak Lab free class, English course trial Lahore, communication course free demo Lahore">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  <meta name="author" content="SpeakLab by Shayan">
+  <meta name="ai-content-declaration" content="human-created">
+  <link rel="canonical" href="https://www.speaklabbyshayan.com/trial-classes.html">
+
+  <!-- GEO Tags -->
+  <meta name="geo.region" content="PK-PB">
+  <meta name="geo.placename" content="Lahore, Punjab, Pakistan">
+  <meta name="geo.position" content="31.5204;74.3587">
+  <meta name="ICBM" content="31.5204, 74.3587">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.speaklabbyshayan.com/trial-classes.html">
+  <meta property="og:title" content="Free Trial Classes | SpeakLab — Attend 3 Classes Free">
+  <meta property="og:description" content="Attend 3 full classes free before you decide. Experience SpeakLab's 8-week program in Lahore in person — no payment, no obligation.">
+  <meta property="og:image" content="https://www.speaklabbyshayan.com/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_PK">
+  <meta property="og:site_name" content="SpeakLab">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Trial Classes | SpeakLab — Attend 3 Classes Free">
+  <meta name="twitter:description" content="Attend 3 full classes free before you decide about the program. In-person in Lahore.">
+  <meta name="twitter:image" content="https://www.speaklabbyshayan.com/assets/og-image.jpg">
+
+  <!-- Theme & Favicons -->
+  <meta name="theme-color" content="#1e3a8a">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- Structured data: the trial is a zero-price offer on the course -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "SpeakLab Free Trial Classes",
+    "description": "Attend 3 full sessions of SpeakLab's 8-week Communication & Confidence Program in Lahore free of cost, before deciding to enroll.",
+    "provider": {
+      "@type": "Organization",
+      "name": "SpeakLab",
+      "alternateName": ["Speak Lab", "SpeakLab by Shayan"],
+      "url": "https://www.speaklabbyshayan.com"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "PKR",
+      "availability": "https://schema.org/LimitedAvailability",
+      "description": "3 full in-person classes free — no payment, no obligation."
+    },
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "onsite",
+      "location": {
+        "@type": "Place",
+        "name": "Punjab Tianjin University of Technology",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lahore",
+          "addressRegion": "Punjab",
+          "addressCountry": "PK"
+        }
+      }
+    }
+  }
+  </script>
+
+  <!-- Vercel Speed Insights -->
+  <script>
+    window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
+  <script defer src="analytics.js"></script>
+</head>
+
+<body>
+
+  <!-- Top Navigation (Light Theme) -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <div class="menu-wrapper" style="position: relative;">
+        <button class="menu-btn" aria-label="Menu"
+          onclick="document.getElementById('mobile-dropdown').classList.toggle('show')">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <div id="mobile-dropdown" class="dropdown-content">
+          <h3 class="dropdown-header">SPEAKLAB</h3>
+          <ul class="dropdown-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="course-details.html">Our Program</a></li>
+            <li><a href="trial-classes.html">Free Trial Classes</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="venue.html">Venue</a></li>
+          </ul>
+          <a href="login.html" class="speaklab-join-btn"
+            style="padding: 6px 16px; font-size: 0.7rem; color: #ffffff !important; margin-top: 10px;">LOG IN / SIGN
+            UP</a>
+        </div>
+      </div>
+      <a href="enroll.html" class="speaklab-join-btn"
+        style="padding: 6px 16px; font-size: 0.7rem; color: #ffffff !important;">JOIN JULY BATCH</a>
+    </div>
+    <div class="nav-center">
+      <h2>Speak Lab</h2>
+    </div>
+    <div class="nav-right">
+      <a href="enroll.html" class="donate-btn">❤️ GET STARTED</a>
+    </div>
+  </nav>
+
+  <div class="back-bar">
+    <a href="index.html" class="back-btn"
+      onclick="if (history.length > 1 && document.referrer.indexOf(location.origin) === 0) { history.back(); return false; }">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Back
+    </a>
+  </div>
+
+  <header class="hero-section inner-page">
+    <div class="hero-content">
+      <h1 class="gradient-heading">Free Trial Classes</h1>
+      <p>Attend 3 full classes free — decide only after you've experienced the program</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="trial-container">
+      <div class="trial-card">
+        <div class="trial-point"><span class="tick">✓</span> 3 complete, real classes with the current batch — not a
+          shortened preview session</div>
+        <div class="trial-point"><span class="tick">✓</span> Learn directly with <span id="inst-name">Sir Shayan</span>
+          and sit alongside enrolled students</div>
+        <div class="trial-point"><span class="tick">✓</span> No payment and no obligation — you decide only after your
+          third class</div>
+        <div class="trial-point"><span class="tick">✓</span> In-person at <span id="prog-location">Punjab Tianjin
+            University of Technology, Lahore</span>, <span id="prog-timing">5:00 PM to 6:45 PM</span></div>
+
+        <div class="trial-steps">
+          <h4>How it works</h4>
+          <ol>
+            <li>Book below — takes 30 seconds.</li>
+            <li>We confirm your first class date on WhatsApp within 24 hours.</li>
+            <li>Attend 3 classes. If it's right for you, your trial seat becomes your batch seat.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="trial-form">
+        <h3>Book your trial</h3>
+        <p class="form-sub">No card, no advance — just your details so we can schedule you in.</p>
+        <form id="trialForm">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="name" required maxlength="100">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" required maxlength="200">
+          </div>
+          <div class="form-group">
+            <label>WhatsApp Number</label>
+            <input type="tel" name="whatsapp" required maxlength="30" placeholder="03xx-xxxxxxx">
+          </div>
+          <div class="form-group">
+            <label>Preferred Batch</label>
+            <select name="batch_preference" required>
+              <option value="" disabled selected>Choose a batch…</option>
+              <option value="Weekday Batch (Mon–Fri)">Weekday Batch (Mon–Fri), 5:00–6:45 PM</option>
+              <option value="Weekend Batch (Sat–Sun)">Weekend Batch (Sat–Sun), 5:00–6:45 PM</option>
+              <option value="Either works for me">Either works for me</option>
+            </select>
+          </div>
+          <button type="submit" id="trialSubmitBtn">Book My Free Trial Classes</button>
+          <p id="trial-msg"></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="wa-cta">
+      <p>Prefer to arrange it over chat?</p>
+      <a href="https://wa.me/923014497532" target="_blank" rel="noopener" class="btn-whatsapp">Book on WhatsApp</a>
+    </div>
+  </main>
+
+  <footer class="dtl-footer">
+    <div class="dtl-footer-inner">
+      <div class="speaklab-bottom cta-section">
+        <div class="dtl-bottom-left">
+          <h2>SPEAK WITH CONFIDENCE.<br>LEAD WITH IMPACT.</h2>
+          <p>Join Pakistan's most practical English communication program.</p>
+          <a href="enroll.html" class="speaklab-join-btn">JOIN JULY BATCH</a>
+        </div>
+        <div class="dtl-bottom-right">
+          <div class="dtl-graphic">
+            <span class="emoji-circle circle-lg rot-left" style="top:8%; left:18%;">🎤</span>
+            <span class="emoji-circle circle-sm rot-right" style="top:42%; left:5%;">💬</span>
+            <span class="emoji-circle circle-md rot-left" style="top:62%; left:32%;">🏆</span>
+            <span class="emoji-circle circle-lg rot-right" style="top:18%; left:52%;">⭐</span>
+            <span class="emoji-circle circle-md rot-left" style="top:48%; left:72%;">📚</span>
+
+            <div class="dtl-badge" style="top:30%; left:10%; transform:rotate(-15deg);">PUBLIC SPEAKING</div>
+            <div class="dtl-badge" style="top:80%; left:20%;">COMMUNICATION</div>
+            <div class="dtl-badge" style="top:75%; left:45%; transform:rotate(10deg);">CONFIDENCE</div>
+            <div class="dtl-badge" style="top:25%; left:85%; transform:rotate(45deg);">ENGLISH</div>
+            <div class="dtl-badge" style="top:70%; left:80%; transform:rotate(-20deg);">LEADERSHIP</div>
+
+            <div class="dtl-star">✨</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="footer-divider">
+
+      <div class="dtl-footer-top links-grid">
+        <div class="dtl-col">
+          <h3>SPEAKLAB</h3>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="course-details.html">Our Program</a></li>
+            <li><a href="trial-classes.html">Free Trial Classes</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="venue.html">Venue</a></li>
+          </ul>
+        </div>
+        <div class="dtl-col">
+          <h3>QUICK LINKS</h3>
+          <ul>
+            <li><a href="course-details.html">Communication Program</a></li>
+            <li><a href="course-details.html#pricing">July Batch Details</a></li>
+            <li><a href="course-details.html#pricing">Fee Structure</a></li>
+            <li><a href="enroll.html">Enroll Now</a></li>
+            <li><a href="https://wa.me/923014497532" target="_blank">WhatsApp Us</a></li>
+            <li><a href="https://g.page/r/CdPtj9VpwqqKEBM/review" target="_blank" rel="noopener noreferrer" class="google-rate-btn">⭐ Rate us on Google</a></li>
+          </ul>
+        </div>
+        <div class="dtl-col">
+          <h3>PROGRAM</h3>
+          <ul>
+            <li><a href="course-details.html#curriculum">Spoken English</a></li>
+            <li><a href="course-details.html#curriculum">Public Speaking</a></li>
+            <li><a href="course-details.html#curriculum">Interview Prep</a></li>
+            <li><a href="course-details.html#curriculum">Confidence Building</a></li>
+            <li><a href="course-details.html#curriculum">Critical Thinking</a></li>
+          </ul>
+        </div>
+        <div class="dtl-col dtl-col-right stay-connected">
+          <div class="dtl-newsletter">
+            <h3>GET EARLY ACCESS</h3>
+            <p class="subtext">Register your interest and we'll contact you on WhatsApp!</p>
+            <div class="dtl-input-group">
+              <input type="text" placeholder="Enter your WhatsApp number...">
+              <button type="button" onclick="window.open('https://wa.me/923014497532', '_blank')">GET EARLY ACCESS</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="footer-divider">
+
+      <div class="dtl-footer-legal bottom-bar">
+        <div class="legal-left">
+          <p id="footer-location">VENUE: Punjab Tianjin University of Technology, Lahore</p>
+          <p class="copyright">© 2025 SpeakLab. All rights reserved.</p>
+        </div>
+        <div class="legal-right">
+          <div class="legal-links">
+            <a href="contact.html">Contact</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Booking form → /api/contact with type 'trial'. The API branches on the
+    // type server-side, so the subject line is never caller-controlled.
+    document.getElementById('trialForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const btn = document.getElementById('trialSubmitBtn');
+      const msg = document.getElementById('trial-msg');
+      const originalText = btn.textContent;
+      btn.textContent = 'Booking…';
+      btn.disabled = true;
+      msg.style.display = 'none';
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'trial',
+            name: this.elements.namedItem('name').value,
+            email: this.elements.namedItem('email').value,
+            whatsapp: this.elements.namedItem('whatsapp').value,
+            batch_preference: this.elements.namedItem('batch_preference').value
+          })
+        });
+
+        if (response.ok) {
+          if (window.slTrack) {
+            window.slTrack('trial_request', { batch: this.elements.namedItem('batch_preference').value });
+          }
+          if (window.fbq) window.fbq('track', 'Lead');
+          msg.textContent = '✓ Booked! Check your email — we\'ll confirm your first class on WhatsApp within 24 hours.';
+          msg.style.cssText = 'display:block;background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;';
+          this.reset();
+        } else {
+          const err = await response.json().catch(() => ({}));
+          msg.textContent = err.message || 'Something went wrong. Please try again or book on WhatsApp below.';
+          msg.style.cssText = 'display:block;background:#fef2f2;color:#991b1b;border:1px solid #fecaca;';
+        }
+      } catch (error) {
+        msg.textContent = 'Could not reach the server. Please book on WhatsApp below.';
+        msg.style.cssText = 'display:block;background:#fef2f2;color:#991b1b;border:1px solid #fecaca;';
+      } finally {
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
+    });
+
+    // Keep instructor/venue/timing in sync with data.json like other pages.
+    fetch('./data.json')
+      .then(res => res.json())
+      .then(data => {
+        const update = (id, text) => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = text;
+        };
+        update('inst-name', data.instructor.name);
+        update('prog-location', data.site.location);
+        update('prog-timing', data.program.timing);
+        update('footer-location', `VENUE: ${data.site.location}`);
+      })
+      .catch(err => console.error('Failed to load data.json', err));
+  </script>
+
+  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/923014497532" target="_blank" class="floating-whatsapp" style="position: fixed; bottom: 25px; right: 25px; z-index: 1000; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite; transition: transform 0.3s ease; background-color: #25D366; width: 65px; height: 65px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="white" viewBox="0 0 16 16">
+      <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+    </svg>
+  </a>
+  <style>
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+      70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
+    .floating-whatsapp:hover {
+      transform: scale(1.1) !important;
+      box-shadow: 0 15px 35px rgba(37, 211, 102, 0.6), 0 5px 15px rgba(0,0,0,0.2) !important;
+    }
+  </style>
+</body>
+
+</html>

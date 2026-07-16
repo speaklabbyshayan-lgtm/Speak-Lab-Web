@@ -6,6 +6,12 @@
     "whatsapp": "923014497532",
     "location": "Punjab Tianjin University of Technology, Lahore"
   },
+  "trial": {
+    "name": "Free Trial Classes",
+    "classes": 3,
+    "tagline": "Attend 3 full classes free — decide only after you've experienced the program.",
+    "description": "Join any running batch as a guest for 3 complete sessions at no cost and with no obligation. Meet Sir Shayan, sit with current students, and experience the teaching style before you pay anything."
+  },
   "program": {
     "name": "Communication & Confidence Program",
     "duration": "8 Weeks",
@@ -74,6 +80,10 @@
     {
       "q": "What will I learn in 8 weeks?",
       "a": "Spoken English, Professional Communication, Public Speaking, Interview Preparation, Critical Thinking, and Confidence Building."
+    },
+    {
+      "q": "Can I attend classes before paying?",
+      "a": "Yes. Our Free Trial Classes let you attend 3 full sessions at no cost and with no obligation. You experience the real program, meet Sir Shayan, and only then decide. Book your trial at speaklabbyshayan.com/trial-classes.html or on WhatsApp."
     },
     {
       "q": "How much does the program cost?",

@@ -1,4 +1,5 @@
 const { Resend } = require('resend');
+const { rateLimited, clientIp, escapeHtml, isEmail, cleanText } = require('../lib/api-utils.js');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const SENDER_EMAIL = process.env.RESEND_SENDER_EMAIL === 'onboarding@resend.dev' ? 'info@speaklabbyshayan.com' : (process.env.RESEND_SENDER_EMAIL || 'info@speaklabbyshayan.com');
@@ -9,8 +10,25 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
+  // Sends a confirmation to a caller-chosen address; without a cap this is a
+  // spam relay wearing SpeakLab's sender domain.
+  if (rateLimited(`enroll:${clientIp(req)}`, { max: 5 })) {
+    return res.status(429).json({ status: 'error', message: 'Too many requests. Please wait a minute and try again.' });
+  }
+
   try {
-    const { name, whatsapp, email, city, source, batch_preference } = req.body;
+    const body = req.body || {};
+    // Every value below is interpolated into email HTML, so escape them all.
+    const name = escapeHtml(cleanText(body.name, 100));
+    const whatsapp = escapeHtml(cleanText(body.whatsapp, 30));
+    const email = cleanText(body.email, 200).toLowerCase();
+    const city = escapeHtml(cleanText(body.city, 100));
+    const source = escapeHtml(cleanText(body.source, 100));
+    const batch_preference = cleanText(body.batch_preference, 30);
+
+    if (!name || !isEmail(email)) {
+      return res.status(400).json({ status: 'error', message: 'A name and a valid email are required.' });
+    }
 
     const BATCH_LABELS = {
       weekday: 'Weekday Batch (Mon–Fri), 5:00–6:45 PM',

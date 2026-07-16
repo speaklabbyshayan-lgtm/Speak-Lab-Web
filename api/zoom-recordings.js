@@ -1,13 +1,39 @@
-export default async function handler(req, res) {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://gwyowayzhdnmueferjpn.supabase.co';
+// Same anon key the browser already downloads in supabase-config.js — it leaks
+// nothing new and lets this endpoint validate sessions with no extra env setup.
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd3eW93YXl6aGRubXVlZmVyanBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxNjg1OTEsImV4cCI6MjA5ODc0NDU5MX0.mnGOG4aINIEToivKCcNWXlSlKaI9WzaOQBBBukNc5E0';
 
+/**
+ * Recordings are paid course content, so the caller must present a valid
+ * Supabase session token. Verified server-side — the page gate alone would be
+ * decoration, since anyone could call this endpoint directly.
+ */
+async function isValidStudent(req) {
+  const auth = req.headers.authorization || '';
+  const token = auth.startsWith('Bearer ') ? auth.slice(7) : null;
+  if (!token) return false;
+
+  try {
+    const r = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+      headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` },
+    });
+    return r.ok;
+  } catch (e) {
+    console.error('[Zoom] Session check failed:', e.message);
+    return false;
+  }
+}
+
+export default async function handler(req, res) {
+  // Same-origin only — the old wildcard CORS invited any site to embed the
+  // recordings feed.
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
+    res.status(204).end();
     return;
+  }
+
+  if (!(await isValidStudent(req))) {
+    return res.status(401).json({ success: false, message: 'Please sign in to view class recordings.' });
   }
 
   // ── 1. Validate environment variables ─────────────────────────────────────
@@ -81,14 +107,30 @@ export default async function handler(req, res) {
 
     const fmt = (d) => d.toISOString().split('T')[0];
 
-    const [recResp1, recResp2] = await Promise.all([
+    const [recResp1, recResp2, liveResp] = await Promise.all([
       fetch(`https://api.zoom.us/v2/users/${hostUserId}/recordings?from=${fmt(oneMonth)}&to=${fmt(today)}&page_size=100`, {
         headers: { 'Authorization': `Bearer ${accessToken}` },
       }),
       fetch(`https://api.zoom.us/v2/users/${hostUserId}/recordings?from=${fmt(twoMonth)}&to=${fmt(oneMonth)}&page_size=100`, {
         headers: { 'Authorization': `Bearer ${accessToken}` },
       }),
+      // Live-class.js reads active_meeting_url for the "Join Live" button —
+      // which never worked because this field was never returned.
+      fetch(`https://api.zoom.us/v2/users/${hostUserId}/meetings?type=live&page_size=1`, {
+        headers: { 'Authorization': `Bearer ${accessToken}` },
+      }),
     ]);
+
+    let activeMeetingUrl = null;
+    try {
+      if (liveResp.ok) {
+        const live = await liveResp.json();
+        activeMeetingUrl = live?.meetings?.[0]?.join_url || null;
+        if (activeMeetingUrl) console.log('[Zoom] Live meeting in progress.');
+      }
+    } catch (e) {
+      console.warn('[Zoom] Live meeting lookup failed:', e.message);
+    }
 
     const [recText1, recText2] = await Promise.all([recResp1.text(), recResp2.text()]);
     console.log('[Zoom] Recordings (recent) status:', recResp1.status);
@@ -116,6 +158,7 @@ export default async function handler(req, res) {
       return res.status(200).json({
         success: true,
         recordings: [],
+        active_meeting_url: activeMeetingUrl,
         message: 'No recordings found in the last 2 months.'
       });
     }
@@ -137,7 +180,7 @@ export default async function handler(req, res) {
 
     console.log('[Zoom] Returning', cleanRecordings.length, 'recordings.');
 
-    return res.status(200).json({ success: true, recordings: cleanRecordings });
+    return res.status(200).json({ success: true, recordings: cleanRecordings, active_meeting_url: activeMeetingUrl });
 
   } catch (error) {
     console.error('[Zoom] Fatal error:', error.message);
