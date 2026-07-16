@@ -505,6 +505,16 @@
     var r = data.result;
     var report = r.report || {};
 
+    // The level test is the main free lure into the funnel — knowing how many
+    // finish it, and at what level, is what makes it measurable as one.
+    if (window.slTrack) {
+      window.slTrack('level_test_complete', {
+        cefr_level: r.cefr_level,
+        overall_percent: Math.round(r.overall_percent),
+        saved: data.saved === true,
+      });
+    }
+
     $('result-level').textContent = r.cefr_level;
     $('result-label').textContent = r.level_label;
     $('result-summary').textContent = report.summary || '';

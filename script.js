@@ -125,28 +125,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 6. REAL-TIME SEATS COUNTER
   const fetchSeats = async () => {
-    if (!window.supabase) return;
+    if (!window.supabaseClient) return;
     try {
-      const { data, error } = await supabase.from('seats').select('*').limit(1).single();
+      const { data, error } = await window.supabaseClient.from('seats').select('*').limit(1).single();
       if (error) throw error;
       if (data) {
-        const remaining = data.total_seats - data.booked_seats;
-        const seatEls = document.querySelectorAll('#seats-available');
-        seatEls.forEach(el => {
-          if (remaining <= 0) {
-            el.textContent = 'Batch Full';
-            // Hide enroll buttons
-            document.querySelectorAll('a, button').forEach(btn => {
-              if (btn.textContent.trim().toUpperCase().includes('ENROLL NOW') || btn.textContent.trim().toUpperCase().includes('JOIN')) {
-                btn.style.display = 'none';
-              }
-            });
-          } else if (remaining <= 5) {
-            el.innerHTML = `<span style="color:red; font-weight:bold;">${remaining} (Hurry!)</span>`;
+        const remaining = Math.max(0, data.total_seats - data.booked_seats);
+
+        // #seats-available always sits inside surrounding copy that supplies
+        // its own noun — "ONLY <n> SEATS", "Only <n> seats available". So this
+        // may only ever write a number into it: writing "Batch Full" here
+        // produced "ONLY Batch Full SEATS". Full-batch messaging is conveyed
+        // by hiding the enroll CTAs instead.
+        document.querySelectorAll('#seats-available').forEach(el => {
+          if (remaining > 0 && remaining <= 5) {
+            el.innerHTML = `<span style="color:red; font-weight:bold;">${remaining}</span>`;
           } else {
             el.textContent = remaining;
           }
         });
+
+        if (remaining <= 0) {
+          document.querySelectorAll('a, button').forEach(btn => {
+            const label = btn.textContent.trim().toUpperCase();
+            if (label.includes('ENROLL NOW') || label.includes('JOIN')) {
+              btn.style.display = 'none';
+            }
+          });
+        }
       }
     } catch (err) {
       console.error('Error fetching seats:', err);
@@ -207,6 +213,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // 8. ENROLL FORM
   const enrollForm = document.querySelector('.enroll-form form');
   if (enrollForm) {
+    // Fires once, when the student first touches the form. Paired with
+    // enroll_submit this gives the abandonment rate — the single most useful
+    // number for knowing whether the form itself is losing seats.
+    let startTracked = false;
+    enrollForm.addEventListener('focusin', () => {
+      if (startTracked) return;
+      startTracked = true;
+      if (window.slTrack) window.slTrack('enroll_start');
+    });
+
     enrollForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = enrollForm.querySelector('button[type="submit"]');
@@ -263,6 +279,17 @@ document.addEventListener('DOMContentLoaded', () => {
           const errData = await emailResponse.json().catch(() => ({}));
           throw new Error(errData.message || 'Failed to send emails. Please check your Resend configuration.');
         }
+
+        // Fired only after the row is really in the database and the emails
+        // went out — so this counts seats taken, not buttons pressed.
+        if (window.slTrack) {
+          window.slTrack('enroll_submit', {
+            batch_preference: payload.batch_preference,
+            heard_from: payload.heard_from,
+            city: payload.city,
+          });
+        }
+        if (window.fbq) window.fbq('track', 'Lead');
 
         // Carry the student straight into the level test so we can place them
         // in the right group before their first class.

@@ -1,8 +1,8 @@
 {
   "name": "speaklabs",
   "version": "1.0.0",
-  "description": "",
-  "main": "build-admin.js",
+  "description": "SpeakLab — 8-week English Communication & Confidence Program, Lahore",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

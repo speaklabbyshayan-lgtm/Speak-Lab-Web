@@ -78,11 +78,9 @@ SEO CHECKLIST — Complete after deployment:
   <!-- Preload critical fonts -->
   <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/outfit/v14/QGYsz_wNahGAdqQ43Rh_fKDptfpM.woff2" crossorigin>
 
-  <!-- Preload hero images -->
-  <link rel="preload" as="image" href="card1.png" type="image/png">
-  <link rel="preload" as="image" href="card2.png" type="image/png">
-  <link rel="preload" as="image" href="card3.png" type="image/png">
-  <link rel="preload" as="image" href="card4.png" type="image/png">
+  <!-- Only card1 is above the fold. Preloading all four made cards 2-4 compete
+       with the hero for bandwidth on 4G; the rest are lazy-loaded instead. -->
+  <link rel="preload" as="image" href="card1.webp" type="image/webp">
 
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -252,6 +250,7 @@ SEO CHECKLIST — Complete after deployment:
     window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
   </script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
+  <script src="analytics.js"></script>
 </head>
 
 <body>
@@ -336,7 +335,7 @@ SEO CHECKLIST — Complete after deployment:
           class="card-btn">VIEW LOCATION</a>
       </div>
       <div class="card-right">
-        <img src="card1.png" alt="Program Details">
+        <img src="card1.webp" alt="Program Details" width="800" height="800" fetchpriority="high" decoding="async">
       </div>
     </div>
 
@@ -351,7 +350,7 @@ SEO CHECKLIST — Complete after deployment:
         <a href="course-details.html" class="card-btn">LEARN MORE</a>
       </div>
       <div class="card-right">
-        <img src="card2.png" alt="Core Focus">
+        <img src="card2.webp" alt="Core Focus" width="800" height="800" loading="lazy" decoding="async">
       </div>
     </div>
 
@@ -366,7 +365,7 @@ SEO CHECKLIST — Complete after deployment:
         <a href="course-details.html#curriculum" class="card-btn">VIEW CURRICULUM</a>
       </div>
       <div class="card-right">
-        <img src="card3.png" alt="Career Preparation">
+        <img src="card3.webp" alt="Career Preparation" width="800" height="800" loading="lazy" decoding="async">
       </div>
     </div>
 
@@ -379,13 +378,13 @@ SEO CHECKLIST — Complete after deployment:
           registration fee. Remaining balance is payable by the <span id="prog-balance-due">5th of next month</span>.
         </p>
         <div class="card-tags">
-          <span class="tag">LIMITED SEATS</span>
+          <span class="tag">ONLY <span id="seats-available">20</span> SEATS</span>
           <span class="tag">DISCOUNTED FEE</span>
         </div>
         <a href="course-details.html#pricing" class="card-btn">ENROLL NOW</a>
       </div>
       <div class="card-right">
-        <img src="card4.png" alt="Pricing and Registration">
+        <img src="card4.webp" alt="Pricing and Registration" width="800" height="800" loading="lazy" decoding="async">
       </div>
     </div>
 

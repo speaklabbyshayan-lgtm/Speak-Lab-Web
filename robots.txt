@@ -3,6 +3,6 @@ Allow: /
 Disallow: /admin/
 Disallow: /admin.html
 Disallow: /student-portal.html
-Disallow: /wb.html
+Disallow: /live-class.html
 
 Sitemap: https://www.speaklabbyshayan.com/sitemap.xml

@@ -70,14 +70,18 @@
    * @param {string} input - Raw input string
    * @returns {string} Sanitized string
    */
+  // The HTML entities here had themselves been HTML-unescaped at some point
+  // ('&amp;' -> '&', '&#039;' -> ''', which broke the parse). That left this
+  // file with a syntax error, so none of it ever ran — and had it run, every
+  // replace below swapped a character for itself and sanitized nothing.
   function sanitizeAttribute(input) {
     if (typeof input !== 'string') return '';
     return input
-      .replace(/&/g, '&')
-      .replace(/"/g, '"')
-      .replace(/'/g, ''')
-      .replace(/</g, '<')
-      .replace(/>/g, '>');
+      .replace(/&/g, '&amp;')   // must stay first, or it double-escapes the rest
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
   }
 
   /**
@@ -259,8 +263,8 @@
     });
     
     // Clear any Supabase auth data
-    if (window.supabase && window.supabase.auth) {
-      window.supabase.auth.signOut().catch(() => {});
+    if (window.supabaseClient && window.supabaseClient.auth) {
+      window.supabaseClient.auth.signOut().catch(() => {});
     }
   }
   
@@ -382,10 +386,10 @@
    * @returns {Promise<boolean>} True if authenticated
    */
   async function checkAuth() {
-    if (!window.supabase) return false;
-    
+    if (!window.supabaseClient) return false;
+
     try {
-      const { data: { session } } = await window.supabase.auth.getSession();
+      const { data: { session } } = await window.supabaseClient.auth.getSession();
       return !!session;
     } catch (e) {
       return false;
@@ -397,14 +401,14 @@
    * @returns {Promise<boolean>} True if admin
    */
   async function checkAdminAuth() {
-    if (!window.supabase) return false;
-    
+    if (!window.supabaseClient) return false;
+
     try {
-      const { data: { session } } = await window.supabase.auth.getSession();
+      const { data: { session } } = await window.supabaseClient.auth.getSession();
       if (!session) return false;
-      
+
       // Check user metadata for admin role
-      const { data: { user } } = await window.supabase.auth.getUser();
+      const { data: { user } } = await window.supabaseClient.auth.getUser();
       return user?.user_metadata?.role === 'admin' || user?.app_metadata?.role === 'admin';
     } catch (e) {
       return false;

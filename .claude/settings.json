@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node seats-dom-test.js)",
+      "Bash(node --check security-utils.js)",
+      "Bash(node -e ' *)",
+      "Bash(pkill -f \"http.server 8899\")"
+    ]
+  }
+}

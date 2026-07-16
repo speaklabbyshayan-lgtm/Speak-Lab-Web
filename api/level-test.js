@@ -6,6 +6,13 @@ const {
   SPEAKING_PROMPTS,
   SPEAKING_TOTAL,
 } = require('../lib/level-test.js');
+const {
+  GEMINI_MODEL,
+  NVIDIA_MODEL,
+  GEMINI_URL,
+  NVIDIA_URL,
+  fetchWithTimeout,
+} = require('../lib/llm.js');
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://gwyowayzhdnmueferjpn.supabase.co';
 
@@ -19,11 +26,9 @@ const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABA
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
 
-// 'gemini-3.5-flash' (copied from api/chat.js) does not resolve — the endpoint
-// accepts the request and then never responds. 'gemini-2.0-flash' answers in
-// well under a second. Override with the GEMINI_MODEL env var.
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
-const NVIDIA_MODEL = process.env.NVIDIA_MODEL || 'meta/llama-3.3-70b-instruct';
+// Model names and fetchWithTimeout now live in lib/llm.js so this file and
+// api/chat.js cannot drift apart again — that drift is what left the tutor on
+// a dead model after the level test had already been fixed.
 
 // Total wall-clock the speaking grader may spend on LLMs before giving up and
 // scoring heuristically. Both providers share this budget, so a hung upstream
@@ -34,23 +39,6 @@ const SUPABASE_TIMEOUT_MS = 6000;
 
 // Vercel's default is 10s, which a slow-but-working provider could exceed.
 export const config = { maxDuration: 30 };
-
-/**
- * fetch with a hard deadline.
- *
- * Without this a provider that accepts the connection and never replies pins
- * the function until the platform kills it — which is exactly what left the
- * test stuck on "Grading your test…".
- */
-async function fetchWithTimeout(url, options, ms) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), ms);
-  try {
-    return await fetch(url, { ...options, signal: controller.signal });
-  } finally {
-    clearTimeout(timer);
-  }
-}
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
@@ -203,13 +191,13 @@ async function callLLM(messages) {
     {
       name: 'Gemini',
       key: GEMINI_API_KEY,
-      url: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
+      url: GEMINI_URL,
       model: GEMINI_MODEL,
     },
     {
       name: 'NVIDIA',
       key: NVIDIA_API_KEY,
-      url: 'https://integrate.api.nvidia.com/v1/chat/completions',
+      url: NVIDIA_URL,
       model: NVIDIA_MODEL,
     },
   ];

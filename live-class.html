@@ -8,6 +8,10 @@
   <title>Live Classes & Recordings | SpeakLab</title>
   <meta name="description" content="Join your SpeakLab live classes or catch up with recorded sessions.">
 
+  <!-- Paid course content: must never be indexed. Note this page and
+       /api/zoom-recordings still have no auth gate — see the security note. -->
+  <meta name="robots" content="noindex, nofollow">
+
   <!-- Favicons -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   
@@ -170,6 +174,7 @@
       font-weight: 500;
     }
   </style>
+  <script src="analytics.js"></script>
 </head>
 
 <body>
