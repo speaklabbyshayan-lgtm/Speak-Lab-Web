@@ -1401,6 +1401,9 @@ What would you like to work on today? Pick one or just start chatting in English
         // them into one generic throw is what made this undiagnosable.
         if (!response.ok) {
           const detail = await response.json().catch(() => null);
+          if (detail?.detail?.length) {
+            console.error('Chat provider failures:', detail.detail);
+          }
           throw new ChatError(detail?.message || response.statusText, response.status);
         }
 

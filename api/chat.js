@@ -93,7 +93,7 @@ export default async function handler(req, res) {
     providers.push({ url: GEMINI_URL, key: GEMINI_API_KEY, model: GEMINI_MODEL });
   }
 
-  let lastError = null;
+  const failures = [];
 
   for (const provider of providers) {
     try {
@@ -102,10 +102,16 @@ export default async function handler(req, res) {
     } catch (err) {
       // A bounded failure here is normal — fall through to the next provider.
       console.error(`Chat provider ${provider.model} failed:`, err.message);
-      lastError = err;
+      failures.push(`${provider.model}: ${err.message}`);
     }
   }
 
-  console.error('Chat API Error: all providers failed:', lastError?.message);
-  return res.status(502).json({ message: 'Sara is unavailable right now. Please try again.' });
+  console.error('Chat API Error: all providers failed:', failures.join(' | '));
+  return res.status(502).json({
+    message: 'Sara is unavailable right now. Please try again.',
+    // The browser only ever saw a bare 502. Echoing the provider errors here
+    // (they carry HTTP status + provider text, never keys) turns "it broke"
+    // into a diagnosable failure without needing the Vercel dashboard.
+    detail: failures,
+  });
 }
