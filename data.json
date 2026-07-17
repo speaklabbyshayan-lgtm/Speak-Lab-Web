@@ -21,7 +21,7 @@
     "batch": "July Batch",
     "seats": 20,
     "fee": 20000,
-    "regularFee": 25000,
+    "regularFee": 30000,
     "registrationFee": 10000,
     "balanceDue": "5th of next month",
     "batchOptions": [
@@ -87,7 +87,7 @@
     },
     {
       "q": "How much does the program cost?",
-      "a": "Special July Batch fee is PKR 20,000 (regular PKR 25,000). Secure your seat with PKR 10,000 registration fee, balance due by 5th of next month."
+      "a": "Special July Batch fee is PKR 20,000 (regular PKR 30,000). Secure your seat with PKR 10,000 registration fee, balance due by 5th of next month."
     },
     {
       "q": "How many seats are available?",
