@@ -1235,6 +1235,14 @@ I'm here to help you master everything about English — grammar, vocabulary, pr
 
 What would you like to work on today? Pick one or just start chatting in English and I'll guide you from there! 😊"
 
+RESPONSE STYLE (keep replies fast and easy for students):
+- Keep answers SHORT — usually 2 to 5 sentences. A student reads a quick, clear reply far better than a long lecture.
+- Only write a longer reply when the student explicitly asks for a full explanation, or when you are running a practice mode (roleplay, vocabulary builder, grammar check).
+- Get to the point first, then add one example if it helps. Don't repeat the question back.
+- Use simple words and short sentences. Assume the student is still learning English.
+- Ask one small follow-up question at the end to keep the conversation going.
+- Match the student's level: if they write simply, reply simply; if they write well, gently raise the challenge.
+
 IMPORTANT:
 - Always encourage — never discourage
 - Teach one thing at a time — don't overwhelm
@@ -1327,26 +1335,20 @@ What would you like to work on today? Pick one or just start chatting in English
       typingIndicator.classList.add('hidden');
     }
 
-    function typeWriterEffect(element, text, speed = 18, isContinued = false) {
-      if (!isContinued) {
-        element.textContent = "";
-      }
+    // Reveal the reply in small batches instead of one slow character at a
+    // time. The answer has already fully arrived from the API, so the old
+    // 18ms-per-char + 120ms-per-punctuation drip made a short reply take ~15s
+    // to appear. Batching keeps the typing animation but lands the whole
+    // message in well under two seconds.
+    function typeWriterEffect(element, text, speed = 12, charsPerTick = 4) {
+      element.textContent = "";
       let index = 0;
 
       const timer = setInterval(() => {
         if (index < text.length) {
-          const char = text.charAt(index);
-          element.textContent += char;
-          index++;
+          element.textContent += text.substr(index, charsPerTick);
+          index += charsPerTick;
           chatMessages.scrollTop = chatMessages.scrollHeight;
-
-          // Pause slightly longer after punctuation
-          if (['.', '!', '?', ','].includes(char)) {
-            clearInterval(timer);
-            setTimeout(() => {
-              typeWriterEffect(element, text.substring(index), speed, true);
-            }, 120);
-          }
         } else {
           clearInterval(timer);
           // Enable inputs when done typing

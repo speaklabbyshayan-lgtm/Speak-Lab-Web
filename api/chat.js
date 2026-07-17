@@ -7,10 +7,11 @@ const {
 } = require('../lib/llm.js');
 const { rateLimited, clientIp } = require('../lib/api-utils.js');
 
-// Total wall-clock either provider may spend before we give up on it. Gemini
-// answers in well under a second; anything approaching this means it is hung,
-// and the student is better served by falling through to Grok than by
-// waiting for the platform to kill the function.
+// Total wall-clock either provider may spend before we give up on it. Groq
+// answers in ~0.2s and Gemini in a few seconds; anything approaching this
+// means the provider is hung, and the student is better served by falling
+// through to the next one than by waiting for the platform to kill the
+// function.
 const LLM_TIMEOUT_MS = Number(process.env.CHAT_LLM_TIMEOUT_MS || 8000);
 
 // Vercel's default is 10s. Two providers at 8s each can exceed that.
@@ -82,12 +83,14 @@ export default async function handler(req, res) {
     return res.status(400).json({ message: 'Message too long.' });
   }
 
+  // Groq goes first: it replies in ~0.2s where Gemini takes several seconds,
+  // so students get a near-instant answer and Gemini is only the fallback.
   const providers = [];
-  if (GEMINI_API_KEY) {
-    providers.push({ url: GEMINI_URL, key: GEMINI_API_KEY, model: GEMINI_MODEL });
-  }
   if (GROK_API_KEY) {
     providers.push({ url: GROK_URL, key: GROK_API_KEY, model: GROK_MODEL });
+  }
+  if (GEMINI_API_KEY) {
+    providers.push({ url: GEMINI_URL, key: GEMINI_API_KEY, model: GEMINI_MODEL });
   }
 
   let lastError = null;
