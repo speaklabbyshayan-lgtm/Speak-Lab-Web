@@ -1340,6 +1340,16 @@ What would you like to work on today? Pick one or just start chatting in English
     // 18ms-per-char + 120ms-per-punctuation drip made a short reply take ~15s
     // to appear. Batching keeps the typing animation but lands the whole
     // message in well under two seconds.
+    /** Carries the HTTP status through to the catch block, so the student is
+     *  told which failure they hit rather than one message for all of them. */
+    class ChatError extends Error {
+      constructor(message, status) {
+        super(message);
+        this.name = 'ChatError';
+        this.status = status;
+      }
+    }
+
     function typeWriterEffect(element, text, speed = 12, charsPerTick = 4) {
       element.textContent = "";
       let index = 0;
@@ -1386,12 +1396,19 @@ What would you like to work on today? Pick one or just start chatting in English
 
         hideTyping();
 
+        // /api/chat distinguishes rate limiting (429), missing keys (500) and
+        // every provider failing (502), and says so in `message`. Collapsing
+        // them into one generic throw is what made this undiagnosable.
         if (!response.ok) {
-          throw new Error('API request failed');
+          const detail = await response.json().catch(() => null);
+          throw new ChatError(detail?.message || response.statusText, response.status);
         }
 
         const data = await response.json();
-        const reply = data.choices[0].message.content;
+        const reply = data.choices?.[0]?.message?.content;
+        if (!reply) {
+          throw new ChatError('The provider returned no message content.', response.status);
+        }
 
         chatState.messages.push({ role: "assistant", content: reply });
 
@@ -1414,11 +1431,35 @@ What would you like to work on today? Pick one or just start chatting in English
         typeWriterEffect(textSpan, reply);
 
       } catch (error) {
-        console.error('Chat API Error:', error);
+        console.error('Chat API Error:', error.status || '(no response)', error.message);
         hideTyping();
-        addMessageUI('ai', "Sara is taking a short break — please try again in a moment! 🙏");
+
+        // Show the student what actually went wrong. A rate limit is worth
+        // waiting out; a server outage is not, and "taking a short break"
+        // reads the same for both.
+        let shown;
+        if (error.status === 429) {
+          shown = "You're sending messages faster than Sara can keep up — please wait a minute and try again. ⏳";
+        } else if (error.status === 500) {
+          shown = "Sara isn't configured on the server yet (missing API key). Please let us know on WhatsApp. 🛠️";
+        } else if (error.status === 502) {
+          shown = "Sara can't reach her AI service right now. Please try again in a moment. 🙏";
+        } else if (!error.status) {
+          shown = "Couldn't reach the server — please check your internet connection and try again. 📡";
+        } else {
+          shown = "Sara is taking a short break — please try again in a moment! 🙏";
+        }
+        addMessageUI('ai', shown);
+
+        // The failed turn never got an answer; leaving it in the history means
+        // the next request re-sends a dangling user message.
+        if (chatState.messages[chatState.messages.length - 1]?.role === 'user') {
+          chatState.messages.pop();
+        }
+
         chatInput.disabled = false;
         sendBtn.disabled = false;
+        chatInput.focus();
       }
     }
 
