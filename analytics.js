@@ -16,7 +16,7 @@
  */
 const ANALYTICS = {
   GA4_ID: 'G-K83DWRBSRF',
-  PIXEL_ID: '', // e.g. '1234567890123456'
+  PIXEL_ID: '2246859136132897',
 };
 
 (function () {
