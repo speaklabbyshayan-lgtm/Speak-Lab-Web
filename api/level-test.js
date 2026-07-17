@@ -8,9 +8,9 @@ const {
 } = require('../lib/level-test.js');
 const {
   GEMINI_MODEL,
-  NVIDIA_MODEL,
+  GROK_MODEL,
   GEMINI_URL,
-  NVIDIA_URL,
+  GROK_URL,
   fetchWithTimeout,
 } = require('../lib/llm.js');
 
@@ -24,7 +24,7 @@ const SUPABASE_ANON_FALLBACK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || SUPABASE_ANON_FALLBACK;
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
+const GROK_API_KEY = process.env.GROK_API_KEY;
 
 // Model names and fetchWithTimeout now live in lib/llm.js so this file and
 // api/chat.js cannot drift apart again — that drift is what left the tutor on
@@ -177,7 +177,7 @@ Reply with ONLY this JSON, no markdown fence:
 }
 
 /**
- * Gemini first, NVIDIA second. Returns null if both fail or run out of budget,
+ * Gemini first, Grok second. Returns null if both fail or run out of budget,
  * which sends the caller to the heuristic scorer.
  *
  * Every attempt is bounded and shares one deadline, so the worst case for the
@@ -195,10 +195,10 @@ async function callLLM(messages) {
       model: GEMINI_MODEL,
     },
     {
-      name: 'NVIDIA',
-      key: NVIDIA_API_KEY,
-      url: NVIDIA_URL,
-      model: NVIDIA_MODEL,
+      name: 'Grok',
+      key: GROK_API_KEY,
+      url: GROK_URL,
+      model: GROK_MODEL,
     },
   ];
 

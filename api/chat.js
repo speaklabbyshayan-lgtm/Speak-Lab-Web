@@ -1,15 +1,15 @@
 const {
   GEMINI_MODEL,
-  NVIDIA_MODEL,
+  GROK_MODEL,
   GEMINI_URL,
-  NVIDIA_URL,
+  GROK_URL,
   fetchWithTimeout,
 } = require('../lib/llm.js');
 const { rateLimited, clientIp } = require('../lib/api-utils.js');
 
 // Total wall-clock either provider may spend before we give up on it. Gemini
 // answers in well under a second; anything approaching this means it is hung,
-// and the student is better served by falling through to NVIDIA than by
+// and the student is better served by falling through to Grok than by
 // waiting for the platform to kill the function.
 const LLM_TIMEOUT_MS = Number(process.env.CHAT_LLM_TIMEOUT_MS || 8000);
 
@@ -17,7 +17,7 @@ const LLM_TIMEOUT_MS = Number(process.env.CHAT_LLM_TIMEOUT_MS || 8000);
 export const config = { maxDuration: 30 };
 
 // /api/chat is unauthenticated and spends real money on every call, so an
-// open endpoint is a standing invitation to drain the Gemini and NVIDIA
+// open endpoint is a standing invitation to drain the Gemini and Grok
 // quota. Limiting lives in lib/api-utils.js, shared with contact and enroll.
 const RATE_LIMIT_MAX = 12;
 const MAX_MESSAGES = 40;
@@ -57,10 +57,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
+  const GROK_API_KEY = process.env.GROK_API_KEY;
   const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-  if (!NVIDIA_API_KEY && !GEMINI_API_KEY) {
+  if (!GROK_API_KEY && !GEMINI_API_KEY) {
     return res.status(500).json({ message: 'API keys not configured on server' });
   }
 
@@ -86,8 +86,8 @@ export default async function handler(req, res) {
   if (GEMINI_API_KEY) {
     providers.push({ url: GEMINI_URL, key: GEMINI_API_KEY, model: GEMINI_MODEL });
   }
-  if (NVIDIA_API_KEY) {
-    providers.push({ url: NVIDIA_URL, key: NVIDIA_API_KEY, model: NVIDIA_MODEL });
+  if (GROK_API_KEY) {
+    providers.push({ url: GROK_URL, key: GROK_API_KEY, model: GROK_MODEL });
   }
 
   let lastError = null;
