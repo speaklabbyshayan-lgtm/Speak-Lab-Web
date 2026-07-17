@@ -200,6 +200,15 @@ body {
   line-height: 1.6;
 }
 
+/* Carries the "Speak English with Confidence" slogan that used to be the H1,
+   so it sits heavier than the body copy below it. */
+.hero-content p.hero-subhead {
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 18px;
+}
+
 .tagline {
   font-weight: 700;
   font-size: 1.1rem;
