@@ -667,7 +667,10 @@
       }
 
       .chat-container {
+        /* dvh tracks the address bar as it shows/hides; vh does not, which
+           left the input row sitting under it. vh first as the fallback. */
         height: calc(100vh - 220px);
+        height: calc(100dvh - 220px);
         min-height: 450px;
         border-radius: 20px;
       }
@@ -737,11 +740,15 @@
         font-size: 0.95rem;
       }
 
+      /* Sits bottom-left on this page only: bottom-right put it directly on
+         top of the chat's send button, which is the one control a student
+         needs most here. */
       .floating-whatsapp {
         bottom: 20px;
-        right: 20px;
-        width: 60px;
-        height: 60px;
+        right: auto !important;
+        left: 20px;
+        width: 56px;
+        height: 56px;
       }
 
       .floating-whatsapp svg {
@@ -757,18 +764,18 @@
 
       .chat-container {
         height: calc(100vh - 200px);
+        height: calc(100dvh - 200px);
       }
 
       .message {
         max-width: 95%;
       }
 
-      .prompt-btn span {
-        display: none;
-      }
-
+      /* The label (emoji + text) is a single span, so hiding it here left
+         four empty circles. Keep the text and let the chips wrap instead. */
       .prompt-btn {
-        padding: 10px;
+        padding: 8px 12px;
+        font-size: 0.75rem;
       }
 
       .ai-cta-buttons {
@@ -1264,6 +1271,22 @@ IMPORTANT:
     const sendBtn = document.getElementById('send-btn');
     const typingIndicator = document.getElementById('typing-indicator');
     const suggestedPrompts = document.getElementById('suggested-prompts');
+
+    // The full placeholder wraps to a second line on a phone and gets clipped
+    // by the input's fixed height. Shortening the text beats shrinking the
+    // font, which below 16px makes iOS Safari zoom the page on focus.
+    const narrowScreen = window.matchMedia('(max-width: 480px)');
+    function syncPlaceholder() {
+      chatInput.placeholder = narrowScreen.matches
+        ? 'Message or speak…'
+        : 'Type your message or speak to Sara...';
+    }
+    syncPlaceholder();
+    if (narrowScreen.addEventListener) {
+      narrowScreen.addEventListener('change', syncPlaceholder);
+    } else if (narrowScreen.addListener) {
+      narrowScreen.addListener(syncPlaceholder); // Safari < 14
+    }
 
     // Suggested Practice Topics
     const practiceTopics = [
