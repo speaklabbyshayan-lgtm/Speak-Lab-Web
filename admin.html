@@ -584,10 +584,11 @@
               <th>Current Gate</th>
               <th>Gate Name</th>
               <th>Actions</th>
+              <th style="text-align:center;">Remove</th>
             </tr>
           </thead>
           <tbody id="journey-body">
-            <tr><td colspan="5">Loading student journeys...</td></tr>
+            <tr><td colspan="6">Loading student journeys...</td></tr>
           </tbody>
         </table>
       </div>
@@ -1112,9 +1113,22 @@
       '🏆 Destination Reached!',
     ];
 
+    /**
+     * Normalise a stored number into the digits-only form wa.me needs.
+     * Numbers are typed by students, so they arrive as 0301-4497532,
+     * +92 301 4497532, 92301..., etc. Returns '' when there is nothing usable.
+     */
+    const waNumber = (raw) => {
+      let d = String(raw ?? '').replace(/\D/g, '');
+      if (!d) return '';
+      if (d.startsWith('0')) d = '92' + d.slice(1);      // local 03xx -> 923xx
+      else if (d.startsWith('3') && d.length === 10) d = '92' + d; // 3xx typed bare
+      return d.length >= 11 && d.length <= 15 ? d : '';
+    };
+
     window.loadStudentJourney = async () => {
       const body = document.getElementById('journey-body');
-      body.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
+      body.innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
       try {
         // Get all student progress
         const { data: progresses, error } = await window.supabaseClient
@@ -1125,37 +1139,104 @@
         if (error) throw error;
 
         if (!progresses || progresses.length === 0) {
-          body.innerHTML = '<tr><td colspan="5" style="color:#64748b;">No students have logged in yet. Students need to visit the portal first.</td></tr>';
+          body.innerHTML = '<tr><td colspan="6" style="color:#64748b;">No students have logged in yet. Students need to visit the portal first.</td></tr>';
           return;
         }
 
+        // student_progress has no phone column, so the WhatsApp link used to
+        // point at an empty wa.me/. Numbers live on the enrolment, so match
+        // them up by email here.
+        const phoneByEmail = {};
+        const { data: enrolments } = await window.supabaseClient
+          .from('enrollments')
+          .select('email, whatsapp');
+        (enrolments || []).forEach((en) => {
+          const num = waNumber(en.whatsapp);
+          if (en.email && num) phoneByEmail[String(en.email).trim().toLowerCase()] = num;
+        });
+
         body.innerHTML = '';
         for (const p of progresses) {
-          // Fetch user email from auth (using admin API - might need to store email in student_progress)
           const gateNum    = p.current_gate || 1;
           const gateName   = GATE_NAMES[gateNum] || `Gate ${gateNum}`;
           const canUnlock  = gateNum < 8;
           const nextGate   = gateNum + 1;
+          const email      = p.student_email || '';
+          const name       = p.student_name || 'Student';
+          const phone      = phoneByEmail[email.trim().toLowerCase()] || '';
+
+          const waCell = phone
+            ? `<a href="https://wa.me/${phone}?text=${encodeURIComponent(
+                 `Hi ${name}! This is SpeakLab. You are at ${gateName} (Gate ${gateNum}) of your journey.`
+               )}" target="_blank" rel="noopener noreferrer"
+                 style="margin-left:10px;color:#25D366;font-weight:600;text-decoration:none;font-size:0.8rem;"
+                 title="+${phone}">💬 WhatsApp</a>`
+            : `<span style="margin-left:10px;color:#94a3b8;font-size:0.8rem;"
+                 title="No WhatsApp number on this student's enrolment">💬 No number</span>`;
 
           body.innerHTML += `
             <tr>
-              <td style="font-size:0.8rem;color:#475569;">${p.student_email || p.student_id.substring(0,8) + '...'}</td>
-              <td><strong>${p.student_name || 'Student'}</strong></td>
+              <td style="font-size:0.8rem;color:#475569;">${esc(email || p.student_id.substring(0,8) + '...')}</td>
+              <td><strong>${esc(name)}</strong></td>
               <td><span class="gate-badge">Gate ${gateNum}</span></td>
-              <td>${gateName}</td>
+              <td>${esc(gateName)}</td>
               <td>
                 ${canUnlock
-                  ? `<button class="takeoff-btn" onclick="clearForTakeoff('${p.student_id}', ${gateNum}, ${nextGate}, this)">
+                  ? `<button class="takeoff-btn" onclick="clearForTakeoff('${esc(p.student_id)}', ${gateNum}, ${nextGate}, this)">
                        🛫 Clear for Takeoff → Gate ${nextGate}
                      </button>`
                   : '<span style="color:#16a34a;font-weight:600;">🏆 Graduated!</span>'}
-                <a href="https://wa.me/?text=" target="_blank" style="margin-left:10px;color:#25D366;font-weight:600;text-decoration:none;font-size:0.8rem;">💬 WhatsApp</a>
+                ${waCell}
+              </td>
+              <td style="text-align:center;">
+                <button onclick="deleteJourney('${esc(p.student_id)}', '${esc(name)}', this)"
+                  style="padding:6px 12px;border-radius:8px;border:1px solid #fecaca;background:#fef2f2;color:#dc2626;font-weight:600;font-size:0.8rem;cursor:pointer;font-family:inherit;"
+                  title="Remove this student's journey record">🗑 Delete</button>
               </td>
             </tr>`;
         }
       } catch (err) {
-        body.innerHTML = `<tr><td colspan="5" style="color:red;">Error: ${err.message}</td></tr>`;
+        body.innerHTML = `<tr><td colspan="6" style="color:red;">Error: ${err.message}</td></tr>`;
         console.error('Journey load error:', err);
+      }
+    };
+
+    /**
+     * Remove one student's journey row plus the badges hanging off it. Only the
+     * journey is deleted — the enrolment, payment and level-test records stay,
+     * so this clears clutter without losing who the student is.
+     */
+    window.deleteJourney = async (studentId, name, btn) => {
+      if (!confirm(
+        `Delete the journey record for ${name}?\n\n` +
+        'Their gate progress and badges will be removed.\n' +
+        'Enrolment, payment and level-test records are NOT affected.\n\n' +
+        'This cannot be undone.'
+      )) return;
+
+      btn.disabled = true;
+      btn.textContent = 'Deleting...';
+
+      try {
+        // Badges first: they reference the student, so clearing them here
+        // avoids leaving orphan rows behind if the table has no cascade.
+        await window.supabaseClient
+          .from('student_badges')
+          .delete()
+          .eq('student_id', studentId);
+
+        const { error } = await window.supabaseClient
+          .from('student_progress')
+          .delete()
+          .eq('student_id', studentId);
+
+        if (error) throw error;
+
+        loadStudentJourney();
+      } catch (err) {
+        alert('Could not delete: ' + err.message);
+        btn.disabled = false;
+        btn.textContent = '🗑 Delete';
       }
     };
 
