@@ -26,7 +26,30 @@
   var finalTranscript = '';   // committed speech for the current prompt
   var stoppedByUser = false;
 
+  // Chrome hands the same result back more than once, so the recogniser's
+  // output is rebuilt from its results array on every event instead of being
+  // appended to. sessionFinal holds the finals for the *current* recognition
+  // session only; resultOffset marks how much of that array has already been
+  // folded into finalTranscript and must not be counted again.
+  var sessionFinal = '';
+  var resultOffset = 0;
+  var lastResultCount = 0;
+
   var $ = function (id) { return document.getElementById(id); };
+
+  /** Join transcript fragments with single spaces, dropping empty ones. */
+  function joinParts(parts) {
+    return parts
+      .map(function (p) { return (p || '').trim(); })
+      .filter(Boolean)
+      .join(' ');
+  }
+
+  /** Forget the recogniser's buffered results; the box is now the base text. */
+  function resetSpeechBuffer(offset) {
+    sessionFinal = '';
+    resultOffset = offset || 0;
+  }
 
   // ── Screens ───────────────────────────────────────────────────────────
   function show(screenId) {
@@ -239,6 +262,7 @@
     $('speaking-hint').textContent = p.hint;
 
     finalTranscript = state.speakingAnswers[p.id] || '';
+    resetSpeechBuffer(0);
     $('transcript').value = finalTranscript;
     updateWordCount();
 
@@ -281,8 +305,10 @@
 
   function onTranscriptInput() {
     // Typing wins over the recogniser: keep them in sync so a restart of the
-    // mic doesn't clobber hand-written edits.
+    // mic doesn't clobber hand-written edits. The box already contains this
+    // session's speech, so skip past those results rather than re-adding them.
     finalTranscript = $('transcript').value;
+    resetSpeechBuffer(lastResultCount);
     updateWordCount();
   }
 
@@ -320,16 +346,23 @@
     recognition.interimResults = true;
 
     recognition.onresult = function (event) {
+      // Rebuilt from scratch, never appended to: Chrome fires onresult again
+      // over ranges that include results it has already marked final, and
+      // appending those a second or third time is what wrote the spoken text
+      // into the box twice. Recomputing makes a repeat event a no-op.
+      var finals = '';
       var interim = '';
-      for (var i = event.resultIndex; i < event.results.length; i++) {
+      for (var i = resultOffset; i < event.results.length; i++) {
         var chunk = event.results[i][0].transcript;
         if (event.results[i].isFinal) {
-          finalTranscript += (finalTranscript ? ' ' : '') + chunk.trim();
+          finals = joinParts([finals, chunk]);
         } else {
           interim += chunk;
         }
       }
-      $('transcript').value = (finalTranscript + (interim ? ' ' + interim : '')).trim();
+      sessionFinal = finals;
+      lastResultCount = event.results.length;
+      $('transcript').value = joinParts([finalTranscript, sessionFinal, interim]);
       updateWordCount();
     };
 
@@ -351,6 +384,13 @@
     };
 
     recognition.onend = function () {
+      // The results array resets when recognition restarts, so this segment's
+      // finals have to be folded into the committed text first — otherwise the
+      // restart would drop everything said before the pause.
+      finalTranscript = joinParts([finalTranscript, sessionFinal]);
+      resetSpeechBuffer(0);
+      lastResultCount = 0;
+
       // Chrome stops recognition after a pause; restart unless the user stopped.
       if (isRecording && !stoppedByUser) {
         try { recognition.start(); } catch (e) { stopRecording(); }
@@ -367,6 +407,8 @@
     if (!recognition) return;
     // Keep whatever is in the box (typed or previously spoken) as the base.
     finalTranscript = $('transcript').value.trim();
+    resetSpeechBuffer(0);
+    lastResultCount = 0;
     stoppedByUser = false;
     try {
       recognition.start();
