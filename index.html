@@ -501,10 +501,20 @@ SEO CHECKLIST — Complete after deployment:
     <div class="hero-content">
 
       <h1 class="gradient-heading">Speak English<br>with confidence</h1>
-      <p class="hero-subhead">Speak English with confidence — an 8-week communication and confidence
-        course with in-person spoken English classes in Lahore, in small batches.</p>
-      <p>Master real-world English through immersive, interactive sessions designed for actual conversations, not just
-        textbooks. We help you navigate communication challenges and excel globally.</p>
+      <div class="hero-copy">
+        <div class="hero-copy-scroll">
+          <p class="hero-subhead">Speak English with confidence — an 8-week communication and confidence
+            course with in-person spoken English classes in Lahore, in small batches.</p>
+          <p>Master real-world English through immersive, interactive sessions designed for actual conversations, not just
+            textbooks. We help you navigate communication challenges and excel globally.</p>
+        </div>
+        <span class="hero-copy-more" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
+      </div>
 
       <p class="tagline" id="site-tagline">Speak. Communicate. Succeed.</p>
 
@@ -1022,6 +1032,25 @@ SEO CHECKLIST — Complete after deployment:
 </a>
   <script defer src="seminar-popup.js"></script>
   <script defer src="community-bell.js"></script>
+
+  <!-- Hero copy: hide the "swipe for more" arrow + fade once all the text has
+       been scrolled into view (or if it already fits). -->
+  <script>
+    (function () {
+      var copy = document.querySelector('.hero-copy');
+      var box = copy && copy.querySelector('.hero-copy-scroll');
+      if (!box) return;
+      function update() {
+        var atEnd = box.scrollHeight - box.scrollTop - box.clientHeight < 6;
+        var fits = box.scrollHeight - box.clientHeight < 6;
+        copy.classList.toggle('is-scrolled-end', atEnd || fits);
+      }
+      box.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      window.addEventListener('load', update);
+      update();
+    })();
+  </script>
 </body>
 
 </html>
