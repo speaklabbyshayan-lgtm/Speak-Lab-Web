@@ -76,7 +76,7 @@ const ANALYTICS = {
   //   2. prefill the message with the page it came from, so an inbound chat
   //      says what the person was looking at.
   const CONTEXT = {
-    index: 'Hi! I saw the SpeakLab homepage and want to know more about the July batch.',
+    index: 'Hi! I saw the SpeakLab homepage and want to know more about the August batch.',
     'course-details': 'Hi! I was reading the SpeakLab course details and have a question.',
     enroll: 'Hi! I was enrolling for SpeakLab and need help with my registration.',
     'trial-classes': 'Hi! I want to book my 3 Free Trial Classes at SpeakLab.',

@@ -18,7 +18,7 @@
     "sessions": "24 Sessions",
     "schedule": "Flexible days (Regular & Weekend Batches)",
     "timing": "5:00 PM to 6:45 PM",
-    "batch": "July Batch",
+    "batch": "August Batch",
     "seats": 20,
     "fee": 20000,
     "regularFee": 30000,
@@ -87,11 +87,11 @@
     },
     {
       "q": "How much does the program cost?",
-      "a": "Special July Batch fee is PKR 20,000 (regular PKR 30,000). Secure your seat with PKR 10,000 registration fee, balance due by 5th of next month."
+      "a": "Special August Batch fee is PKR 20,000 (regular PKR 30,000). Secure your seat with PKR 10,000 registration fee, balance due by 5th of next month."
     },
     {
       "q": "How many seats are available?",
-      "a": "Only 20 seats are available for the July Batch. Once filled, registration closes."
+      "a": "Only 20 seats are available for the August Batch. Once filled, registration closes."
     },
     {
       "q": "How do I enroll?",
