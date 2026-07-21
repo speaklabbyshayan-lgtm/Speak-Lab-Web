@@ -320,6 +320,21 @@ SEO CHECKLIST — Complete after deployment:
 
 <body>
 
+  <!-- ===== Announcement Bar =====
+       EDIT ME: change the text / link below to announce a seminar, new batch,
+       event, etc. To hide it, just delete this whole block or set style="display:none". -->
+  <div class="announcement-bar" id="announcement-bar" role="region" aria-label="Announcement">
+    <div class="announcement-inner">
+      <span class="announcement-badge">NEW</span>
+      <p class="announcement-text">
+        🎤 Free Public Speaking Seminar — Sat, 2 Aug at Punjab Tianjin University.
+        <a href="enroll.html" class="announcement-link">Reserve your seat →</a>
+      </p>
+    </div>
+    <button class="announcement-close" aria-label="Dismiss announcement"
+      onclick="document.getElementById('announcement-bar').remove()">&times;</button>
+  </div>
+
   <!-- Top Navigation (Light Theme) -->
   <nav class="top-nav">
     <div class="nav-left">
