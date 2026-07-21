@@ -492,6 +492,15 @@ body {
     border-radius: 10px;
   }
 
+  /* The pricing card is the only one with a second paragraph (the "Not sure
+     yet?" line under the button). Without this it also gets flex:1 and splits
+     the height with the pricing text, clipping it. Let it size to its content
+     so the pricing paragraph keeps the full scroll area. */
+  .card-4 .card-left p:last-of-type {
+    flex: 0 0 auto;
+    overflow: visible;
+  }
+
   .card-tags {
     display: none;
   }
