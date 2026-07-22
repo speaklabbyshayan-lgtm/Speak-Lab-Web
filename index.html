@@ -89,24 +89,39 @@ SEO CHECKLIST — Complete after deployment:
     .announcement-bar {
       display: flex;
       align-items: center;
-      justify-content: center;
       gap: 14px;
       position: relative;
       width: 100%;
-      padding: 11px 52px;
+      padding: 11px 52px 11px 20px;
       background: #0b0e1a;
       color: #ffffff;
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       z-index: 1100;
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
     }
 
-    .announcement-inner {
+    /* Marquee viewport: clips the scrolling track to a single line */
+    .announcement-marquee {
+      flex: 1 1 auto;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+    }
+
+    .announcement-track {
       display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
+      width: max-content;
+      animation: annMarquee 26s linear infinite;
+    }
+
+    .announcement-bar:hover .announcement-track {
+      animation-play-state: paused;
+    }
+
+    @keyframes annMarquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
     }
 
     .announcement-badge {
@@ -139,9 +154,12 @@ SEO CHECKLIST — Complete after deployment:
 
     .announcement-text {
       margin: 0;
+      flex-shrink: 0;
+      padding-right: 4rem;
       font-size: 0.9rem;
       font-weight: 400;
       line-height: 1.4;
+      white-space: nowrap;
       color: rgba(255, 255, 255, 0.9);
     }
 
@@ -188,11 +206,12 @@ SEO CHECKLIST — Complete after deployment:
 
     @media (max-width: 640px) {
       .announcement-bar {
-        padding: 10px 42px;
+        padding: 10px 38px 10px 14px;
         gap: 8px;
       }
       .announcement-text {
         font-size: 0.78rem;
+        padding-right: 3rem;
       }
       .announcement-badge {
         font-size: 0.56rem;
@@ -202,6 +221,13 @@ SEO CHECKLIST — Complete after deployment:
         right: 10px;
         width: 24px;
         height: 24px;
+      }
+    }
+
+    /* Accessibility: no motion for users who ask for reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .announcement-track {
+        animation: none;
       }
     }
   </style>
@@ -446,12 +472,12 @@ SEO CHECKLIST — Complete after deployment:
        EDIT ME: change the text / link below to announce a seminar, new batch,
        event, etc. To hide it, just delete this whole block or set style="display:none". -->
   <div class="announcement-bar" id="announcement-bar" role="region" aria-label="Announcement">
-    <div class="announcement-inner">
-      <span class="announcement-badge"><span class="dot"></span>NEW</span>
-      <p class="announcement-text">
-        🎤 Free Public Speaking Seminar — Sat, 2 Aug at Punjab Tianjin University.
-        <a href="enroll.html" class="announcement-link">Reserve your seat →</a>
-      </p>
+    <span class="announcement-badge"><span class="dot"></span>NEW</span>
+    <div class="announcement-marquee">
+      <div class="announcement-track">
+        <span class="announcement-text">🎤 Free Public Speaking Seminar &nbsp;·&nbsp; Saturday, 2 August 2025 &nbsp;·&nbsp; Punjab Tianjin University, Lahore &nbsp;·&nbsp; Limited seats available. <a href="enroll.html" class="announcement-link">Reserve your complimentary seat →</a></span>
+        <span class="announcement-text" aria-hidden="true">🎤 Free Public Speaking Seminar &nbsp;·&nbsp; Saturday, 2 August 2025 &nbsp;·&nbsp; Punjab Tianjin University, Lahore &nbsp;·&nbsp; Limited seats available. <a href="enroll.html" class="announcement-link" tabindex="-1">Reserve your complimentary seat →</a></span>
+      </div>
     </div>
     <button class="announcement-close" aria-label="Dismiss announcement"
       onclick="document.getElementById('announcement-bar').remove()">&times;</button>
