@@ -502,6 +502,19 @@ body {
     overflow: visible;
   }
 
+  /* The pricing card carries an extra paragraph + button + link, so the shared
+     fixed card height clips its bottom on mobile. Let this last card grow to
+     fit its content instead, and give the image a little less height. */
+  .stack-card.card-4 {
+    height: auto;
+    max-height: none;
+    min-height: 420px;
+  }
+
+  .card-4 .card-right {
+    height: 170px;
+  }
+
   .card-tags {
     display: none;
   }
