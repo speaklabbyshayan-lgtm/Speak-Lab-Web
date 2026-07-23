@@ -16,8 +16,8 @@
     "name": "Communication & Confidence Program",
     "duration": "8 Weeks",
     "sessions": "24 Sessions",
-    "schedule": "Flexible days (Regular & Weekend Batches)",
-    "timing": "5:00 PM to 6:45 PM",
+    "schedule": "Mon, Wed, Fri",
+    "timing": "7:00 PM to 8:30 PM",
     "batch": "August Batch",
     "seats": 20,
     "fee": 20000,
@@ -27,18 +27,8 @@
     "batchOptions": [
       {
         "value": "weekday",
-        "label": "Weekday Batch (Mon–Fri)",
-        "desc": "5:00 PM – 6:45 PM"
-      },
-      {
-        "value": "weekend",
-        "label": "Weekend Batch (Sat–Sun)",
-        "desc": "5:00 PM – 6:45 PM"
-      },
-      {
-        "value": "flexible",
-        "label": "Either works for me",
-        "desc": "Most flexible — best chance of a seat"
+        "label": "Weekday Batch (Mon, Wed & Fri)",
+        "desc": "7:00 PM – 8:30 PM"
       }
     ]
   },
@@ -71,7 +61,7 @@
   "faqs": [
     {
       "q": "What is the Communication & Confidence Program?",
-      "a": "It is an intensive 8-week English communication course held at Punjab Tianjin University of Technology, Lahore. Classes run Flexible days (Regular & Weekend Batches) from 5:00 PM to 6:45 PM \u2014 24 total sessions."
+      "a": "It is an intensive 8-week English communication course held at Punjab Tianjin University of Technology, Lahore. Classes run Mon, Wed & Fri from 7:00 PM to 8:30 PM \u2014 24 total sessions."
     },
     {
       "q": "Who is this program designed for?",

@@ -120,7 +120,7 @@ export default async function handler(req, res) {
         <h2>Hi ${name},</h2>
         <p>Great decision — your <strong>Free Trial Classes</strong> request is confirmed on our side.</p>
         <p>You are welcome to attend <strong>3 full classes at no cost</strong> before deciding about the program. Our team will contact you on WhatsApp (<strong>${whatsapp || 'the number you provided'}</strong>) within 24 hours to schedule your first class.</p>
-        <p>Venue: Punjab Tianjin University of Technology, Lahore &middot; 5:00&ndash;6:45 PM</p>
+        <p>Venue: Punjab Tianjin University of Technology, Lahore &middot; 7:00&ndash;8:30 PM</p>
         <br/>
         <p>Best regards,<br/>The SpeakLab Team</p>
       `

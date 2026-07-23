@@ -70,6 +70,12 @@
       margin-top: 2px;
     }
 
+    /* Keep all the text (and its inline spans) as ONE flex item so the 12px
+       gap only sits between the tick and the copy — not between every word. */
+    .trial-point .trial-point-text {
+      flex: 1;
+    }
+
     .trial-steps {
       background: rgba(255, 255, 255, 0.55);
       border-radius: 20px;
@@ -335,14 +341,14 @@
   <main>
     <div class="trial-container">
       <div class="trial-card">
-        <div class="trial-point"><span class="tick">✓</span> 2 complete, real classes with the current batch — not a
-          shortened preview session</div>
-        <div class="trial-point"><span class="tick">✓</span> Learn directly with <span id="inst-name">Sir Shayan</span>
-          and sit alongside enrolled students</div>
-        <div class="trial-point"><span class="tick">✓</span> No payment and no obligation — you decide only after your
-          second class</div>
-        <div class="trial-point"><span class="tick">✓</span> In-person at <span id="prog-location">Punjab Tianjin
-            University of Technology, Lahore</span>, <span id="prog-timing">5:00 PM to 6:45 PM</span></div>
+        <div class="trial-point"><span class="tick">✓</span> <span class="trial-point-text">2 complete, real classes with the current batch — not a
+          shortened preview session</span></div>
+        <div class="trial-point"><span class="tick">✓</span> <span class="trial-point-text">Learn directly with <span id="inst-name">Sir Shayan</span>
+          and sit alongside enrolled students</span></div>
+        <div class="trial-point"><span class="tick">✓</span> <span class="trial-point-text">No payment and no obligation — you decide only after your
+          second class</span></div>
+        <div class="trial-point"><span class="tick">✓</span> <span class="trial-point-text">In-person at <span id="prog-location">Punjab Tianjin
+            University of Technology, Lahore</span>, <span id="prog-timing">7:00 PM to 8:30 PM</span></span></div>
 
         <div class="trial-steps">
           <h4>How it works</h4>
@@ -374,9 +380,7 @@
             <label>Preferred Batch</label>
             <select name="batch_preference" required>
               <option value="" disabled selected>Choose a batch…</option>
-              <option value="Weekday Batch (Mon–Fri)">Weekday Batch (Mon–Fri), 5:00–6:45 PM</option>
-              <option value="Weekend Batch (Sat–Sun)">Weekend Batch (Sat–Sun), 5:00–6:45 PM</option>
-              <option value="Either works for me">Either works for me</option>
+              <option value="Weekday Batch (Mon, Wed & Fri)">Weekday Batch (Mon, Wed & Fri), 7:00–8:30 PM</option>
             </select>
           </div>
           <button type="submit" id="trialSubmitBtn">Book My Free Trial Classes</button>

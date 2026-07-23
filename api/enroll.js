@@ -31,9 +31,7 @@ export default async function handler(req, res) {
     }
 
     const BATCH_LABELS = {
-      weekday: 'Weekday Batch (Mon–Fri), 5:00–6:45 PM',
-      weekend: 'Weekend Batch (Sat–Sun), 5:00–6:45 PM',
-      flexible: 'Either batch works for them',
+      weekday: 'Weekday Batch (Mon, Wed & Fri), 7:00–8:30 PM',
     };
     const batchLabel = BATCH_LABELS[batch_preference] || 'Not specified';
 
