@@ -68,11 +68,10 @@ SEO CHECKLIST — Complete after deployment:
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
   <!-- Prefetch critical pages -->
+  <!-- Trimmed to the two most-likely next hops (enroll + course-details) so the
+       prefetches don't contend with the hero/CSS for 3G bandwidth on load. -->
   <link rel="prefetch" href="enroll.html" as="document">
-  <link rel="prefetch" href="ai-tutor.html" as="document">
-  <link rel="prefetch" href="about.html" as="document">
   <link rel="prefetch" href="course-details.html" as="document">
-  <link rel="prefetch" href="contact.html" as="document">
 
   <!-- Preload critical fonts -->
   <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/outfit/v14/QGYsz_wNahGAdqQ43Rh_fKDptfpM.woff2" crossorigin>
@@ -452,11 +451,17 @@ SEO CHECKLIST — Complete after deployment:
        would flood the console with false violations. -->
   
   <!-- Security Utilities -->
-  <script src="security-utils.js"></script>
-  
+  <!-- defer: this IIFE only defines helpers + registers a DOMContentLoaded
+       listener, so deferring keeps behaviour identical while unblocking paint. -->
+  <script defer src="security-utils.js"></script>
+
   <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js"></script>
+  <!-- defer: index.html only touches Supabase via the deferred community-bell.js
+       (bell badge) and script.js's seat counter (500ms setTimeout). defer keeps
+       document order (SDK -> config -> bell), so both still work, but the SDK no
+       longer blocks first paint or competes with the hero for 3G bandwidth. -->
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="supabase-config.js"></script>
   
   <!-- Vercel Speed Insights -->
   <script>
@@ -475,8 +480,8 @@ SEO CHECKLIST — Complete after deployment:
     <span class="announcement-badge"><span class="dot"></span>NEW</span>
     <div class="announcement-marquee">
       <div class="announcement-track">
-        <span class="announcement-text">🎤 Free Public Speaking Seminar &nbsp;·&nbsp; Saturday, 2 August 2025 &nbsp;·&nbsp; Punjab Tianjin University, Lahore &nbsp;·&nbsp; Limited seats available. <a href="enroll.html" class="announcement-link">Reserve your complimentary seat →</a></span>
-        <span class="announcement-text" aria-hidden="true">🎤 Free Public Speaking Seminar &nbsp;·&nbsp; Saturday, 2 August 2025 &nbsp;·&nbsp; Punjab Tianjin University, Lahore &nbsp;·&nbsp; Limited seats available. <a href="enroll.html" class="announcement-link" tabindex="-1">Reserve your complimentary seat →</a></span>
+        <span class="announcement-text">🎤 Free Public Speaking Seminar &nbsp;·&nbsp; Class 1: Tue, 28 July &nbsp;·&nbsp; Class 2: Sat, 1 August 2026 &nbsp;·&nbsp; Punjab Tianjin University, Lahore &nbsp;·&nbsp; Both classes FREE. <a href="enroll.html" class="announcement-link">Reserve your complimentary seat →</a></span>
+        <span class="announcement-text" aria-hidden="true">🎤 Free Public Speaking Seminar &nbsp;·&nbsp; Class 1: Tue, 28 July &nbsp;·&nbsp; Class 2: Sat, 1 August 2026 &nbsp;·&nbsp; Punjab Tianjin University, Lahore &nbsp;·&nbsp; Both classes FREE. <a href="enroll.html" class="announcement-link" tabindex="-1">Reserve your complimentary seat →</a></span>
       </div>
     </div>
     <button class="announcement-close" aria-label="Dismiss announcement"
@@ -962,9 +967,13 @@ SEO CHECKLIST — Complete after deployment:
     fetch('./data.json')
       .then(res => res.json())
       .then(data => {
+        // Skip the write when the inlined HTML already shows the same value.
+        // The hardcoded values mirror data.json, so this makes the post-load
+        // sync an invisible no-op (no repaint / no digit-locale flip) instead
+        // of re-stamping identical text after render.
         const update = (id, text) => {
           const el = document.getElementById(id);
-          if (el) el.textContent = text;
+          if (el && el.textContent !== text) el.textContent = text;
         };
 
         // Site
