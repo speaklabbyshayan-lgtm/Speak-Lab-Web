@@ -111,4 +111,8 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
+
+  // On pages that lazy-load the Supabase SDK (index.html), the boot() above
+  // renders the bell without a live count; fetch it once the client exists.
+  window.addEventListener('supabase:ready', refresh);
 })();

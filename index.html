@@ -70,9 +70,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
   <!-- Resource Hints for Performance -->
-  <!-- Outfit is self-hosted now (see @font-face below) — the two Google Fonts
-       preconnects are gone because there is nothing left to fetch there. -->
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <!-- Outfit is self-hosted (see @font-face below) and the Supabase SDK now
+       lazy-loads from jsdelivr on first interaction, so no preconnects are
+       needed at startup — every early connection competes with the hero
+       CSS/font for Slow-4G bandwidth. -->
 
   <!-- Prefetch critical pages -->
   <!-- Trimmed to the two most-likely next hops (enroll + course-details) so the
@@ -84,9 +85,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
        carries every weight (300-800), so one preload covers the h1, nav, and body. -->
   <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/outfit-latin.woff2" crossorigin>
 
-  <!-- Only card1 is above the fold. Preloading all four made cards 2-4 compete
-       with the hero for bandwidth on 4G; the rest are lazy-loaded instead. -->
-  <link rel="preload" as="image" href="card1.webp" type="image/webp">
+  <!-- card1.webp is NOT preloaded: it sits below the mobile fold (the LCP is
+       the hero h1 text), so preloading its ~90KB just starved the hero CSS and
+       font on Slow 4G. It lazy-loads with the other cards. -->
 
   <!-- ===== Self-hosted Outfit (replaces fonts.googleapis.com) =====
        Same variable woff2 files Google served, downloaded to /assets/fonts/.
@@ -556,13 +557,35 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
        listener, so deferring keeps behaviour identical while unblocking paint. -->
   <script defer src="security-utils.js"></script>
 
-  <!-- Supabase -->
-  <!-- defer: index.html only touches Supabase via the deferred community-bell.js
-       (bell badge) and script.js's seat counter (500ms setTimeout). defer keeps
-       document order (SDK -> config -> bell), so both still work, but the SDK no
-       longer blocks first paint or competes with the hero for 3G bandwidth. -->
-  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="supabase-config.js"></script>
+  <!-- Supabase — lazy-loaded on first interaction -->
+  <!-- index.html only touches Supabase for two enhancements: the live seat
+       counter (script.js, has a data.json fallback that renders first) and the
+       community bell badge (community-bell.js, bell renders without it). The
+       ~130KB SDK was Lighthouse's biggest "unused JavaScript" item and a TBT
+       source, so it now loads only after the visitor's first tap/scroll/key.
+       Both consumers listen for the 'supabase:ready' event and refresh then.
+       No form on this page depends on Supabase at load time (verified). -->
+  <script>
+    (function () {
+      var loaded = false;
+      var EVTS = ['pointerdown', 'touchstart', 'keydown', 'wheel', 'scroll'];
+      function loadSupabase() {
+        if (loaded) return;
+        loaded = true;
+        EVTS.forEach(function (t) { window.removeEventListener(t, loadSupabase, { passive: true }); });
+        var sdk = document.createElement('script');
+        sdk.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+        sdk.onload = function () {
+          var cfg = document.createElement('script');
+          cfg.src = 'supabase-config.js';
+          cfg.onload = function () { window.dispatchEvent(new Event('supabase:ready')); };
+          document.head.appendChild(cfg);
+        };
+        document.head.appendChild(sdk);
+      }
+      EVTS.forEach(function (t) { window.addEventListener(t, loadSupabase, { passive: true }); });
+    })();
+  </script>
   
   <!-- Vercel Speed Insights -->
   <script>
@@ -680,7 +703,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           class="card-btn">VIEW LOCATION</a>
       </div>
       <div class="card-right">
-        <img src="card1.webp" alt="Program Details" width="800" height="800" fetchpriority="high" decoding="async">
+        <img src="card1.webp" alt="Program Details" width="800" height="800" loading="lazy" decoding="async">
       </div>
     </div>
 
@@ -801,19 +824,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <h2 style="color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">Why SpeakLab Works When Everything Else Fails</h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; text-align: left; margin-top: 40px;">
           <div style="background: rgba(255,255,255,0.95); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-            <h4 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 10px; color: #000;">Small Batches — Maximum Attention</h4>
+            <h3 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 10px; color: #000;">Small Batches — Maximum Attention</h3>
             <p style="color: #444; font-size: 0.95rem; font-weight: 500; line-height: 1.5;">Only 20 students per batch. Your growth is personal, not generic.</p>
           </div>
           <div style="background: rgba(255,255,255,0.95); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-            <h4 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 10px; color: #000;">Real Practice, Not Just Lectures</h4>
+            <h3 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 10px; color: #000;">Real Practice, Not Just Lectures</h3>
             <p style="color: #444; font-size: 0.95rem; font-weight: 500; line-height: 1.5;">Every session is interactive. You speak, get feedback, and improve in real time.</p>
           </div>
           <div style="background: rgba(255,255,255,0.95); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-            <h4 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 10px; color: #000;">Built for Pakistani Students</h4>
+            <h3 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 10px; color: #000;">Built for Pakistani Students</h3>
             <p style="color: #444; font-size: 0.95rem; font-weight: 500; line-height: 1.5;">We understand your specific challenges, fears, and goals. This isn't a one-size-fits-all program.</p>
           </div>
           <div style="background: rgba(255,255,255,0.95); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-            <h4 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 10px; color: #000;">Results From Week 1</h4>
+            <h3 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 10px; color: #000;">Results From Week 1</h3>
             <p style="color: #444; font-size: 0.95rem; font-weight: 500; line-height: 1.5;">You won't wait 8 weeks to feel the difference. Students notice a shift within the first 2 sessions.</p>
           </div>
         </div>
@@ -865,7 +888,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div style="display: flex; gap: 20px; align-items: flex-start; background: #ffffff; border: 1px solid rgba(0,0,0,0.05); padding: 20px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.04);">
             <div style="background: linear-gradient(135deg, #ff455b 0%, #ffac41 100%); color: #fff; padding: 5px 15px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; white-space: nowrap; box-shadow: 0 4px 10px rgba(255, 69, 91, 0.3);">Week 1-2</div>
             <div>
-              <h4 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; color: #111;">Breaking The Fear Barrier</h4>
+              <h3 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; color: #111;">Breaking The Fear Barrier</h3>
               <p style="color: #555; font-size: 0.95rem; font-weight: 500; margin: 0;">Destroy the mental blocks stopping you from speaking</p>
             </div>
           </div>
@@ -873,7 +896,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div style="display: flex; gap: 20px; align-items: flex-start; background: #ffffff; border: 1px solid rgba(0,0,0,0.05); padding: 20px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.04);">
             <div style="background: linear-gradient(135deg, #45ffbc 0%, #45bcff 100%); color: #000; padding: 5px 15px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; white-space: nowrap; box-shadow: 0 4px 10px rgba(69, 255, 188, 0.3);">Week 3-4</div>
             <div>
-              <h4 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; color: #111;">Speaking With Clarity</h4>
+              <h3 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; color: #111;">Speaking With Clarity</h3>
               <p style="color: #555; font-size: 0.95rem; font-weight: 500; margin: 0;">Structure your thoughts, speak with confidence and flow</p>
             </div>
           </div>
@@ -881,7 +904,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div style="display: flex; gap: 20px; align-items: flex-start; background: #ffffff; border: 1px solid rgba(0,0,0,0.05); padding: 20px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.04);">
             <div style="background: linear-gradient(135deg, #9b45ff 0%, #ff455b 100%); color: #fff; padding: 5px 15px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; white-space: nowrap; box-shadow: 0 4px 10px rgba(155, 69, 255, 0.3);">Week 5-6</div>
             <div>
-              <h4 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; color: #111;">Advanced Communication</h4>
+              <h3 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; color: #111;">Advanced Communication</h3>
               <p style="color: #555; font-size: 0.95rem; font-weight: 500; margin: 0;">Presentations, storytelling, debates, and leadership voice</p>
             </div>
           </div>
@@ -1141,7 +1164,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
                 <div class="curr-content">
-                  <h4>${item.title}</h4>
+                  <!-- h3 (not h4) keeps heading order sequential after the h2
+                       section title; font-size:1em pins the h4 UA size so the
+                       rendering is unchanged. -->
+                  <h3 style="font-size: 1em;">${item.title}</h3>
                   <p>${item.desc}</p>
                 </div>
               </div>
@@ -1166,7 +1192,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </style>
 
 <!-- Floating WhatsApp Button -->
-<a href="https://wa.me/923014497532" target="_blank" class="floating-whatsapp" style="position: fixed; bottom: 25px; right: 25px; z-index: 1000; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite; transition: transform 0.3s ease; background-color: #25D366; width: 65px; height: 65px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+<a href="https://wa.me/923014497532" target="_blank" class="floating-whatsapp" aria-label="Chat with SpeakLab on WhatsApp" style="position: fixed; bottom: 25px; right: 25px; z-index: 1000; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite; transition: transform 0.3s ease; background-color: #25D366; width: 65px; height: 65px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
   <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="white" viewBox="0 0 16 16">
     <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
   </svg>

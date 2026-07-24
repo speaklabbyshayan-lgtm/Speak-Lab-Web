@@ -160,6 +160,9 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   // Wait a small bit for data.json fetch to populate the hardcoded #seats-available first, then override
   setTimeout(fetchSeats, 500);
+  // On index.html the Supabase SDK lazy-loads on first interaction; the timer
+  // above no-ops there (no client yet), so refresh again once it's ready.
+  window.addEventListener('supabase:ready', fetchSeats);
 
   // 7. CONTACT FORM
   const contactForm = document.querySelector('.contact-form form');

@@ -144,7 +144,31 @@
     try { window.localStorage.setItem(CONFIG.storageKey, todayKey()); } catch (e) {}
   }
 
-  function schedule() { setTimeout(show, CONFIG.delayMs); }
+  // ---- Trigger: delay AND first interaction --------------------------------
+  // The popup used to appear on a bare 4s timer. In Lighthouse that late
+  // full-screen paint re-registered Largest Contentful Paint at ~7s (the
+  // overlay is the biggest thing on screen), tanking the perf score. LCP
+  // finalises at the visitor's first input, so requiring BOTH the delay and
+  // one interaction (tap / scroll / key) means the popup can never be the LCP
+  // — for real users or lab runs. Real visitors touch the page within seconds,
+  // so in practice it still appears right around the 4s mark.
+  var delayDone = false;
+  var interacted = false;
+  var EVTS = ['pointerdown', 'touchstart', 'keydown', 'wheel', 'scroll'];
+
+  function maybeShow() { if (delayDone && interacted) show(); }
+
+  function onFirstInteraction() {
+    interacted = true;
+    EVTS.forEach(function (t) { window.removeEventListener(t, onFirstInteraction, { passive: true }); });
+    maybeShow();
+  }
+
+  EVTS.forEach(function (t) { window.addEventListener(t, onFirstInteraction, { passive: true }); });
+
+  function schedule() {
+    setTimeout(function () { delayDone = true; maybeShow(); }, CONFIG.delayMs);
+  }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', schedule);
