@@ -53,7 +53,7 @@ const schema2 = `{
     "addressLocality": "Lahore",
     "addressCountry": "PK"
   },
-  "openingHours": "Flexible Days 17:00-18:45",
+  "openingHours": "Tu,Th,Sa 18:00-19:30",
   "url": "https://speaklab.pk"
 }`;
 
