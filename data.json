@@ -22,8 +22,8 @@
     "seats": 20,
     "fee": 20000,
     "regularFee": 30000,
-    "registrationFee": 10000,
-    "balanceDue": "5th of next month",
+    "registrationFee": 20000,
+    "balanceDue": "before the batch starts",
     "batchOptions": [
       {
         "value": "weekday",
@@ -77,7 +77,7 @@
     },
     {
       "q": "How much does the program cost?",
-      "a": "Special August Batch fee is PKR 20,000 (regular PKR 30,000). Secure your seat with PKR 10,000 registration fee, balance due by 5th of next month."
+      "a": "Special August Batch fee is PKR 20,000 (regular PKR 30,000). No advance is required — pay the full PKR 20,000 before the batch starts, and your seat is confirmed once payment is received."
     },
     {
       "q": "How many seats are available?",
@@ -100,8 +100,8 @@
       "a": "You can reach us at info@speaklabbyshayan.com and our team will respond within 24 hours."
     },
     {
-      "q": "Can I pay in installments?",
-      "a": "Yes. Pay PKR 10,000 to reserve your seat, remaining PKR 10,000 due by 5th of next month."
+      "q": "Do I need to pay an advance to book my seat?",
+      "a": "No advance is required. The full PKR 20,000 is payable before the batch starts, and your seat is confirmed once the full fee is received."
     },
     {
       "q": "Is this program worth it?",
