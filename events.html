@@ -97,39 +97,107 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       .ev-grid { grid-template-columns: 1fr; max-width: 560px; margin-inline: auto; }
     }
 
+    /* Each event carries its own palette in custom properties, so the border,
+       the bar, the glow, the icon chip and the button all pull from one place
+       and can never drift apart. */
+    .ev-card.ev-walk {
+      --ev-a: #1e3a8a; --ev-b: #3b82f6; --ev-c: #06b6d4; --ev-soft: #eff6ff;
+    }
+    .ev-card.ev-mic {
+      --ev-a: #0f766e; --ev-b: #14b8a6; --ev-c: #22d3ee; --ev-soft: #ecfdf5;
+    }
+    .ev-card.ev-workshop {
+      --ev-a: #b45309; --ev-b: #f59e0b; --ev-c: #f43f5e; --ev-soft: #fffbeb;
+    }
+
+    /* Two-layer background: white fills the padding box, the moving gradient
+       fills the border box. Same trick the seminar popup uses for its button —
+       it gives a real gradient border without an extra wrapper element. */
     .ev-card {
-      background: #fff;
-      border: 1px solid #ebedf3;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid transparent;
       border-radius: 26px;
-      padding: 34px 30px;
+      padding: 32px 28px;
       display: flex;
       flex-direction: column;
+      background:
+        linear-gradient(#fff, #fff) padding-box,
+        linear-gradient(120deg, var(--ev-a), var(--ev-b), var(--ev-c), var(--ev-b), var(--ev-a)) border-box;
+      background-size: auto, 300% 300%;
+      animation: ev-border-flow 9s linear infinite;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .ev-card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 20px 44px rgba(15, 23, 42, 0.1);
+      box-shadow: 0 22px 46px -12px var(--ev-b);
     }
 
-    /* Each event gets its own accent so the three read as a set, not a list. */
+    @keyframes ev-border-flow {
+      0%   { background-position: 0 0, 0% 50%; }
+      100% { background-position: 0 0, 300% 50%; }
+    }
+
+    /* A soft blob of the accent colour drifting behind the text — this is what
+       makes the colour feel like it is moving rather than just sitting there. */
+    .ev-card::after {
+      content: "";
+      position: absolute;
+      top: -110px;
+      right: -110px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--ev-b) 0%, transparent 68%);
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+      animation: ev-drift 14s ease-in-out infinite alternate;
+    }
+
+    @keyframes ev-drift {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(-38px, 44px) scale(1.18); }
+      100% { transform: translate(16px, 84px) scale(0.94); }
+    }
+
+    /* The blob is a positioned element, so plain in-flow children would paint
+       underneath it. Lift the real content above. */
+    .ev-card > *,
+    .ev-card::before { position: relative; z-index: 1; }
+
     .ev-card::before {
       content: "";
       display: block;
       width: 52px;
       height: 5px;
       border-radius: 999px;
-      margin-bottom: 22px;
+      background: linear-gradient(90deg, var(--ev-a), var(--ev-b), var(--ev-c), var(--ev-b), var(--ev-a));
+      background-size: 200% 100%;
+      animation: ev-flow 4.5s linear infinite;
+      margin-bottom: 20px;
     }
-    .ev-card.ev-walk::before     { background: linear-gradient(90deg, #1e3a8a, #3b82f6); }
-    .ev-card.ev-mic::before      { background: linear-gradient(90deg, #0f766e, #14b8a6); }
-    .ev-card.ev-workshop::before { background: linear-gradient(90deg, #b45309, #f59e0b); }
+
+    @keyframes ev-flow {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
 
     .ev-icon {
-      font-size: 2.2rem;
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.85rem;
       line-height: 1;
       margin-bottom: 16px;
+      background: var(--ev-soft);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 8px 20px -8px var(--ev-b);
     }
 
     .ev-card h3 {
@@ -141,12 +209,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     .ev-tagline {
       font-size: 0.98rem;
-      font-weight: 600;
-      color: #0f766e;
+      font-weight: 700;
       margin-bottom: 16px;
+      background: linear-gradient(90deg, var(--ev-a), var(--ev-b), var(--ev-c), var(--ev-b), var(--ev-a));
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: ev-flow 5.5s linear infinite;
     }
-    .ev-card.ev-walk .ev-tagline     { color: #1e3a8a; }
-    .ev-card.ev-workshop .ev-tagline { color: #b45309; }
 
     .ev-card > p.ev-body {
       font-size: 0.96rem;
@@ -159,7 +230,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       list-style: none;
       margin: 0 0 24px;
       padding: 18px 20px;
-      background: #f8f9fc;
+      /* Fallback matters here: an undefined custom property makes the whole
+         declaration invalid, which would leave this panel transparent. */
+      background: var(--ev-soft, #f8f9fc);
       border-radius: 16px;
       display: grid;
       gap: 12px;
@@ -187,18 +260,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       text-align: center;
       padding: 14px 22px;
       border-radius: 40px;
-      background: #000;
-      color: #c0f4f9;
+      background: linear-gradient(90deg, var(--ev-a), var(--ev-b), var(--ev-c), var(--ev-b), var(--ev-a));
+      background-size: 200% 100%;
+      animation: ev-flow 6s linear infinite;
+      color: #fff;
       font-weight: 700;
       font-size: 0.95rem;
+      letter-spacing: 0.02em;
       text-decoration: none;
       transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 12px rgba(0, 255, 255, 0.18);
+      box-shadow: 0 8px 20px -8px var(--ev-b);
     }
 
     .ev-card .ev-cta:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 22px rgba(0, 255, 255, 0.28);
+      box-shadow: 0 14px 26px -8px var(--ev-b);
     }
 
     /* ── Who can join ───────────────────────────────────────────────────── */
@@ -445,7 +521,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       .ev-grid { gap: 14px; margin-bottom: 42px; }
       .ev-card { padding: 22px 19px; border-radius: 20px; }
       .ev-card::before { width: 40px; height: 4px; margin-bottom: 15px; }
-      .ev-icon { font-size: 1.7rem; margin-bottom: 10px; }
+      .ev-card::after { width: 200px; height: 200px; top: -80px; right: -80px; }
+      .ev-icon { width: 48px; height: 48px; border-radius: 14px; font-size: 1.5rem; margin-bottom: 12px; }
       .ev-card h3 { font-size: 1.18rem; }
       .ev-tagline { font-size: 0.88rem; margin-bottom: 11px; }
       .ev-card > p.ev-body { font-size: 0.89rem; line-height: 1.6; margin-bottom: 16px; }
@@ -490,6 +567,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     @media (hover: none) {
       .ev-card:hover { transform: none; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); }
       .ev-card .ev-cta:hover, .ev-form button:hover:not(:disabled), .ev-wa a:hover { transform: none; }
+    }
+
+    /* Continuous motion is a genuine accessibility problem for some people —
+       and these gradients never stop. Hold every one of them still, keeping the
+       colours, when the visitor has asked the OS for reduced motion. */
+    @media (prefers-reduced-motion: reduce) {
+      .ev-card,
+      .ev-card::before,
+      .ev-card::after,
+      .ev-tagline,
+      .ev-card .ev-cta {
+        animation: none;
+      }
+      .ev-card { background-position: 0 0, 50% 50%; }
+      .ev-card:hover { transform: none; }
     }
   </style>
 
