@@ -28,6 +28,84 @@
   var INTRO_LINE = bubble ? bubble.textContent : '';
   var talkTimer = null;
 
+  // ── Voice ─────────────────────────────────────────────────────────────────
+  // The browser's own speech synthesis: no audio files to host, no CDN, and
+  // nothing for the CSP to block. It is a synthetic voice rather than a real
+  // recording — swap speak() for an <audio> element per line if you record one.
+  var synth = window.speechSynthesis || null;
+  var soundBtn = document.getElementById('sl-sound');
+  var soundLabel = document.getElementById('sl-sound-label');
+  var voiceOn = false;
+
+  function pickVoice() {
+    if (!synth) return null;
+    var voices = synth.getVoices() || [];
+    // Prefer a natural-sounding English voice, then any English one.
+    for (var i = 0; i < voices.length; i++) {
+      if (/en[-_](GB|US|IN)/i.test(voices[i].lang) && /natural|google|premium/i.test(voices[i].name)) return voices[i];
+    }
+    for (var j = 0; j < voices.length; j++) {
+      if (/^en/i.test(voices[j].lang)) return voices[j];
+    }
+    return null;
+  }
+
+  /**
+   * Speak a line, and drive the mouth from the speech itself rather than a
+   * fixed timer — so the mouth stops exactly when the sentence does.
+   */
+  function speak(line) {
+    if (!synth || !voiceOn || !line) return false;
+
+    synth.cancel(); // never let two lines overlap
+    var utterance = new SpeechSynthesisUtterance(line);
+    var voice = pickVoice();
+    if (voice) utterance.voice = voice;
+    utterance.lang = voice ? voice.lang : 'en-GB';
+    utterance.rate = 0.95;
+    utterance.pitch = 1.0;
+
+    utterance.onstart = function () { if (coach) coach.classList.add('is-talking'); };
+    utterance.onend = function () { if (coach) coach.classList.remove('is-talking'); };
+    utterance.onerror = function () { if (coach) coach.classList.remove('is-talking'); };
+
+    synth.speak(utterance);
+    return true;
+  }
+
+  function setupSound() {
+    // No speech support (older Android WebViews, some in-app browsers) — leave
+    // the button hidden rather than offering a control that does nothing.
+    if (!synth || !soundBtn || typeof window.SpeechSynthesisUtterance !== 'function') return;
+
+    soundBtn.hidden = false;
+
+    soundBtn.addEventListener('click', function () {
+      voiceOn = !voiceOn;
+      soundBtn.classList.toggle('is-on', voiceOn);
+      soundBtn.setAttribute('aria-pressed', voiceOn ? 'true' : 'false');
+      soundBtn.firstElementChild.textContent = voiceOn ? '🔊' : '🔈';
+      if (soundLabel) soundLabel.textContent = voiceOn ? 'Voice on' : 'Turn on voice';
+
+      if (voiceOn) {
+        // The click is the user gesture browsers require before audio, so read
+        // the line that is on screen right now.
+        speak(bubble ? bubble.textContent : INTRO_LINE);
+      } else {
+        synth.cancel();
+        if (coach) coach.classList.remove('is-talking');
+      }
+    });
+
+    // Chrome populates getVoices() asynchronously.
+    if (typeof synth.onvoiceschanged !== 'undefined') {
+      synth.onvoiceschanged = pickVoice;
+    }
+
+    // Leaving the page mid-sentence otherwise keeps talking in some browsers.
+    window.addEventListener('pagehide', function () { synth.cancel(); });
+  }
+
   // ── The bubble ────────────────────────────────────────────────────────────
   /** Fade the old line out, swap the text, fade in, and move the mouth. */
   function say(line) {
@@ -35,6 +113,7 @@
 
     if (reduceMotion) {
       bubble.textContent = line;
+      speak(line);
       return;
     }
 
@@ -42,7 +121,9 @@
     window.setTimeout(function () {
       bubble.textContent = line;
       bubble.classList.remove('is-swapping');
-      talk();
+      // When the voice is on it drives the mouth itself, and for exactly the
+      // right length; the timer version is only for the silent case.
+      if (!speak(line)) talk();
     }, 220);
   }
 
@@ -186,6 +267,7 @@
   }
 
   function init() {
+    setupSound();
     setupWeeks();
     setupCounters();
     setupReveals();

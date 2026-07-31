@@ -53,8 +53,13 @@
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: 40px;
-  align-items: start;
+  /* Deliberately NOT `align-items: start`. That shrink-wraps the guide column
+     to its own content, and a sticky element can only travel inside its
+     parent's box — so the guide would pin at the top and never follow the
+     scroll. The column has to stretch to the full row height. */
 }
+
+.sl-guide-col { height: 100%; }
 
 /* The guide follows you down the section instead of scrolling away, which is
    what makes it feel like a guide rather than a picture. */
@@ -110,6 +115,37 @@
 }
 
 .sl-bubble p.is-swapping { opacity: 0; }
+
+/* ── Voice toggle ────────────────────────────────────────────────────────── */
+/* Off by default and never auto-started: browsers block unprompted audio, and
+   a page that starts talking at you on load is worse than a silent one.
+   Hidden entirely when the browser has no speech synthesis. */
+.sl-sound {
+  margin: 12px auto 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  background: #fff;
+  border: 1px solid #dbe2ec;
+  border-radius: 999px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.sl-sound:hover { background: #eff6ff; border-color: #bfdbfe; }
+
+.sl-sound.is-on {
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+  border-color: transparent;
+  color: #fff;
+}
+
+.sl-sound[hidden] { display: none; }
 
 /* ── Character animation ─────────────────────────────────────────────────── */
 .sl-shadow { fill: rgba(15, 23, 42, 0.10); }
@@ -308,6 +344,78 @@
   color: #64748b;
 }
 
+/* ── The detail cards below the journey ──────────────────────────────────────
+   Program Overview / What You'll Learn / pricing used to be flat blocks of
+   static gradient. Same treatment as the events cards: the gradient itself
+   drifts, a soft glow moves behind the content, and each card gets a flowing
+   accent bar. The theme-1/2/3 backgrounds are untouched — only animated. */
+.detail-card.theme-1,
+.detail-card.theme-2,
+.detail-card.theme-3 {
+  background-size: 220% 220%;
+  animation: sl-card-flow 14s ease infinite;
+}
+
+@keyframes sl-card-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* ::before on .detail-card is already the noise texture, so the glow goes on
+   ::after. z-index 0 keeps it under .detail-content, which is z-index 1. */
+.detail-card.theme-1::after,
+.detail-card.theme-2::after,
+.detail-card.theme-3::after {
+  content: "";
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
+  animation: sl-card-glow 16s ease-in-out infinite alternate;
+}
+
+.detail-card.theme-1::after { background: radial-gradient(circle, #f59e0b 0%, transparent 68%); }
+.detail-card.theme-2::after { background: radial-gradient(circle, #14b8a6 0%, transparent 68%); }
+.detail-card.theme-3::after { background: radial-gradient(circle, #f43f5e 0%, transparent 68%); }
+
+@keyframes sl-card-glow {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(-50px, 60px) scale(1.2); }
+  100% { transform: translate(24px, 110px) scale(0.92); }
+}
+
+/* Flowing accent bar at the top of each card. */
+.sl-card-accent {
+  display: block;
+  width: 58px;
+  height: 5px;
+  border-radius: 999px;
+  margin-bottom: 22px;
+  background-size: 200% 100%;
+  animation: sl-accent-flow 5s linear infinite;
+}
+
+.theme-1 .sl-card-accent { background-image: linear-gradient(90deg, #b45309, #f59e0b, #f43f5e, #f59e0b, #b45309); }
+.theme-2 .sl-card-accent { background-image: linear-gradient(90deg, #0f766e, #14b8a6, #84cc16, #14b8a6, #0f766e); }
+.theme-3 .sl-card-accent { background-image: linear-gradient(90deg, #be123c, #f43f5e, #f59e0b, #f43f5e, #be123c); }
+
+@keyframes sl-accent-flow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+@media (max-width: 640px) {
+  .sl-card-accent { width: 44px; height: 4px; margin-bottom: 16px; }
+  .detail-card.theme-1::after,
+  .detail-card.theme-2::after,
+  .detail-card.theme-3::after { width: 220px; height: 220px; top: -90px; right: -90px; }
+}
+
 /* ── Generic scroll reveal, used on the existing cards further down ───────── */
 .sl-reveal {
   opacity: 0;
@@ -377,7 +485,10 @@
    anyone who has asked the OS for less movement, and show every revealed
    element outright rather than leaving it invisible. */
 @media (prefers-reduced-motion: reduce) {
-  .sl-figure, .sl-eyes, .sl-arm, .sl-coach.is-talking .sl-mouth { animation: none; }
+  .sl-figure, .sl-eyes, .sl-arm, .sl-coach.is-talking .sl-mouth,
+  .detail-card.theme-1, .detail-card.theme-2, .detail-card.theme-3,
+  .detail-card.theme-1::after, .detail-card.theme-2::after, .detail-card.theme-3::after,
+  .sl-card-accent { animation: none; }
   .sl-week, .sl-reveal { opacity: 1; transform: none; transition: none; }
   .sl-rail-fill { transition: none; }
   .sl-bubble p { transition: none; }
