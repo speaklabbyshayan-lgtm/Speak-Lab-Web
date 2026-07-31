@@ -1,0 +1,265 @@
+/* SpeakLab — Entry Test / Application page.
+   Loaded on top of level-test.css, which owns the tokens (--lt-*), the card,
+   the buttons, the progress bar and the form field styles. This file only adds
+   what the application form needs and the level test does not: selects,
+   textareas, choice cards, the Urdu translation block and the thank-you state.
+   Keeping it additive means a change to the level test's look carries over
+   here automatically, which is the point. */
+
+/* ── Step panes ───────────────────────────────────────────────────────── */
+/* .lt-form is a grid and its gap spaces its own children — but here the only
+   child is the step pane, so the fields inside it need their own rhythm.
+   Deliberately block flow, not grid: a display rule would beat the UA's
+   [hidden] { display:none } and every step would render at once. */
+.ap-step > .lt-field,
+.ap-step > .ap-grid-2 { margin-bottom: 18px; }
+.ap-step > .lt-field:last-child,
+.ap-step > .ap-grid-2:last-child { margin-bottom: 0; }
+
+/* ── Section headings inside a step ───────────────────────────────────── */
+.ap-fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0 0 26px;
+}
+.ap-fieldset:last-of-type { margin-bottom: 0; }
+.ap-legend {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lt-navy);
+  padding: 0;
+  margin-bottom: 14px;
+}
+.ap-step-title {
+  font-size: clamp(1.35rem, 3.4vw, 1.7rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.ap-step-sub {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--lt-body);
+  margin-bottom: 26px;
+}
+
+/* Two-up on desktop, stacked on phones. */
+.ap-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+@media (max-width: 560px) {
+  .ap-grid-2 { grid-template-columns: 1fr; }
+}
+
+/* ── Selects and textareas, matched to .lt-field input ────────────────── */
+.lt-field select,
+.lt-field textarea {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 13px 14px;
+  border: 1px solid var(--lt-line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--lt-ink);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  min-height: 44px;
+  width: 100%;
+}
+.lt-field textarea {
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 120px;
+}
+.lt-field select:focus,
+.lt-field textarea:focus {
+  outline: none;
+  border-color: var(--lt-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+.lt-field select.has-error,
+.lt-field textarea.has-error { border-color: var(--lt-red); }
+
+/* Native selects render their own arrow inconsistently across platforms;
+   a background chevron plus appearance:none keeps every field the same height. */
+.lt-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+.ap-counter {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--lt-muted);
+  text-align: right;
+}
+.ap-counter.is-ok { color: var(--lt-green); }
+
+/* ── Choice cards (age, self-rating, fee-ready) ───────────────────────── */
+.ap-choices {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+.ap-choices.is-pair { grid-template-columns: 1fr 1fr; }
+
+.ap-choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--lt-line);
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  min-height: 52px;
+  font-size: 0.95rem;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+}
+.ap-choice:hover { border-color: #c7d2fe; background: #fbfcff; }
+.ap-choice:active { transform: scale(0.995); }
+
+/* The radio itself stays in the DOM for keyboard and screen-reader users —
+   it is only visually replaced by the dot below. */
+.ap-choice input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.ap-choice-dot {
+  flex: 0 0 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.ap-choice-text { line-height: 1.4; }
+.ap-choice-text small {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--lt-muted);
+  margin-top: 2px;
+}
+
+.ap-choice:has(input:checked) {
+  border-color: var(--lt-blue);
+  background: #eff6ff;
+}
+.ap-choice:has(input:checked) .ap-choice-dot {
+  border-color: var(--lt-blue);
+  box-shadow: inset 0 0 0 4px var(--lt-blue);
+}
+.ap-choice:has(input:focus-visible) {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+/* Fallback for browsers without :has() — JS mirrors the state onto the label. */
+.ap-choice.is-selected {
+  border-color: var(--lt-blue);
+  background: #eff6ff;
+}
+.ap-choice.is-selected .ap-choice-dot {
+  border-color: var(--lt-blue);
+  box-shadow: inset 0 0 0 4px var(--lt-blue);
+}
+
+/* ── The sentence to translate ────────────────────────────────────────── */
+.ap-translate-box {
+  background: #f8fafc;
+  border: 1px solid var(--lt-line);
+  border-left: 4px solid var(--lt-navy);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+.ap-urdu {
+  font-size: 1.35rem;
+  line-height: 2.1;
+  color: var(--lt-ink);
+  direction: rtl;
+  text-align: right;
+  margin-bottom: 8px;
+}
+.ap-roman {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--lt-body);
+  line-height: 1.6;
+}
+
+/* ── Trust strip on the intro screen ──────────────────────────────────── */
+.ap-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.ap-trust span {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--lt-body);
+  background: #f8fafc;
+  border: 1px solid var(--lt-line);
+  border-radius: 999px;
+  padding: 7px 14px;
+}
+
+/* ── Thank-you screen ─────────────────────────────────────────────────── */
+.ap-tick {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--lt-navy), var(--lt-blue));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(30, 58, 138, 0.28);
+}
+.ap-thanks-title {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+.ap-thanks-body {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--lt-body);
+  max-width: 46ch;
+  margin: 0 auto 26px;
+}
+.ap-next-steps {
+  display: grid;
+  gap: 14px;
+  text-align: left;
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 26px;
+}
+.ap-next-step { display: flex; gap: 14px; align-items: flex-start; }
+.ap-next-step .lt-step-num { flex: 0 0 28px; }
+.ap-next-step h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 2px; }
+.ap-next-step p { font-size: 0.88rem; color: var(--lt-body); line-height: 1.5; }
+
+/* ── Submitting state ─────────────────────────────────────────────────── */
+.ap-form-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}

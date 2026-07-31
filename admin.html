@@ -431,6 +431,203 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       color: #334155;
       white-space: pre-wrap;
     }
+
+    /* ─── ENTRY TEST APPLICATIONS ────────────────────── */
+    /* These are cold leads from apply.html (the ad funnel), not enrolled
+       students — so they render as report cards a human can read and judge,
+       rather than as another dense table. */
+    .app-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .app-tab {
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 100px;
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      color: #64748b;
+      cursor: pointer;
+      min-height: 38px;
+      transition: all 0.15s ease;
+    }
+    .app-tab:hover { border-color: #cbd5e1; color: #0f172a; }
+    .app-tab.is-active {
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      border-color: transparent;
+      color: #fff;
+    }
+    .app-tab .app-tab-count {
+      display: inline-block;
+      margin-left: 6px;
+      font-variant-numeric: tabular-nums;
+      opacity: 0.75;
+    }
+
+    .app-grid { display: grid; gap: 18px; }
+    .app-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 22px;
+      background: #fff;
+      border-left: 5px solid #cbd5e1;
+    }
+    .app-card.status-pending  { border-left-color: #f59e0b; }
+    .app-card.status-approved { border-left-color: #16a34a; }
+    .app-card.status-rejected { border-left-color: #dc2626; }
+
+    .app-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .app-card-head h3 { font-size: 1.25rem; margin: 0 0 4px; }
+    .app-card-meta { font-size: 0.85rem; color: #64748b; line-height: 1.6; }
+    .app-card-meta a { color: #1e3a8a; font-weight: 600; text-decoration: none; }
+    .app-card-meta a:hover { text-decoration: underline; }
+
+    .app-score {
+      text-align: center;
+      min-width: 104px;
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .app-score strong {
+      display: block;
+      font-size: 1.7rem;
+      line-height: 1.1;
+      color: #1e3a8a;
+      font-variant-numeric: tabular-nums;
+    }
+    .app-score span {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #64748b;
+      font-weight: 700;
+    }
+
+    .app-facts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    .app-fact-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #94a3b8;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .app-fact-value { font-size: 0.92rem; font-weight: 600; color: #0f172a; }
+
+    .app-answer {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+    .app-answer h4 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #64748b;
+      margin: 0 0 6px;
+      font-weight: 700;
+    }
+    .app-answer p {
+      font-size: 0.93rem;
+      line-height: 1.65;
+      color: #334155;
+      white-space: pre-wrap;
+      margin: 0;
+    }
+    .app-answer .app-prompt {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      font-style: italic;
+    }
+
+    .app-examiner {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #1e3a8a;
+    }
+
+    .app-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid #e2e8f0;
+    }
+    .app-btn {
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      min-height: 40px;
+      transition: all 0.15s ease;
+    }
+    .app-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .app-btn-approve { background: #16a34a; color: #fff; }
+    .app-btn-approve:not(:disabled):hover { background: #15803d; }
+    .app-btn-reject { background: #fff; color: #dc2626; border: 1px solid #fecaca; }
+    .app-btn-reject:not(:disabled):hover { background: #fef2f2; }
+    .app-btn-reset {
+      background: #fff;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+    }
+    .app-btn-reset:not(:disabled):hover { background: #f8fafc; }
+
+    .app-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .badge-pending  { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+    .badge-approved { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+    .badge-rejected { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+    .app-flag {
+      display: inline-block;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #92400e;
+      border-radius: 100px;
+      padding: 4px 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-left: 8px;
+    }
   </style>
 
   <!-- Covers the page until the admin check passes. Removed on success; on
@@ -482,6 +679,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <h3>Average Score</h3>
         <div class="stat-val" id="stat-avg-score">—</div>
       </div>
+      <div class="stat-card" style="border-top-color:#f59e0b;">
+        <h3>Applications to Review</h3>
+        <div class="stat-val" id="stat-apps-pending">0</div>
+      </div>
     </div>
 
     <div class="admin-section">
@@ -518,6 +719,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <tr><td colspan="9">Loading...</td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- Entry Test Applications (public funnel — apply.html) -->
+    <div class="admin-section">
+      <div class="journey-section-header">
+        <h2 style="margin-bottom:0;">📝 Applications · Entry Test</h2>
+        <div style="display:flex;gap:8px;">
+          <button class="lt-admin-btn" onclick="exportApplicationsCSV()">⬇ Export CSV</button>
+          <button class="lt-admin-btn" onclick="loadApplications()">🔄 Refresh</button>
+        </div>
+      </div>
+      <p style="color:#64748b;margin-bottom:18px;font-size:0.9rem;">
+        Applications from <strong>apply.html</strong> — the public entry test behind the ads. No account needed to apply, so read the written English before approving.
+      </p>
+
+      <div class="app-tabs" id="app-tabs">
+        <button class="app-tab is-active" data-status="all"      onclick="setAppFilter('all', this)">All <span class="app-tab-count" id="count-all">0</span></button>
+        <button class="app-tab"           data-status="pending"  onclick="setAppFilter('pending', this)">Pending <span class="app-tab-count" id="count-pending">0</span></button>
+        <button class="app-tab"           data-status="approved" onclick="setAppFilter('approved', this)">Approved <span class="app-tab-count" id="count-approved">0</span></button>
+        <button class="app-tab"           data-status="rejected" onclick="setAppFilter('rejected', this)">Rejected <span class="app-tab-count" id="count-rejected">0</span></button>
+      </div>
+
+      <div class="lt-toolbar">
+        <input type="search" id="app-search" placeholder="Search by name, city or number…" oninput="renderApplications()">
+        <select id="app-sort" onchange="renderApplications()">
+          <option value="recent">Newest first</option>
+          <option value="score-desc">Highest English score</option>
+          <option value="score-asc">Lowest English score</option>
+          <option value="name">Name A–Z</option>
+        </select>
+      </div>
+
+      <div class="app-grid" id="applications-body">
+        <p style="color:#64748b;">Loading applications…</p>
       </div>
     </div>
 
@@ -1129,6 +1365,270 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       URL.revokeObjectURL(url);
     };
 
+    // ─── ENTRY TEST APPLICATIONS ─────────────────────────────────────────────
+    // The public funnel from apply.html. Unlike level_tests these are strangers,
+    // so the panel shows the whole application — written English included — and
+    // asks for an explicit approve/reject rather than inferring anything.
+    let applications = [];
+    let appFilter = 'all';
+
+    const AGE_LABELS = { '18-25': '18–25', '26-35': '26–35', '36-45': '36–45', '45+': '45+' };
+    const EDU_LABELS = {
+      matric: 'Matric', intermediate: 'Intermediate',
+      bachelors: "Bachelor's", masters: "Master's", other: 'Other',
+    };
+    const OCC_LABELS = { student: 'Student', job: 'Job', business: 'Business', other: 'Other' };
+    const RATING_LABELS = { beginner: 'Beginner', basic: 'Basic', good: 'Good', fluent: 'Fluent' };
+
+    window.loadApplications = async () => {
+      if (!window.supabaseClient) return;
+      const body = document.getElementById('applications-body');
+      try {
+        const { data, error } = await window.supabaseClient
+          .from('entry_applications')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        applications = data || [];
+        renderApplications();
+      } catch (err) {
+        console.error('Error loading applications:', err);
+        // A missing table is the likeliest cause on a fresh deploy — say so
+        // rather than leaving a spinner forever.
+        const hint = /relation|does not exist|schema cache/i.test(err.message || '')
+          ? 'The <code>entry_applications</code> table does not exist yet. Run <code>supabase-entry-applications.sql</code> in the Supabase SQL editor.'
+          : esc(err.message);
+        body.innerHTML = `<p style="color:#b91c1c;">Could not load applications: ${hint}</p>`;
+      }
+    };
+
+    window.setAppFilter = (status, btn) => {
+      appFilter = status;
+      document.querySelectorAll('.app-tab').forEach(t => t.classList.remove('is-active'));
+      if (btn) btn.classList.add('is-active');
+      renderApplications();
+    };
+
+    const visibleApplications = () => {
+      const q = document.getElementById('app-search').value.trim().toLowerCase();
+      const sort = document.getElementById('app-sort').value;
+
+      let rows = appFilter === 'all'
+        ? [...applications]
+        : applications.filter(a => (a.application_status || 'pending') === appFilter);
+
+      if (q) {
+        rows = rows.filter(a =>
+          (a.full_name || '').toLowerCase().includes(q) ||
+          (a.city || '').toLowerCase().includes(q) ||
+          (a.whatsapp || '').toLowerCase().includes(q)
+        );
+      }
+
+      if (sort === 'score-desc') rows.sort((a, b) => Number(b.english_score || 0) - Number(a.english_score || 0));
+      else if (sort === 'score-asc') rows.sort((a, b) => Number(a.english_score || 0) - Number(b.english_score || 0));
+      else if (sort === 'name') rows.sort((a, b) => (a.full_name || '').localeCompare(b.full_name || ''));
+
+      return rows;
+    };
+
+    window.renderApplications = () => {
+      const body = document.getElementById('applications-body');
+
+      // Counts always describe the whole set, not the current search.
+      const counts = { all: applications.length, pending: 0, approved: 0, rejected: 0 };
+      applications.forEach(a => {
+        const s = a.application_status || 'pending';
+        if (counts[s] !== undefined) counts[s]++;
+      });
+      Object.keys(counts).forEach(k => {
+        document.getElementById('count-' + k).textContent = counts[k];
+      });
+      document.getElementById('stat-apps-pending').textContent = counts.pending;
+
+      const rows = visibleApplications();
+      if (!rows.length) {
+        body.innerHTML = applications.length
+          ? '<p style="color:#64748b;">No applications match this filter.</p>'
+          : '<p style="color:#64748b;">No applications yet. Send your ad traffic to <strong>apply.html</strong>.</p>';
+        return;
+      }
+
+      body.innerHTML = rows.map(applicationCard).join('');
+    };
+
+    const applicationCard = (a) => {
+      const status = a.application_status || 'pending';
+      const score = Math.round(Number(a.english_score || 0));
+      const report = a.score_report || {};
+      const wa = waNumber(a.whatsapp);
+
+      const badge = {
+        pending:  '<span class="app-status-badge badge-pending">⏳ Pending review</span>',
+        approved: '<span class="app-status-badge badge-approved">✅ Approved</span>',
+        rejected: '<span class="app-status-badge badge-rejected">❌ Rejected</span>',
+      }[status] || '';
+
+      // The score is only trustworthy when the AI examiner produced it; say so
+      // plainly rather than letting a heuristic number look like a grade.
+      const scoredFlag = a.scored_by === 'ai'
+        ? ''
+        : '<span class="app-flag">Auto-scored — AI unavailable, read the answers</span>';
+
+      const fact = (label, value) => `
+        <div>
+          <div class="app-fact-label">${label}</div>
+          <div class="app-fact-value">${value}</div>
+        </div>`;
+
+      const dash = '<span style="color:#94a3b8;">—</span>';
+      const feeReady = a.fee_ready === true
+        ? '<span style="color:#16a34a;">Yes</span>'
+        : (a.fee_ready === false ? '<span style="color:#dc2626;">No</span>' : dash);
+
+      const examiner = report.feedback
+        ? `<div class="app-examiner"><strong>${a.scored_by === 'ai' ? 'AI examiner' : 'Automatic scorer'}:</strong> ${esc(report.feedback)}</div>`
+        : '';
+
+      const translationPrompt = (report.tasks && report.tasks.translation && report.tasks.translation.roman) || '';
+
+      const actions = status === 'pending'
+        ? `<button class="app-btn app-btn-approve" onclick="reviewApplication('${esc(a.id)}', 'approved', this)">✅ Approve</button>
+           <button class="app-btn app-btn-reject"  onclick="reviewApplication('${esc(a.id)}', 'rejected', this)">❌ Reject</button>`
+        : `<button class="app-btn app-btn-reset" onclick="reviewApplication('${esc(a.id)}', 'pending', this)">↩ Move back to pending</button>
+           <span style="color:#64748b;font-size:0.82rem;">
+             ${status === 'approved' ? 'Approved' : 'Rejected'}${a.reviewed_at ? ' on ' + formatDate(a.reviewed_at) : ''}${a.reviewed_by ? ' by ' + esc(a.reviewed_by) : ''}
+           </span>`;
+
+      return `
+        <article class="app-card status-${status}">
+          <div class="app-card-head">
+            <div>
+              <h3>${esc(a.full_name)} ${badge}</h3>
+              <div class="app-card-meta">
+                ${wa ? `<a href="https://wa.me/${wa}" target="_blank" rel="noopener">📱 ${esc(a.whatsapp)}</a>` : esc(a.whatsapp || '—')}
+                &nbsp;·&nbsp; ${esc(AGE_LABELS[a.age_group] || a.age_group || '—')}
+                &nbsp;·&nbsp; ${esc(a.city || '—')}
+                <br>Applied ${formatDate(a.created_at)}${a.source ? ' · via ' + esc(a.source) : ''}
+              </div>
+            </div>
+            <div class="app-score">
+              <strong>${score}%</strong>
+              <span>English${a.english_band ? ' · ' + esc(a.english_band) : ''}</span>
+            </div>
+          </div>
+
+          ${scoredFlag}
+
+          <div class="app-facts">
+            ${fact('Education', esc(EDU_LABELS[a.education] || a.education || '—'))}
+            ${fact('Grades', esc(a.grades || '—'))}
+            ${fact('Occupation', esc(OCC_LABELS[a.occupation] || a.occupation || '—'))}
+            ${fact('Self-rating', esc(RATING_LABELS[a.self_rating] || a.self_rating || '—'))}
+            ${fact('Level', esc(a.english_label || '—'))}
+            ${fact('Ready to invest', feeReady)}
+          </div>
+
+          ${examiner}
+
+          <div class="app-answer">
+            <h4>Translation into English</h4>
+            ${translationPrompt ? `<p class="app-prompt">${esc(translationPrompt)}</p>` : ''}
+            <p>${esc(a.translation_answer) || '<em style="color:#94a3b8;">No answer</em>'}</p>
+          </div>
+
+          <div class="app-answer">
+            <h4>Daily routine (written English)</h4>
+            <p>${esc(a.writing_answer) || '<em style="color:#94a3b8;">No answer</em>'}</p>
+          </div>
+
+          <div class="app-answer">
+            <h4>Why they want to improve</h4>
+            <p>${esc(a.motivation) || '<em style="color:#94a3b8;">No answer</em>'}</p>
+          </div>
+
+          <div class="app-actions">${actions}</div>
+        </article>
+      `;
+    };
+
+    window.reviewApplication = async (id, status, btn) => {
+      const row = applications.find(a => a.id === id);
+      if (!row) return;
+
+      if (status === 'rejected' && !confirm(`Reject ${row.full_name}'s application?`)) return;
+
+      // Disable the whole card's buttons: a double-click here is a double write.
+      const card = btn.closest('.app-card');
+      card.querySelectorAll('button').forEach(b => { b.disabled = true; });
+
+      try {
+        const { data: { session } } = await window.supabaseClient.auth.getSession();
+        const patch = status === 'pending'
+          ? { application_status: 'pending', reviewed_at: null, reviewed_by: null }
+          : {
+              application_status: status,
+              reviewed_at: new Date().toISOString(),
+              reviewed_by: session?.user?.email || null,
+            };
+
+        const { error } = await window.supabaseClient
+          .from('entry_applications')
+          .update(patch)
+          .eq('id', id);
+
+        if (error) throw error;
+
+        // Patch locally so the card flips instantly instead of waiting for the
+        // 30s refresh.
+        Object.assign(row, patch);
+        renderApplications();
+      } catch (err) {
+        console.error('Failed to update application:', err);
+        alert('Could not update this application: ' + err.message);
+        card.querySelectorAll('button').forEach(b => { b.disabled = false; });
+      }
+    };
+
+    window.exportApplicationsCSV = () => {
+      const rows = visibleApplications();
+      if (!rows.length) return alert('Nothing to export.');
+
+      const headers = [
+        'Date', 'Name', 'WhatsApp', 'Age', 'City', 'Education', 'Grades', 'Occupation',
+        'English %', 'Band', 'Level', 'Scored By', 'Self-rating', 'Fee Ready',
+        'Status', 'Reviewed By', 'Translation', 'Daily Routine', 'Motivation',
+      ];
+      // Escape quotes, and guard against spreadsheet formula injection.
+      const cell = (v) => {
+        let s = String(v ?? '');
+        if (/^[=+\-@]/.test(s)) s = "'" + s;
+        return `"${s.replace(/"/g, '""')}"`;
+      };
+
+      const csv = [
+        headers.join(','),
+        ...rows.map(a => [
+          new Date(a.created_at).toISOString(),
+          a.full_name, a.whatsapp, a.age_group || '', a.city || '',
+          a.education || '', a.grades || '', a.occupation || '',
+          Math.round(Number(a.english_score || 0)), a.english_band || '', a.english_label || '',
+          a.scored_by || '', a.self_rating || '',
+          a.fee_ready === true ? 'Yes' : (a.fee_ready === false ? 'No' : ''),
+          a.application_status || 'pending', a.reviewed_by || '',
+          a.translation_answer || '', a.writing_answer || '', a.motivation || '',
+        ].map(cell).join(','))
+      ].join('\r\n');
+
+      const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+      const el = document.createElement('a');
+      el.href = url;
+      el.download = `speaklab-applications-${new Date().toISOString().slice(0, 10)}.csv`;
+      el.click();
+      URL.revokeObjectURL(url);
+    };
+
     // ─── STUDENT JOURNEY FUNCTIONS ───────────────────────────────────────────
     const GATE_NAMES = [
       '', // index 0 unused
@@ -1306,8 +1806,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       loadDashboard();
       loadStudentJourney();
       loadLevelTests();
+      loadApplications();
       setInterval(loadDashboard, 30000);
       setInterval(loadLevelTests, 30000);
+      setInterval(loadApplications, 30000);
     });
 
     // Signing out in another tab should not leave this one showing data.
