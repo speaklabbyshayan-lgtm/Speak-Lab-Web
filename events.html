@@ -426,6 +426,71 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
     }
+
+    /* ── Mobile: compact ────────────────────────────────────────────────────
+       Three stacked cards plus a form makes a very long scroll on a phone, and
+       desktop padding on a 360px screen reads as wasted space. Everything below
+       tightens the rhythm — smaller type scale, tighter padding, less air
+       between blocks. Last in the file so it wins on equal specificity. */
+    @media (max-width: 760px) {
+      .ev-section { padding: 30px 16px 0; }
+      .ev-section-head { margin-bottom: 24px; }
+      .ev-section-head h2 { font-size: 1.5rem; }
+      .ev-section-head p { font-size: 0.93rem; line-height: 1.6; }
+      .ev-eyebrow { font-size: 0.64rem; padding: 6px 13px; margin-bottom: 12px; }
+
+      .ev-strip { gap: 7px; margin-bottom: 26px; }
+      .ev-strip span { font-size: 0.74rem; padding: 7px 13px; }
+
+      .ev-grid { gap: 14px; margin-bottom: 42px; }
+      .ev-card { padding: 22px 19px; border-radius: 20px; }
+      .ev-card::before { width: 40px; height: 4px; margin-bottom: 15px; }
+      .ev-icon { font-size: 1.7rem; margin-bottom: 10px; }
+      .ev-card h3 { font-size: 1.18rem; }
+      .ev-tagline { font-size: 0.88rem; margin-bottom: 11px; }
+      .ev-card > p.ev-body { font-size: 0.89rem; line-height: 1.6; margin-bottom: 16px; }
+
+      .ev-meta { padding: 13px 15px; gap: 9px; margin-bottom: 18px; border-radius: 13px; }
+      .ev-meta li { font-size: 0.81rem; gap: 8px; }
+      .ev-meta .ev-k { min-width: 60px; }
+
+      .ev-card .ev-cta { padding: 12px 18px; font-size: 0.88rem; }
+
+      .ev-open { padding: 28px 20px; border-radius: 22px; margin-bottom: 42px; }
+      .ev-open h2 { font-size: 1.4rem; }
+      .ev-open > p { font-size: 0.92rem; line-height: 1.6; margin-bottom: 20px; }
+      .ev-who { gap: 12px; }
+      .ev-who-card { padding: 18px; border-radius: 16px; }
+      .ev-who-card h4 { font-size: 0.98rem; }
+      .ev-who-card p { font-size: 0.88rem; }
+
+      .ev-register { gap: 26px; padding-bottom: 10px; }
+      .ev-register-copy h2 { font-size: 1.5rem; }
+      .ev-register-copy > p { font-size: 0.93rem; margin-bottom: 20px; }
+      .ev-steps { gap: 13px; }
+      .ev-step-num { flex-basis: 26px; height: 26px; font-size: 0.76rem; }
+      .ev-steps h4 { font-size: 0.92rem; }
+      .ev-steps p { font-size: 0.86rem; }
+
+      .ev-form { padding: 24px 18px; border-radius: 22px; }
+      .ev-form h3 { font-size: 1.35rem; }
+      .ev-form .form-sub { font-size: 0.88rem; margin-bottom: 18px; }
+      .ev-form .form-group { margin-bottom: 15px; }
+      .ev-form label { font-size: 0.88rem; margin-bottom: 6px; }
+      .ev-form input, .ev-form select, .ev-form textarea { padding: 12px 13px; font-size: 0.95rem; }
+      .ev-form textarea { min-height: 76px; }
+      .ev-form button { padding: 14px 26px; font-size: 0.98rem; }
+
+      .ev-wa { padding: 4px 16px 54px; }
+      .ev-wa a { padding: 14px 32px; font-size: 0.98rem; }
+    }
+
+    /* A hover lift on a touch screen just leaves the card stuck mid-animation
+       after a tap, so drop it where there is no real pointer. */
+    @media (hover: none) {
+      .ev-card:hover { transform: none; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); }
+      .ev-card .ev-cta:hover, .ev-form button:hover:not(:disabled), .ev-wa a:hover { transform: none; }
+    }
   </style>
 
   <!-- Primary Meta Tags -->
@@ -644,9 +709,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="ev-icon" aria-hidden="true">🚶</div>
           <h3>Communication Walks</h3>
           <p class="ev-tagline">Real conversations, on the move.</p>
-          <p class="ev-body">A guided walk through the city where the only rule is: speak English. You are paired
-            with a new partner every few minutes and given a real topic to talk about. No desks, no marks, no
-            waiting for your turn — just conversation until it stops feeling difficult.</p>
+          <p class="ev-body">A guided walk through the city where the only rule is: speak English. New partner every
+            few minutes, a real topic each time. No desks, no marks — just conversation until it stops feeling
+            difficult.</p>
           <ul class="ev-meta">
             <li><span class="ev-k">Format</span><span>Outdoor walk, rotating partners, coach on hand</span></li>
             <li><span class="ev-k">Length</span><span>About 90 minutes</span></li>
@@ -660,9 +725,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="ev-icon" aria-hidden="true">🎤</div>
           <h3>Open Mics</h3>
           <p class="ev-tagline">Five minutes. One mic. Your voice.</p>
-          <p class="ev-body">An evening where anyone can take the stage — a story, an opinion, a poem, a pitch,
-            or something you have never said out loud before. A warm room that claps first and critiques kindly,
-            plus direct feedback from the SpeakLab team when you want it.</p>
+          <p class="ev-body">An evening where anyone can take the stage — a story, an opinion, a poem, a pitch. A warm
+            room that claps first and critiques kindly, plus direct feedback from the SpeakLab team when you want
+            it.</p>
           <ul class="ev-meta">
             <li><span class="ev-k">Format</span><span>Live stage, 5 minutes each, optional feedback</span></li>
             <li><span class="ev-k">Length</span><span>About 2 hours</span></li>
@@ -676,9 +741,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="ev-icon" aria-hidden="true">🎯</div>
           <h3>One-Day Workshop</h3>
           <p class="ev-tagline">One focused day, one skill sharpened.</p>
-          <p class="ev-body">A full intensive built around a single theme — interviews, presentations,
-            storytelling or debate. Short teaching, long practice: you spend most of the day speaking, being
-            recorded, and being corrected. You leave with one skill measurably better than you arrived with.</p>
+          <p class="ev-body">A full intensive on one theme — interviews, presentations, storytelling or debate.
+            Short teaching, long practice: most of the day you are speaking, being recorded, and being corrected.
+            You leave with one skill measurably better.</p>
           <ul class="ev-meta">
             <li><span class="ev-k">Format</span><span>Full-day intensive, drills and live practice</span></li>
             <li><span class="ev-k">Length</span><span>One full day</span></li>
@@ -693,9 +758,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <section class="ev-section">
       <div class="ev-open">
         <h2>You don't have to be a SpeakLab student</h2>
-        <p>These events are open to the city. If you are enrolled with us, they are part of how you practise
-          between classes. If you are not, you are just as welcome — plenty of people come to the events first and
-          decide about the program later, or never join at all and keep coming anyway.</p>
+        <p>These events are open to the whole city. If you are enrolled with us, this is how you practise between
+          classes. If you are not, you are just as welcome — many people come to the events first and decide about
+          the program later.</p>
 
         <div class="ev-who">
           <div class="ev-who-card">
