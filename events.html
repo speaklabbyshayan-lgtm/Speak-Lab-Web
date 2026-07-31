@@ -254,6 +254,60 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       flex-shrink: 0;
     }
 
+    /* "Learn more" uses <details>, so the full write-up is in the page for
+       search engines and for anyone who wants it, without making every visitor
+       scroll past it — which is what made this page feel endless on a phone. */
+    .ev-more {
+      margin-bottom: 18px;
+      border-top: 1px solid #eef0f5;
+      padding-top: 14px;
+    }
+
+    .ev-more summary {
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--ev-a, #1e3a8a);
+      padding: 4px 0;
+    }
+
+    /* Safari still paints its own triangle without this. */
+    .ev-more summary::-webkit-details-marker { display: none; }
+
+    .ev-more summary::after {
+      content: "▾";
+      font-size: 0.9rem;
+      transition: transform 0.25s ease;
+    }
+
+    .ev-more[open] summary::after { transform: rotate(180deg); }
+
+    .ev-more-body {
+      padding-top: 12px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .ev-more-body h5 {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ev-a, #1e3a8a);
+      margin-bottom: 4px;
+    }
+
+    .ev-more-body p {
+      font-size: 0.87rem;
+      line-height: 1.6;
+      color: #555;
+    }
+
     .ev-card .ev-cta {
       margin-top: auto;
       display: block;
@@ -278,27 +332,41 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
 
     /* ── Who can join ───────────────────────────────────────────────────── */
+    /* Same treatment as "Why SpeakLab Works When Everything Else Fails" on the
+       homepage: one animated colour field with white cards floating on it. The
+       gradient and timing are copied from .tilt-color-bg in index.html so the
+       two sections read as the same brand moment, not two different ideas. */
     .ev-open {
-      background: radial-gradient(circle at 8% 100%, rgba(225, 150, 60, 0.85) 0%, transparent 58%),
-                  linear-gradient(135deg, #d3cce3 0%, #e5ddd7 100%);
+      background: linear-gradient(270deg, #1e1b4b, #9333ea, #1e3a8a, #db2777, #1e1b4b);
+      background-size: 800% 800%;
+      animation: ev-tilt-move 8s ease infinite;
       border-radius: 30px;
-      padding: 46px 44px;
+      padding: 50px 44px;
       margin-bottom: 70px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    @keyframes ev-tilt-move {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .ev-open h2 {
       font-size: clamp(1.6rem, 4vw, 2.2rem);
       font-weight: 800;
       letter-spacing: -0.02em;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      color: #fff;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
 
     .ev-open > p {
-      color: #333;
+      color: rgba(255, 255, 255, 0.92);
       font-size: 1.02rem;
       line-height: 1.65;
-      margin-bottom: 28px;
+      margin: 0 auto 36px;
       max-width: 62ch;
     }
 
@@ -313,26 +381,30 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       .ev-who { grid-template-columns: 1fr; }
     }
 
+    .ev-who { text-align: left; }
+
     .ev-who-card {
-      background: rgba(255, 255, 255, 0.66);
-      border: 1px solid rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.95);
       border-radius: 20px;
-      padding: 24px 26px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
     .ev-who-card h4 {
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: 800;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      color: #000;
       display: flex;
       align-items: center;
       gap: 9px;
     }
 
     .ev-who-card p {
-      font-size: 0.93rem;
-      line-height: 1.6;
-      color: #333;
+      font-size: 0.95rem;
+      font-weight: 500;
+      line-height: 1.5;
+      color: #444;
     }
 
     /* ── Register ───────────────────────────────────────────────────────── */
@@ -533,13 +605,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
       .ev-card .ev-cta { padding: 12px 18px; font-size: 0.88rem; }
 
-      .ev-open { padding: 28px 20px; border-radius: 22px; margin-bottom: 42px; }
+      .ev-more { margin-bottom: 15px; padding-top: 12px; }
+      .ev-more summary { font-size: 0.85rem; }
+      .ev-more-body { gap: 10px; padding-top: 10px; }
+      .ev-more-body p { font-size: 0.84rem; }
+
+      .ev-open { padding: 30px 20px; border-radius: 22px; margin-bottom: 42px; }
       .ev-open h2 { font-size: 1.4rem; }
-      .ev-open > p { font-size: 0.92rem; line-height: 1.6; margin-bottom: 20px; }
+      .ev-open > p { font-size: 0.92rem; line-height: 1.6; margin-bottom: 22px; }
       .ev-who { gap: 12px; }
-      .ev-who-card { padding: 18px; border-radius: 16px; }
-      .ev-who-card h4 { font-size: 0.98rem; }
-      .ev-who-card p { font-size: 0.88rem; }
+      .ev-who-card { padding: 19px; border-radius: 16px; }
+      .ev-who-card h4 { font-size: 1rem; }
+      .ev-who-card p { font-size: 0.89rem; }
 
       .ev-register { gap: 26px; padding-bottom: 10px; }
       .ev-register-copy h2 { font-size: 1.5rem; }
@@ -577,11 +654,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       .ev-card::before,
       .ev-card::after,
       .ev-tagline,
-      .ev-card .ev-cta {
+      .ev-card .ev-cta,
+      .ev-open {
         animation: none;
       }
       .ev-card { background-position: 0 0, 50% 50%; }
+      .ev-open { background-position: 50% 50%; }
       .ev-card:hover { transform: none; }
+      .ev-more summary::after { transition: none; }
     }
   </style>
 
@@ -809,6 +889,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <li><span class="ev-k">Length</span><span>About 90 minutes</span></li>
             <li><span class="ev-k">Best for</span><span>Anyone who knows English but freezes when speaking it</span></li>
           </ul>
+
+          <details class="ev-more">
+            <summary>Learn more</summary>
+            <div class="ev-more-body">
+              <div>
+                <h5>How the walk runs</h5>
+                <p>We meet at an agreed spot, warm up as a group, then walk in pairs. Every few minutes you swap
+                  partner and get a new topic — starting with everyday things and moving to opinions. We finish in a
+                  circle where anyone who wants feedback gets it.</p>
+              </div>
+              <div>
+                <h5>The English-only rule</h5>
+                <p>Only English is spoken on the walk. When you get stuck, the coach helps you find the word instead
+                  of letting the conversation slip back into Urdu — that moment is exactly where the progress is.</p>
+              </div>
+              <div>
+                <h5>What you need</h5>
+                <p>Comfortable shoes, water, and a willingness to sound imperfect for 90 minutes. You do not need to
+                  be fluent — if you can build a basic sentence, you can do this.</p>
+              </div>
+              <div>
+                <h5>Group size</h5>
+                <p>Kept deliberately small so nobody ends up walking in silence.</p>
+              </div>
+            </div>
+          </details>
+
           <a class="ev-cta" href="#register" data-event="Communication Walk">Register for a Walk</a>
         </article>
 
@@ -825,6 +932,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <li><span class="ev-k">Length</span><span>About 2 hours</span></li>
             <li><span class="ev-k">Best for</span><span>Stage fear, interview nerves, anyone who wants a mic</span></li>
           </ul>
+
+          <details class="ev-more">
+            <summary>Learn more</summary>
+            <div class="ev-more-body">
+              <div>
+                <h5>How the evening runs</h5>
+                <p>You put your name down when you arrive and speak for up to five minutes. Any format works — a
+                  story, an opinion, a poem, a pitch, even something you are still figuring out. The room claps
+                  first and critiques kindly.</p>
+              </div>
+              <div>
+                <h5>You can just watch</h5>
+                <p>Plenty of people come the first time and only listen. Nobody is dragged to the mic. Most people
+                  sign up on their second visit, once they have seen how forgiving the room is.</p>
+              </div>
+              <div>
+                <h5>Feedback</h5>
+                <p>Optional. If you want it, you get one thing you did well and one thing to work on — quietly and
+                  one-to-one if you would rather not hear it in front of everyone.</p>
+              </div>
+              <div>
+                <h5>Preparation</h5>
+                <p>Nothing to memorise. Notes on your phone or a piece of paper are completely fine.</p>
+              </div>
+            </div>
+          </details>
+
           <a class="ev-cta" href="#register" data-event="Open Mic">Register for an Open Mic</a>
         </article>
 
@@ -841,6 +975,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <li><span class="ev-k">Length</span><span>One full day</span></li>
             <li><span class="ev-k">Best for</span><span>Professionals and students who want a fast, focused reset</span></li>
           </ul>
+
+          <details class="ev-more">
+            <summary>Learn more</summary>
+            <div class="ev-more-body">
+              <div>
+                <h5>The themes</h5>
+                <p>Each workshop takes one theme and goes deep: interview skills, presentations, storytelling, or
+                  debate. The theme rotates, so coming back gives you something genuinely new rather than a repeat.</p>
+              </div>
+              <div>
+                <h5>How the day is built</h5>
+                <p>Short teaching blocks and long practice blocks. You are on your feet for most of it — speaking,
+                  being recorded, watching it back, and going again with the correction applied.</p>
+              </div>
+              <div>
+                <h5>What you take home</h5>
+                <p>A recording of your first attempt and your last one, plus a short personal action list of the two
+                  or three things that will move you fastest.</p>
+              </div>
+              <div>
+                <h5>Group size</h5>
+                <p>Limited, because everyone has to get real stage time within a single day.</p>
+              </div>
+            </div>
+          </details>
+
           <a class="ev-cta" href="#register" data-event="One-Day Workshop">Register for a Workshop</a>
         </article>
       </div>
