@@ -236,13 +236,30 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const formData = new FormData(enrollForm);
 
-        // Enrolling requires a signed-in account (see the gate in enroll.html),
-        // and RLS requires student_id to match the caller.
+        // Enrolling needs a signed-in account: RLS on enrollments requires
+        // student_id = auth.uid(). The page no longer asks for that up front,
+        // so this is where it gets asked — after the form is filled.
         let session = null;
         if (window.supabaseClient) {
           ({ data: { session } } = await window.supabaseClient.auth.getSession());
         }
         if (!session) {
+          // Carry the answers across the login round trip. sessionStorage, not
+          // localStorage: this belongs to the tab and the attempt, and should
+          // not resurface days later. resumeEnrollment() in enroll.html picks
+          // it up and finishes the submit automatically on the way back.
+          try {
+            sessionStorage.setItem('speaklab_enroll_pending', JSON.stringify({
+              name: formData.get('name'),
+              whatsapp: formData.get('whatsapp'),
+              email: formData.get('email'),
+              city: formData.get('city'),
+              source: formData.get('source'),
+              batch_preference: formData.get('batch_preference'),
+            }));
+          } catch (storageErr) { /* private mode — they will retype, but nothing breaks */ }
+
+          if (window.slTrack) window.slTrack('enroll_login_required');
           window.location.href = 'login.html?redirect=enroll.html';
           return;
         }
@@ -313,6 +330,12 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = `level-test.html?${params.toString()}`;
       } catch (err) {
         console.error(err);
+        // If this was the auto-submit after logging back in, the "Confirming
+        // your seat…" overlay is covering the page — drop it, or the error
+        // below is invisible behind a spinner that never stops.
+        const resumeOverlay = document.getElementById('enroll-resume');
+        if (resumeOverlay) resumeOverlay.hidden = true;
+
         let msgEl = document.getElementById('enroll-msg');
         if (!msgEl) {
           msgEl = document.createElement('p');

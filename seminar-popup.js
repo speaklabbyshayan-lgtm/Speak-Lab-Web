@@ -1,29 +1,37 @@
 /*
- * SpeakLab — Free Seminar Popup
+ * SpeakLab — Announcement Popup
  * Self-contained overlay. Injects its own styles + markup so it never touches
  * a page's existing layout. Appears 4s after load, once per calendar day
- * (localStorage: speaklab_seminar_shown = YYYY-MM-DD).
+ * (localStorage: see CONFIG.storageKey).
  *
- * To change the seminar details, edit the CONFIG block below.
+ * The file is still named seminar-popup.js because every page links it by that
+ * name; the content it shows is whatever CONFIG says. It ran the free seminar
+ * until July 2026 and now announces the batch. To change the announcement,
+ * edit CONFIG — and change storageKey too, or anyone who dismissed the old
+ * message today will not see the new one.
  */
 (function () {
   'use strict';
 
   var CONFIG = {
     delayMs: 4000,
-    storageKey: 'speaklab_seminar_shown',
+    // Bumped from 'speaklab_seminar_shown' with the batch announcement, so the
+    // new message reaches people who had already dismissed the seminar one.
+    storageKey: 'speaklab_batch_aug_shown',
     whatsappNumber: '923014497532',
-    whatsappText: 'I want to register for the free seminar on 28th July',
+    whatsappText: 'I want to register for the batch starting 4th August',
     badge: '🔥 LIMITED SEATS',
-    overline: '🎤 FREE SEMINAR — LAHORE',
-    title: 'Speak With Confidence',
-    subtitle: 'Free English Communication Seminar',
+    overline: '🚀 NEW BATCH — LAHORE',
+    title: 'Classes Start 4th August',
+    subtitle: '8-Week English Communication & Confidence Program',
+    // No fee line on purpose: the price is a conversation, not a popup.
     details: [
-      { icon: '📅', label: 'Date', value: '28th July, 2026' },
+      { icon: '📅', label: 'Starts', value: '4th August, 2026' },
       { icon: '📍', label: 'Venue', value: 'Lahore (details shared on WhatsApp)' },
-      { icon: '💰', label: 'Cost', value: 'Absolutely FREE' },
+      { icon: '⏳', label: 'Duration', value: '8 weeks — live, in person' },
       { icon: '🪑', label: 'Seats', value: 'Limited — Register Now!' }
-    ]
+    ],
+    cta: 'Book My Seat'
   };
 
   // ---- Once-per-day guard -------------------------------------------------
@@ -112,7 +120,7 @@
         '<div class="slab-seminar-actions">' +
           '<a class="slab-seminar-wa" href="' + waHref + '" target="_blank" rel="noopener">' +
             '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.2-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 1.9-1.4.2-.6.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3c-.8-1.3-1.3-2.8-1.3-4.3C3.5 7.3 7.3 3.5 12 3.5S20.5 7.3 20.5 12 16.7 20.2 12 20.2z"/></svg>' +
-            'Register on WhatsApp</a>' +
+            CONFIG.cta + '</a>' +
           '<button class="slab-seminar-later" type="button">Maybe Later</button>' +
         '</div>' +
       '</div>';

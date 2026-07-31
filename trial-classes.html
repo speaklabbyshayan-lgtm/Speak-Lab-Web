@@ -199,11 +199,66 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
     }
+
+    /* ── "Currently closed" state ─────────────────────────────────────────
+       The 2-day free experience only runs in the opening days of a new batch.
+       Between batches the page stays up (it ranks, and the ads point at it)
+       but it collects a waitlist instead of taking bookings it cannot honour. */
+    .trial-closed {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-left: 5px solid #f59e0b;
+      border-radius: 14px;
+      padding: 20px 22px;
+      /* No margin — .trial-container's 40px grid gap already spaces it. */
+    }
+
+    .trial-closed .closed-ic {
+      font-size: 1.4rem;
+      line-height: 1.2;
+      flex-shrink: 0;
+    }
+
+    .trial-closed h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #92400e;
+      margin: 0 0 6px;
+    }
+
+    .trial-closed p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #78350f;
+      margin: 0;
+    }
+
+    .trial-badge {
+      display: inline-block;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      color: #b45309;
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    /* Muted, because these describe what the experience WILL be, not what is
+       on sale today. */
+    .trial-card.is-preview .trial-point-text { color: #475569; }
   </style>
 
   <!-- Primary Meta Tags -->
-  <meta name="title" content="Free Trial Classes | SpeakLab — Attend 2 Classes Free in Lahore">
-  <meta name="description" content="Not sure yet? Attend 2 full SpeakLab classes free before you decide. Experience Lahore's English Communication & Confidence Program in person — no payment, no obligation. Book your Free Trial Classes today.">
+  <meta name="title" content="Free Trial Classes | SpeakLab — Waitlist for the Next Batch in Lahore">
+  <meta name="description" content="SpeakLab's 2-day free experience runs only when a new batch begins, and this round has closed. Join the waitlist and we'll message you on WhatsApp the moment the next batch in Lahore opens.">
   <meta name="keywords" content="free trial English classes Lahore, free English speaking class, SpeakLab trial, Speak Lab free class, English course trial Lahore, communication course free demo Lahore">
   <meta name="robots" content="index, follow">
   <meta name="language" content="English">
@@ -220,8 +275,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.speaklabbyshayan.com/trial-classes.html">
-  <meta property="og:title" content="Free Trial Classes | SpeakLab — Attend 2 Classes Free">
-  <meta property="og:description" content="Attend 2 full classes free before you decide. Experience SpeakLab's 8-week program in Lahore in person — no payment, no obligation.">
+  <meta property="og:title" content="Free Trial Classes | SpeakLab — Waitlist for the Next Batch">
+  <meta property="og:description" content="The 2-day free experience runs only when a new batch begins. Join the waitlist and we'll tell you first when the next SpeakLab batch in Lahore opens.">
   <meta property="og:image" content="https://www.speaklabbyshayan.com/assets/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -230,8 +285,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Free Trial Classes | SpeakLab — Attend 2 Classes Free">
-  <meta name="twitter:description" content="Attend 2 full classes free before you decide about the program. In-person in Lahore.">
+  <meta name="twitter:title" content="Free Trial Classes | SpeakLab — Waitlist for the Next Batch">
+  <meta name="twitter:description" content="The 2-day free experience returns with the next batch. Join the waitlist — in-person in Lahore.">
   <meta name="twitter:image" content="https://www.speaklabbyshayan.com/assets/og-image.jpg">
 
   <!-- Theme & Favicons -->
@@ -240,13 +295,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <!-- Structured data: the trial is a zero-price offer on the course -->
+  <!-- Structured data: a zero-price offer on the course, but not one you can
+       take up today — the experience days run only at the start of a batch, so
+       availability is OutOfStock until the next one is scheduled. Leaving it
+       InStock would earn a "free trial" rich result that dead-ends. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Course",
     "name": "SpeakLab Free Trial Classes",
-    "description": "Attend 2 full sessions of SpeakLab's 8-week Communication & Confidence Program in Lahore free of cost, before deciding to enroll.",
+    "description": "Attend 2 full sessions of SpeakLab's 8-week Communication & Confidence Program in Lahore free of cost, before deciding to enroll. The free experience days run only at the start of each new batch; join the waitlist to be told when the next one opens.",
     "provider": {
       "@type": "Organization",
       "name": "SpeakLab",
@@ -257,8 +315,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "PKR",
-      "availability": "https://schema.org/LimitedAvailability",
-      "description": "2 full in-person classes free — no payment, no obligation."
+      "availability": "https://schema.org/OutOfStock",
+      "description": "2 full in-person classes free — no payment, no obligation. Offered only at the start of each new batch."
     },
     "hasCourseInstance": {
       "@type": "CourseInstance",
@@ -362,14 +420,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <header class="hero-section inner-page">
     <div class="hero-content">
       <h1 class="gradient-heading">Experience Section</h1>
-      <p>Attend 2 full classes free — decide only after you've experienced the program</p>
+      <p>The 2-day free experience runs only when a new batch begins</p>
     </div>
   </header>
 
   <main>
     <div class="trial-container">
-      <div class="trial-card">
-        <div class="trial-point"><span class="tick">✓</span> <span class="trial-point-text">2 complete, real classes with the current batch — not a
+      <div class="trial-closed">
+        <span class="closed-ic" aria-hidden="true">🔒</span>
+        <div>
+          <h3>Free experience days are closed for this batch</h3>
+          <p>The 2-day free experience only runs in the opening days of a new batch, and this round's
+            experience days are over. Join the waitlist below and we'll message you on WhatsApp the
+            moment the next batch opens — waitlist members are contacted first, before the seats
+            go public.</p>
+        </div>
+      </div>
+
+      <div class="trial-card is-preview">
+        <span class="trial-badge">What you'll get next time</span>
+        <div class="trial-point"><span class="tick">✓</span> <span class="trial-point-text">2 complete, real classes with the new batch — not a
           shortened preview session</span></div>
         <div class="trial-point"><span class="tick">✓</span> <span class="trial-point-text">Learn directly with <span id="inst-name">Sir Shayan</span>
           and sit alongside enrolled students</span></div>
@@ -379,18 +449,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             University of Technology, Lahore</span>, <span id="prog-timing">6:00 PM to 7:30 PM</span></span></div>
 
         <div class="trial-steps">
-          <h4>How it works</h4>
+          <h4>How the waitlist works</h4>
           <ol>
-            <li>Book below — takes 30 seconds.</li>
-            <li>We confirm your first class date on WhatsApp within 24 hours.</li>
-            <li>Attend 2 classes. If it's right for you, your trial seat becomes your batch seat.</li>
+            <li>Add your details below — takes 30 seconds.</li>
+            <li>When the next batch is scheduled, we message you on WhatsApp with the experience dates.</li>
+            <li>Attend 2 classes. If it's right for you, your seat in that batch is confirmed.</li>
           </ol>
         </div>
       </div>
 
       <div class="trial-form">
-        <h3>Book your trial</h3>
-        <p class="form-sub">No card, no advance — just your details so we can schedule you in.</p>
+        <h3>Join the waitlist</h3>
+        <p class="form-sub">No card, no advance — just your details so we can reach you when the next batch opens.</p>
         <form id="trialForm">
           <div class="form-group">
             <label>Full Name</label>
@@ -411,7 +481,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <option value="Evening Batch (Tue, Thu & Sat)">Evening Batch (Tue, Thu & Sat), 6:00–7:30 PM</option>
             </select>
           </div>
-          <button type="submit" id="trialSubmitBtn">Book My Free Trial Classes</button>
+          <button type="submit" id="trialSubmitBtn">Notify Me For The Next Batch</button>
           <p id="trial-msg"></p>
         </form>
       </div>
@@ -419,7 +489,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="wa-cta">
       <p>Prefer to arrange it over chat?</p>
-      <a href="https://wa.me/923014497532?text=Hi!%20I%20want%20to%20claim%20my%20free%202-day%20SpeakLab%20experience" target="_blank" rel="noopener" class="btn-whatsapp">Book on WhatsApp</a>
+      <a href="https://wa.me/923014497532?text=Hi!%20Please%20add%20me%20to%20the%20waitlist%20for%20the%20next%20SpeakLab%202-day%20free%20experience" target="_blank" rel="noopener" class="btn-whatsapp">Ask on WhatsApp</a>
     </div>
   </main>
 
@@ -513,14 +583,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </footer>
 
   <script>
-    // Booking form → /api/contact with type 'trial'. The API branches on the
-    // type server-side, so the subject line is never caller-controlled.
+    // Waitlist form → /api/contact with type 'trial'. The API branches on the
+    // type server-side, so the subject line is never caller-controlled. The
+    // type stays 'trial' on purpose: the endpoint and the admin inbox already
+    // route it, and renaming it would only break that for no gain.
     document.getElementById('trialForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       const btn = document.getElementById('trialSubmitBtn');
       const msg = document.getElementById('trial-msg');
       const originalText = btn.textContent;
-      btn.textContent = 'Booking…';
+      btn.textContent = 'Adding you…';
       btn.disabled = true;
       msg.style.display = 'none';
 
@@ -542,16 +614,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             window.slTrack('trial_request', { batch: this.elements.namedItem('batch_preference').value });
           }
           if (window.fbq) window.fbq('track', 'Lead');
-          msg.textContent = '✓ Booked! Check your email — we\'ll confirm your first class on WhatsApp within 24 hours.';
+          msg.textContent = '✓ You\'re on the waitlist! We\'ll message you on WhatsApp with the experience dates as soon as the next batch is scheduled.';
           msg.style.cssText = 'display:block;background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;';
           this.reset();
         } else {
           const err = await response.json().catch(() => ({}));
-          msg.textContent = err.message || 'Something went wrong. Please try again or book on WhatsApp below.';
+          msg.textContent = err.message || 'Something went wrong. Please try again or message us on WhatsApp below.';
           msg.style.cssText = 'display:block;background:#fef2f2;color:#991b1b;border:1px solid #fecaca;';
         }
       } catch (error) {
-        msg.textContent = 'Could not reach the server. Please book on WhatsApp below.';
+        msg.textContent = 'Could not reach the server. Please message us on WhatsApp below.';
         msg.style.cssText = 'display:block;background:#fef2f2;color:#991b1b;border:1px solid #fecaca;';
       } finally {
         btn.textContent = originalText;
@@ -592,7 +664,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       box-shadow: 0 15px 35px rgba(37, 211, 102, 0.6), 0 5px 15px rgba(0,0,0,0.2) !important;
     }
   </style>
-  <script defer src="seminar-popup.js?v=20260724"></script>
+  <script defer src="seminar-popup.js?v=20260731"></script>
   <script defer src="community-bell.js?v=20260724"></script>
 </body>
 

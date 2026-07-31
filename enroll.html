@@ -163,17 +163,34 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </header>
 
-  <!-- Enrolling requires an account, so the seat, the level test and the
-       student portal all hang off one identity. Covers the page until the
-       session check resolves. -->
-  <div id="enroll-gate" style="position:fixed;inset:0;background:#fcfcfc;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;">
+  <!-- No sign-in wall here on purpose. The page used to redirect straight to
+       login.html before anyone could read the fee or see the form, so people
+       arriving from an ad hit a login screen they had no reason to trust yet
+       and left. The account is still required — enrollments.student_id must
+       equal auth.uid() under RLS — but it is now asked for at submit, after the
+       details are filled in. See resumeEnrollment() below for the return trip. -->
+  <div id="enroll-resume" hidden>
     <div style="text-align:center;max-width:420px;">
       <div style="width:36px;height:36px;margin:0 auto 20px;border:3px solid #e8edf5;border-top-color:#3b82f6;border-radius:50%;animation:enrollSpin 0.9s linear infinite;"></div>
-      <h2 id="enroll-gate-msg" style="font-size:1.2rem;margin-bottom:8px;">Checking your account…</h2>
-      <p id="enroll-gate-sub" style="color:#64748b;font-size:0.9rem;line-height:1.6;"></p>
+      <h2 style="font-size:1.2rem;margin-bottom:8px;">Confirming your seat…</h2>
+      <p style="color:#64748b;font-size:0.9rem;line-height:1.6;">You're signed in — we're submitting the details you already filled in.</p>
     </div>
   </div>
-  <style>@keyframes enrollSpin { to { transform: rotate(360deg); } }</style>
+  <style>
+    @keyframes enrollSpin { to { transform: rotate(360deg); } }
+    /* display lives here, not inline: an inline `display:flex` outranks the
+       UA's [hidden] rule and the overlay would cover the page on every load. */
+    #enroll-resume:not([hidden]) {
+      position: fixed;
+      inset: 0;
+      background: #fcfcfc;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+  </style>
 
   <main>
     <div class="enroll-container">
@@ -203,10 +220,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
           <div class="form-group">
             <label>Email</label>
-            <!-- Filled from the signed-in account and locked: the enrollment is
-                 tied to that user, so a mismatched email would orphan it. -->
-            <input type="email" name="email" required readonly>
-            <small style="display:block;margin-top:6px;color:#888;font-size:0.8rem;">
+            <!-- Editable by default so a visitor with no account can fill the
+                 form. Once signed in it is locked to the account email, because
+                 the enrollment is tied to that user and a mismatch would orphan
+                 it — enrollSession() below does the locking. -->
+            <input type="email" name="email" required>
+            <small id="email-hint-guest" style="display:block;margin-top:6px;color:#888;font-size:0.8rem;">
+              You'll confirm this email with a quick sign-in when you submit — it's how you'll access your classes and level test.
+            </small>
+            <small id="email-hint-account" hidden style="margin-top:6px;color:#888;font-size:0.8rem;">
               From your SpeakLab account. <a href="#" onclick="enrollSignOut(); return false;" style="color:#3b82f6;">Use a different account</a>
             </small>
           </div>
@@ -365,49 +387,107 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </footer>
   <script>
-    // ─── ENROLLMENT REQUIRES AN ACCOUNT ──────────────────────────────────
-    // Anonymous enrollments could not be tied to a level test result or a
-    // portal login, which left the team reconciling people by hand.
-    (async function gateEnrollment() {
-      const gate = document.getElementById('enroll-gate');
-      const msg  = document.getElementById('enroll-gate-msg');
-      const sub  = document.getElementById('enroll-gate-sub');
+    // ─── ACCOUNT: PREFILL NOW, REQUIRE AT SUBMIT ─────────────────────────
+    // An enrollment still has to hang off one identity — the seat, the level
+    // test and the portal all key off it, and RLS enforces
+    // student_id = auth.uid() on insert. What changed is *when* we ask. Nobody
+    // is stopped from reading the page or filling the form; script.js sends
+    // them to login only once they press Submit, and brings them straight back
+    // here to finish.
 
-      if (!window.supabaseClient) {
-        msg.textContent = 'Cannot reach our servers';
-        sub.textContent = 'Please check your connection and refresh. If this keeps happening, WhatsApp us and we will enroll you manually.';
-        return;
-      }
+    /** Lock the email field to the account when there is a session. */
+    (async function enrollSession() {
+      if (!window.supabaseClient) return;
 
       const { data: { session } } = await window.supabaseClient.auth.getSession();
+      if (!session) return;
 
-      if (!session) {
-        msg.textContent = 'Please sign in to enroll';
-        sub.textContent = 'Taking you to the login page — it only takes a moment, and it is how you will access your classes and level test.';
-        // Brief pause so the message is readable rather than a blank flash.
-        setTimeout(() => {
-          window.location.replace('login.html?redirect=enroll.html');
-        }, 1200);
-        return;
-      }
-
-      // Tie the form to the signed-in account.
       const user = session.user;
       window.currentEnrollUser = user;
 
       const emailInput = document.querySelector('#enrollForm input[name="email"]');
       const nameInput  = document.querySelector('#enrollForm input[name="name"]');
-      if (emailInput) emailInput.value = user.email || '';
+      if (emailInput) {
+        emailInput.value = user.email || '';
+        emailInput.readOnly = true;
+      }
       if (nameInput && !nameInput.value) {
         nameInput.value = user.user_metadata?.full_name || '';
       }
 
-      gate.remove();
+      const guestHint   = document.getElementById('email-hint-guest');
+      const accountHint = document.getElementById('email-hint-account');
+      if (guestHint) guestHint.hidden = true;
+      if (accountHint) { accountHint.hidden = false; accountHint.style.display = 'block'; }
     })();
+
+    /**
+     * Finish an enrollment that was interrupted by the login step.
+     *
+     * script.js stashes the filled-in form before sending someone to log in.
+     * If we come back with both a session and a stash, put the answers back and
+     * submit for them — being made to retype a form you already filled is the
+     * fastest way to lose the seat you just went and made an account for.
+     *
+     * Runs on `load`, not DOMContentLoaded: script.js binds the submit handler
+     * on DOMContentLoaded, and requestSubmit() before that would do nothing.
+     */
+    window.addEventListener('load', async function resumeEnrollment() {
+      const KEY = 'speaklab_enroll_pending';
+      let pending = null;
+      try { pending = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (e) {}
+      if (!pending || !window.supabaseClient) return;
+
+      const form = document.getElementById('enrollForm');
+      if (!form) return;
+
+      const { data: { session } } = await window.supabaseClient.auth.getSession();
+
+      // The batch <select> is populated from data.json, so its options may not
+      // exist yet. Wait for them rather than silently dropping the choice.
+      if (session) document.getElementById('enroll-resume').hidden = false;
+      await waitForBatchOptions();
+      restoreFields(pending);
+
+      // Still signed out — they backed out of login. The fields are filled
+      // back in above; keep the stash and let them press Submit again.
+      if (!session) return;
+
+      try { sessionStorage.removeItem(KEY); } catch (e) {}
+
+      // The account is the source of truth for the email now.
+      const emailInput = form.querySelector('input[name="email"]');
+      if (emailInput) emailInput.value = session.user.email || pending.email || '';
+
+      form.requestSubmit ? form.requestSubmit() : form.submit();
+    });
+
+    function restoreFields(pending) {
+      const form = document.getElementById('enrollForm');
+      if (!form || !pending) return;
+      Object.keys(pending).forEach((name) => {
+        const field = form.elements.namedItem(name);
+        if (field && pending[name]) field.value = pending[name];
+      });
+    }
+
+    function waitForBatchOptions() {
+      return new Promise((resolve) => {
+        const select = document.getElementById('batch-preference');
+        if (!select) return resolve();
+        let waited = 0;
+        (function check() {
+          // >1 because the disabled placeholder is always there.
+          if (select.options.length > 1 || waited >= 4000) return resolve();
+          waited += 100;
+          setTimeout(check, 100);
+        })();
+      });
+    }
 
     window.enrollSignOut = async () => {
       await window.supabaseClient.auth.signOut();
-      window.location.replace('login.html?redirect=enroll.html');
+      window.location.reload();
     };
   </script>
 
@@ -520,7 +600,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   box-shadow: 0 15px 35px rgba(37, 211, 102, 0.6), 0 5px 15px rgba(0,0,0,0.2) !important;
 }
 </style>
-  <script defer src="seminar-popup.js?v=20260724"></script>
+  <script defer src="seminar-popup.js?v=20260731"></script>
   <script defer src="community-bell.js?v=20260724"></script>
 </body>
 </html>
