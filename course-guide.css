@@ -197,16 +197,19 @@
 }
 
 /* ── Week cards ──────────────────────────────────────────────────────────── */
+/* The wrapper owns the rail so the <ol> can contain only <li> — a <div> child
+   of <ol> is invalid HTML, and it also made the JS offsetTop maths depend on
+   which element happened to be positioned. */
+.sl-weeks-wrap { position: relative; }
+
 .sl-weeks {
   list-style: none;
   margin: 0;
   padding: 0 0 0 40px;
-  position: relative;
-  counter-reset: sl-week;
 }
 
 /* The rail behind the dots, and the coloured line that fills as you scroll. */
-.sl-weeks::before {
+.sl-weeks-wrap::before {
   content: "";
   position: absolute;
   left: 13px;
@@ -486,6 +489,86 @@
   }
   .sl-bubble::before { display: none; }
   .sl-bubble p { font-size: 0.89rem; line-height: 1.55; }
+
+  /* The button is a third child of a two-column grid, so it was being dropped
+     into the 96px icon column and wrapping onto three lines. Span the row. */
+  .sl-sound {
+    grid-column: 1 / -1;
+    justify-self: center;
+    margin: 2px 0 0;
+    white-space: nowrap;
+  }
+
+  /* ── Stacked week cards ─────────────────────────────────────────────────
+     Each card sticks just under the guide, so the next one slides up and
+     covers the one before it instead of the whole list scrolling past. The
+     tops step down by 8px each, which leaves a visible sliver of every card
+     underneath — that sliver is what makes the stack read as a stack. */
+  .sl-weeks { padding-left: 0; }
+  .sl-weeks-wrap::before, .sl-rail-fill { display: none; }
+  .sl-week::before { display: none; }
+
+  .sl-week {
+    position: sticky;
+    /* Solid, not translucent: stacked cards must hide what is behind them. */
+    background: #fff;
+    margin-bottom: 20px;
+    box-shadow: 0 -6px 26px rgba(15, 23, 42, 0.10);
+  }
+
+  .sl-week:nth-of-type(1) { top: 198px; }
+  .sl-week:nth-of-type(2) { top: 206px; }
+  .sl-week:nth-of-type(3) { top: 214px; }
+  .sl-week:nth-of-type(4) { top: 222px; }
+
+  /* The last card has nothing stacking over it, so give it room to breathe
+     rather than leaving a gap the stack never fills. */
+  .sl-week:last-of-type { margin-bottom: 0; }
+}
+
+/* ── Mobile: the detail cards below the journey ──────────────────────────────
+   Program Overview, What You'll Learn and the pricing panel kept their 40px
+   desktop padding on a 360px screen, which is most of a phone's width spent on
+   empty margin and made the page far longer than it needed to be. */
+@media (max-width: 640px) {
+  .detail-wrapper { padding-bottom: 40px; gap: 18px; }
+
+  .detail-card {
+    padding: 26px 20px;
+    border-radius: 26px;
+    margin-bottom: 18px;
+  }
+
+  .detail-card h2 { font-size: 1.4rem; margin-bottom: 18px; }
+
+  .overview-grid { gap: 10px; }
+  .overview-item { padding: 13px 15px; border-radius: 15px; }
+  .overview-item h5 { font-size: 0.66rem; margin-bottom: 3px; }
+  .overview-item p { font-size: 0.95rem; line-height: 1.35; }
+
+  .curr-item {
+    padding: 15px 16px;
+    gap: 12px;
+    border-radius: 16px;
+    margin-bottom: 10px;
+  }
+  .curr-icon { width: 24px; height: 24px; margin-top: 2px; }
+  .curr-content h4 { font-size: 1rem; margin-bottom: 3px; }
+  .curr-content p { font-size: 0.87rem; line-height: 1.45; }
+
+  .price-box { margin-bottom: 18px; }
+  .price-amount { font-size: 2.5rem; margin: 6px 0 4px; }
+  .price-title { font-size: 0.8rem; }
+  .price-regular { font-size: 0.95rem; }
+  .price-details { padding: 18px; border-radius: 18px; }
+  .price-details ul { font-size: 0.88rem !important; }
+
+  .enroll-btn {
+    padding: 16px 18px;
+    font-size: 0.92rem;
+    margin-top: 20px;
+    border-radius: 32px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -494,10 +577,11 @@
   .sl-journey-head { margin-bottom: 24px; }
   .sl-journey-head p { font-size: 0.93rem; }
 
-  .sl-weeks { padding-left: 30px; }
-  .sl-weeks::before, .sl-rail-fill { left: 9px; }
-  .sl-week { padding: 20px 18px; border-radius: 18px; margin-bottom: 14px; }
-  .sl-week::before { left: -27px; top: 26px; width: 13px; height: 13px; }
+  /* No rail rules here: below 900px the cards stack instead, and the rail and
+     its dots are hidden. This block only sizes the cards themselves — an
+     earlier version re-applied the rail padding and left the text indented
+     against a rail that was no longer drawn. */
+  .sl-week { padding: 20px 18px; border-radius: 18px; }
   .sl-week h3 { font-size: 1.1rem; }
   .sl-week p { font-size: 0.89rem; }
   .sl-week-win { font-size: 0.82rem; }
@@ -517,6 +601,8 @@
   .detail-card.theme-1::after, .detail-card.theme-2::after, .detail-card.theme-3::after,
   .sl-card-accent { animation: none; }
   .sl-week, .sl-reveal { opacity: 1; transform: none; transition: none; }
+  /* Cards sliding over each other is motion too — let them scroll normally. */
+  .sl-week { position: static; }
   .sl-rail-fill { transition: none; }
   .sl-bubble p { transition: none; }
 }
