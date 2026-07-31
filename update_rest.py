@@ -56,7 +56,7 @@ new_pricing = """
           <div style="text-align: center; margin-top: 25px;">
             <p style="color: #e53e3e; font-weight: 700; font-size: 0.9rem; margin-bottom: 15px;">⚠️ Only 15 seats per batch. Early bird pricing ends when seats fill up.</p>
             <a href="enroll.html" class="enroll-btn" style="margin-top: 0;">SECURE MY SEAT — PKR 10,000</a>
-            <a href="https://wa.me/923014497532" style="display: block; margin-top: 15px; color: #555; text-decoration: underline; font-weight: 600; font-size: 0.9rem;" target="_blank">Have questions? WhatsApp us</a>
+            <a href="https://wa.me/923044881260" style="display: block; margin-top: 15px; color: #555; text-decoration: underline; font-weight: 600; font-size: 0.9rem;" target="_blank">Have questions? WhatsApp us</a>
           </div>
 """
 cd = re.sub(r'<div class="price-box">.*?<a href="[^"]*" class="enroll-btn">[^<]*</a>', new_pricing, cd, flags=re.DOTALL)

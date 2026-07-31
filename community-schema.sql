@@ -136,7 +136,7 @@ do $$ begin
   if not exists (select 1 from public.community_posts) then
     insert into public.community_posts (user_name, user_badge, content, is_pinned) values
     ('Shayan', 'Admin 👑', '🎉 Welcome to SpeakLab Community! August batch starts 1st August — only limited seats remaining. Drop your questions below!', true),
-    ('Shayan', 'Admin 👑', '📅 FREE Seminar on 28th July in Lahore! Register on WhatsApp: 0301-4497532 — seats are filling fast 🔥', true),
+    ('Shayan', 'Admin 👑', '📅 FREE Seminar on 28th July in Lahore! Register on WhatsApp: +92 304 4881260 — seats are filling fast 🔥', true),
     ('Ali Hassan', 'Student 🎓', 'Just completed Week 2 and I can already feel the difference in how I speak! Best decision ever 🚀', false),
     ('Fatima Malik', 'Student 🎓', 'The mock interview practice in Week 7 was absolutely game-changing. Got my job offer last week! 🎯', false);
   end if;

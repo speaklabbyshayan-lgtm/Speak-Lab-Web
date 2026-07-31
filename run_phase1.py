@@ -6,7 +6,7 @@ directory = r"e:\speaklabs"
 
 whatsapp_button_html = """
 <!-- Floating WhatsApp Button -->
-<a href="https://wa.me/923014497532" target="_blank" class="floating-whatsapp" style="position: fixed; bottom: 20px; right: 20px; background-color: #25D366; color: white; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); z-index: 1000; animation: pulse 2s infinite;">
+<a href="https://wa.me/923044881260" target="_blank" class="floating-whatsapp" style="position: fixed; bottom: 20px; right: 20px; background-color: #25D366; color: white; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); z-index: 1000; animation: pulse 2s infinite;">
   <svg viewBox="0 0 24 24" width="35" height="35" fill="currentColor">
     <path d="M12.01 2.011a9.97 9.97 0 0 0-8.5 4.887L2 12.5l2.427-4.475a9.97 9.97 0 1 0 7.583-6.014zm4.184 13.916c-.22.616-1.28 1.185-1.768 1.258-.456.068-.992.106-2.923-.524-2.37-.773-3.87-3.13-4.01-3.322-.14-.192-.958-1.293-.958-2.464 0-1.17.61-1.745.828-1.97.22-.224.473-.28.628-.28s.31 0 .448.006c.144.006.335-.054.524.41.196.48.667 1.666.726 1.785.058.118.098.256.02.404-.078.148-.118.236-.236.354-.118.118-.246.26-.354.364-.118.103-.242.217-.11.453.134.236.594.998 1.272 1.61.872.784 1.612 1.026 1.848 1.13.236.103.374.088.512-.06.138-.148.59-6.685.748-.92.158-.236.413-.197.63-.118s1.378.665 1.614.783c.236.118.394.177.453.275.058.098.058.572-.162 1.187z"/>
   </svg>
@@ -28,8 +28,8 @@ for filename in os.listdir(directory):
 
         # PHASE 1:
         # 1. WhatsApp number
-        content = re.sub(r'https://wa\.me/(?!\d)', 'https://wa.me/923014497532', content)
-        content = content.replace("Number coming soon", "0301-4497532")
+        content = re.sub(r'https://wa\.me/(?!\d)', 'https://wa.me/923044881260', content)
+        content = content.replace("Number coming soon", "+92 304 4881260")
         
         # 2. Fix broken CTA buttons
         # Replace href="#" for JOIN JULY BATCH and GET STARTED
@@ -42,12 +42,12 @@ for filename in os.listdir(directory):
         content = re.sub(r'href="#"([^>]*>\s*JOIN JULY BATCH)', r'href="enroll.html"\1', content, flags=re.IGNORECASE)
         content = re.sub(r'href="#"([^>]*>\s*❤️ GET STARTED)', r'href="enroll.html"\1', content, flags=re.IGNORECASE)
         
-        # DOWNLOAD SYLLABUS button -> https://wa.me/923014497532
-        content = re.sub(r'href="[^"]*"([^>]*>\s*DOWNLOAD SYLLABUS)', r'href="https://wa.me/923014497532"\1', content, flags=re.IGNORECASE)
-        content = re.sub(r'href=\'#\'([^>]*>\s*DOWNLOAD SYLLABUS)', r'href="https://wa.me/923014497532"\1', content, flags=re.IGNORECASE)
+        # DOWNLOAD SYLLABUS button -> https://wa.me/923044881260
+        content = re.sub(r'href="[^"]*"([^>]*>\s*DOWNLOAD SYLLABUS)', r'href="https://wa.me/923044881260"\1', content, flags=re.IGNORECASE)
+        content = re.sub(r'href=\'#\'([^>]*>\s*DOWNLOAD SYLLABUS)', r'href="https://wa.me/923044881260"\1', content, flags=re.IGNORECASE)
 
         # 4. Fix footer newsletter button
-        content = re.sub(r'<button type="button">ENROLL</button>', r'<button type="button" onclick="window.open(\'https://wa.me/923014497532\', \'_blank\')">GET EARLY ACCESS</button>', content)
+        content = re.sub(r'<button type="button">ENROLL</button>', r'<button type="button" onclick="window.open(\'https://wa.me/923044881260\', \'_blank\')">GET EARLY ACCESS</button>', content)
         
         # 5. Update email everywhere
         content = content.replace("support@speaklab.pk", "info@speaklabbyshayan.com")

@@ -18,7 +18,7 @@
     // Bumped from 'speaklab_seminar_shown' with the batch announcement, so the
     // new message reaches people who had already dismissed the seminar one.
     storageKey: 'speaklab_batch_aug_shown',
-    whatsappNumber: '923014497532',
+    whatsappNumber: '923044881260',
     whatsappText: 'I want to register for the batch starting 4th August',
     badge: '🔥 LIMITED SEATS',
     overline: '🚀 NEW BATCH — LAHORE',

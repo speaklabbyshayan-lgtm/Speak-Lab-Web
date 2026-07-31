@@ -10,7 +10,7 @@ hero_old = r'<div class="hero-cta-wrapper">\s*<a href="[^"]*" class="hero-btn pr
 
 hero_new = """<div class="hero-cta-wrapper">
         <a href="enroll.html" class="hero-btn primary-btn">SECURE MY SPOT</a>
-        <a href="https://wa.me/923014497532" class="hero-btn secondary-btn" target="_blank">
+        <a href="https://wa.me/923044881260" class="hero-btn secondary-btn" target="_blank">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
           CHAT ON WHATSAPP
         </a>
@@ -186,7 +186,7 @@ new_faqs_html = """
           </div>
         </div>
         <div style="text-align: center; margin-top: 30px;">
-          <a href="https://wa.me/923014497532" target="_blank" class="faq-see-all">STILL HAVE QUESTIONS? CHAT WITH US &rarr;</a>
+          <a href="https://wa.me/923044881260" target="_blank" class="faq-see-all">STILL HAVE QUESTIONS? CHAT WITH US &rarr;</a>
         </div>
 """
 content = re.sub(r'<div class="faq-accordion".*?<div style="text-align: center; margin-top: 30px;">.*?</div>', new_faqs_html, content, flags=re.DOTALL)
@@ -203,9 +203,9 @@ final_cta = """
         
         <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
           <a href="enroll.html" class="btn-primary" style="background: #fff; color: #000;">ENROLL NOW — JULY BATCH</a>
-          <a href="https://wa.me/923014497532" class="btn-outline" style="border-color: #333; color: #fff;" target="_blank">ASK US ANYTHING ON WHATSAPP</a>
+          <a href="https://wa.me/923044881260" class="btn-outline" style="border-color: #333; color: #fff;" target="_blank">ASK US ANYTHING ON WHATSAPP</a>
         </div>
-        <p style="margin-top: 25px; font-size: 0.85rem; color: #666; font-weight: 600;">📧 info@speaklabbyshayan.com | 📱 0301-4497532</p>
+        <p style="margin-top: 25px; font-size: 0.85rem; color: #666; font-weight: 600;">📧 info@speaklabbyshayan.com | 📱 +92 304 4881260</p>
       </div>
     </div>
   </section>

@@ -27,7 +27,7 @@ const ANALYTICS = {
   if (window.__slAnalyticsLoaded) return;
   window.__slAnalyticsLoaded = true;
 
-  const WA_NUMBER = '923014497532';
+  const WA_NUMBER = '923044881260';
   const page = (location.pathname.split('/').pop() || 'index.html').replace('.html', '');
 
   // ── Loaders ────────────────────────────────────────────────────────────

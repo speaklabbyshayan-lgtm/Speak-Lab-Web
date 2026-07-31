@@ -7,8 +7,8 @@ files = [
     'thank-you.html', '404.html'
 ]
 
-target = '<li><a href="https://wa.me/923014497532" target="_blank">WhatsApp Us</a></li>'
-replacement = '<li><a href="https://wa.me/923014497532" target="_blank">WhatsApp Us</a></li>\n            <li><a href="https://g.page/r/CdPtj9VpwqqKEBM/review" target="_blank" rel="noopener noreferrer">⭐ Rate us on Google</a></li>'
+target = '<li><a href="https://wa.me/923044881260" target="_blank">WhatsApp Us</a></li>'
+replacement = '<li><a href="https://wa.me/923044881260" target="_blank">WhatsApp Us</a></li>\n            <li><a href="https://g.page/r/CdPtj9VpwqqKEBM/review" target="_blank" rel="noopener noreferrer">⭐ Rate us on Google</a></li>'
 
 for f in files:
     path = os.path.join(r"e:\speaklabs", f)
