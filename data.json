@@ -22,7 +22,7 @@
     "seats": 20,
     "fee": 20000,
     "regularFee": 30000,
-    "registrationFee": 20000,
+    "registrationFee": 10000,
     "balanceDue": "before the batch starts",
     "batchOptions": [
       {
@@ -77,7 +77,7 @@
     },
     {
       "q": "How much does the program cost?",
-      "a": "Special August Batch fee is PKR 20,000 (regular PKR 30,000). No advance is required — pay the full PKR 20,000 before the batch starts, and your seat is confirmed once payment is received."
+      "a": "Special August Batch fee is PKR 20,000 (regular PKR 30,000). Pay PKR 10,000 in advance to confirm your seat, and the remaining PKR 10,000 before the batch starts."
     },
     {
       "q": "How many seats are available?",
@@ -101,7 +101,7 @@
     },
     {
       "q": "Do I need to pay an advance to book my seat?",
-      "a": "No advance is required. The full PKR 20,000 is payable before the batch starts, and your seat is confirmed once the full fee is received."
+      "a": "Yes. A PKR 10,000 advance confirms your seat, and the remaining PKR 10,000 is payable before the batch starts."
     },
     {
       "q": "Is this program worth it?",

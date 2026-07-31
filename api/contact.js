@@ -55,16 +55,24 @@ export default async function handler(req, res) {
     const whatsapp = escapeHtml(cleanText(body.whatsapp, 30));
     const message = escapeHtml(cleanText(body.message, 2000));
     const batch = escapeHtml(cleanText(body.batch_preference, 60));
+    const eventType = escapeHtml(cleanText(body.event_type, 60));
+    const studentStatus = escapeHtml(cleanText(body.student_status, 60));
 
-    // 'trial' marks a Free Trial Classes booking; anything else is a plain
-    // contact message. Server-side branch — the subject line is never
-    // caller-controlled.
+    // 'trial' marks a Free Trial Classes booking, 'event' an events.html
+    // registration; anything else is a plain contact message. Server-side
+    // branch — the subject line is never caller-controlled.
     const isTrial = body.type === 'trial';
+    const isEvent = body.type === 'event';
 
     if (!name || !isEmail(email)) {
       return res.status(400).json({ status: 'error', message: 'A name and a valid email are required.' });
     }
-    if (!isTrial && !message) {
+    if (isEvent && !eventType) {
+      return res.status(400).json({ status: 'error', message: 'Please choose which event you want to attend.' });
+    }
+    // Only a plain contact message actually needs a message body — for a
+    // booking or a registration the note is optional.
+    if (!isTrial && !isEvent && !message) {
       return res.status(400).json({ status: 'error', message: 'Please write a message.' });
     }
 
@@ -78,15 +86,23 @@ export default async function handler(req, res) {
       });
     }
 
-    // Email 1: To Owner
-    const { error: ownerError } = await resend.emails.send({
-      from: SENDER_EMAIL,
-      to: OWNER_EMAIL,
-      subject: isTrial
-        ? `Free Trial booking: ${name}`
-        : `New Contact from ${name}`,
-      html: isTrial
-        ? `
+    // Event registrations land in the same list, prefixed so they are easy to
+    // scan for. Most of these people are not students, so the status matters.
+    if (isEvent) {
+      await saveSubmission({
+        name, email, whatsapp,
+        message: `EVENT REGISTRATION — ${eventType} — ${studentStatus || 'status not given'}${message ? ` — note: ${message}` : ''}`,
+      });
+    }
+
+    // Three kinds of submission now share this endpoint, so the subject and
+    // body are picked here rather than in a nested ternary that nobody can
+    // read six months from now.
+    let ownerSubject, ownerHtml, studentSubject, studentHtml;
+
+    if (isTrial) {
+      ownerSubject = `Free Trial booking: ${name}`;
+      ownerHtml = `
         <h2>New Free Trial Classes Booking</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
@@ -94,14 +110,62 @@ export default async function handler(req, res) {
         <p><strong>Preferred batch:</strong> ${batch || 'Not specified'}</p>
         ${message ? `<p><strong>Note:</strong><br/>${message}</p>` : ''}
         <p>Reply on WhatsApp to schedule their 3 trial classes.</p>
-      `
-        : `
+      `;
+      studentSubject = 'Your Free Trial Classes | SpeakLab';
+      studentHtml = `
+        <h2>Hi ${name},</h2>
+        <p>Great decision — your <strong>Free Trial Classes</strong> request is confirmed on our side.</p>
+        <p>You are welcome to attend <strong>3 full classes at no cost</strong> before deciding about the program. Our team will contact you on WhatsApp (<strong>${whatsapp || 'the number you provided'}</strong>) within 24 hours to schedule your first class.</p>
+        <p>Venue: Punjab Tianjin University of Technology, Lahore &middot; 6:00&ndash;7:30 PM</p>
+        <br/>
+        <p>Best regards,<br/>The SpeakLab Team</p>
+      `;
+    } else if (isEvent) {
+      ownerSubject = `Event registration: ${name} — ${eventType}`;
+      ownerHtml = `
+        <h2>New Event Registration</h2>
+        <p><strong>Event:</strong> ${eventType}</p>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>WhatsApp:</strong> ${whatsapp}</p>
+        <p><strong>SpeakLab student?</strong> ${studentStatus || 'Not specified'}</p>
+        ${message ? `<p><strong>Note:</strong><br/>${message}</p>` : ''}
+        <p>Send them the date, time and meeting point on WhatsApp.</p>
+      `;
+      studentSubject = `You're registered — ${eventType} | SpeakLab`;
+      studentHtml = `
+        <h2>Hi ${name},</h2>
+        <p>You're registered for the <strong>${eventType}</strong>. Good — showing up is the hard part.</p>
+        <p>Our team will message you on WhatsApp (<strong>${whatsapp || 'the number you provided'}</strong>) with the exact date, time and meeting point before the event.</p>
+        <p>All SpeakLab events are held in Lahore and run in English. Come as you are — nobody there is fluent yet, and that is the point.</p>
+        <br/>
+        <p>See you there,<br/>The SpeakLab Team</p>
+      `;
+    } else {
+      ownerSubject = `New Contact from ${name}`;
+      ownerHtml = `
         <h2>New Contact Message</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>WhatsApp:</strong> ${whatsapp}</p>
         <p><strong>Message:</strong><br/>${message}</p>
-      `
+      `;
+      studentSubject = 'We received your message! | SpeakLab';
+      studentHtml = `
+        <h2>Hi ${name},</h2>
+        <p>Thank you for reaching out to SpeakLab!</p>
+        <p>We have received your message and will get back to you shortly on WhatsApp or Email.</p>
+        <br/>
+        <p>Best regards,<br/>The SpeakLab Team</p>
+      `;
+    }
+
+    // Email 1: To Owner
+    const { error: ownerError } = await resend.emails.send({
+      from: SENDER_EMAIL,
+      to: OWNER_EMAIL,
+      subject: ownerSubject,
+      html: ownerHtml,
     });
 
     if (ownerError) {
@@ -112,25 +176,8 @@ export default async function handler(req, res) {
     const { error: studentError } = await resend.emails.send({
       from: SENDER_EMAIL,
       to: email,
-      subject: isTrial
-        ? 'Your Free Trial Classes | SpeakLab'
-        : 'We received your message! | SpeakLab',
-      html: isTrial
-        ? `
-        <h2>Hi ${name},</h2>
-        <p>Great decision — your <strong>Free Trial Classes</strong> request is confirmed on our side.</p>
-        <p>You are welcome to attend <strong>3 full classes at no cost</strong> before deciding about the program. Our team will contact you on WhatsApp (<strong>${whatsapp || 'the number you provided'}</strong>) within 24 hours to schedule your first class.</p>
-        <p>Venue: Punjab Tianjin University of Technology, Lahore &middot; 6:00&ndash;7:30 PM</p>
-        <br/>
-        <p>Best regards,<br/>The SpeakLab Team</p>
-      `
-        : `
-        <h2>Hi ${name},</h2>
-        <p>Thank you for reaching out to SpeakLab!</p>
-        <p>We have received your message and will get back to you shortly on WhatsApp or Email.</p>
-        <br/>
-        <p>Best regards,<br/>The SpeakLab Team</p>
-      `
+      subject: studentSubject,
+      html: studentHtml,
     });
 
     if (studentError) {
