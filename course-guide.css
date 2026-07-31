@@ -17,7 +17,11 @@
   position: relative;
   border-radius: 35px;
   padding: 46px 44px;
-  overflow: hidden;
+  /* NO `overflow: hidden` here. Any ancestor with overflow hidden/auto/scroll
+     becomes the scroll container for `position: sticky` inside it, which stops
+     the guide following the scroll — that was the actual bug, not the column
+     height. Nothing here needs clipping: border-radius already clips the
+     background on its own. */
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
   /* Same recipe as .theme-1 on this page, rotated to blue so the journey reads
@@ -349,16 +353,39 @@
    static gradient. Same treatment as the events cards: the gradient itself
    drifts, a soft glow moves behind the content, and each card gets a flowing
    accent bar. The theme-1/2/3 backgrounds are untouched — only animated. */
-.detail-card.theme-1,
-.detail-card.theme-2,
-.detail-card.theme-3 {
-  background-size: 220% 220%;
-  animation: sl-card-flow 14s ease infinite;
+/* Animating background-position on the original two-layer gradients barely
+   moved anything — the colour has to actually travel through several stops to
+   read as changing. Same recipe as .tilt-color-bg on the homepage: a long
+   multi-stop gradient at 800% size, slid end to end.
+
+   Every stop is a light (200/300-level) tone on purpose: these cards carry
+   near-black text, so the background can cycle but must never darken enough to
+   hurt the contrast. The selector is .detail-card.theme-N so it outranks the
+   single-class rules in the page's own inline <style>. */
+.detail-card.theme-1 {
+  background: linear-gradient(270deg, #e9d5ff, #fed7aa, #fbcfe8, #c7d2fe, #e9d5ff);
+  background-size: 800% 800%;
+  animation: sl-card-flow 15s ease infinite;
 }
 
+.detail-card.theme-2 {
+  background: linear-gradient(270deg, #a7f3d0, #6ee7b7, #a5f3fc, #d9f99d, #a7f3d0);
+  background-size: 800% 800%;
+  animation: sl-card-flow 13s ease infinite;
+}
+
+.detail-card.theme-3 {
+  background: linear-gradient(270deg, #fecdd3, #fda4af, #fde68a, #f9a8d4, #fecdd3);
+  background-size: 800% 800%;
+  animation: sl-card-flow 17s ease infinite;
+}
+
+/* Deliberately different durations so the three never pulse in lockstep, which
+   is what makes a page look like a screensaver. */
 @keyframes sl-card-flow {
-  0%, 100% { background-position: 0% 50%; }
-  50%      { background-position: 100% 50%; }
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* ::before on .detail-card is already the noise texture, so the glow goes on
