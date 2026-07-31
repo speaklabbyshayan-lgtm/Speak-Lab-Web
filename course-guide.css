@@ -456,15 +456,30 @@
 
 /* ── Mobile ──────────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
-  .sl-journey { grid-template-columns: 1fr; gap: 22px; }
+  /* Two tuning knobs for the whole locked layout. The site header is fixed, so
+     the guide pins below it; the cards then pin below the guide. Change these
+     two and everything else follows. */
+  .sl-journey {
+    --sl-nav-h: 74px;
+    --sl-guide-h: 158px;
+    /* Block, not grid. A grid item's sticky travel is limited to its own grid
+       area — one row tall here — so the guide could never follow the scroll.
+       As a plain block container the whole section becomes its travel range. */
+    display: block;
+  }
 
-  /* On a phone the guide sits at the top of the section and stays there while
-     the weeks scroll under it — a side column would be far too narrow, and a
-     floating mascot would cover the content. */
+  /* Dissolve the column box entirely so .sl-guide becomes a direct child of
+     .sl-journey. Sticky is bounded by the parent's box, and the column was
+     exactly as tall as the guide itself — zero room to move. */
+  .sl-guide-col { display: contents; }
+
+  /* On a phone the guide locks under the header and stays there while the
+     weeks slide up underneath it. */
   .sl-guide {
-    top: 74px;
+    top: var(--sl-nav-h);
+    margin-bottom: 18px;
     display: grid;
-    grid-template-columns: 96px 1fr;
+    grid-template-columns: 84px 1fr;
     align-items: center;
     gap: 12px;
     text-align: left;
@@ -476,7 +491,9 @@
     z-index: 5;
   }
 
-  .sl-coach { width: 92px; height: 102px; margin: 0; }
+  /* Smaller than before: the guide is pinned now, so every pixel it occupies
+     is a pixel permanently taken from the card the visitor is reading. */
+  .sl-coach { width: 78px; height: 86px; margin: 0; }
 
   .sl-bubble {
     margin-top: 0;
@@ -516,10 +533,13 @@
     box-shadow: 0 -6px 26px rgba(15, 23, 42, 0.10);
   }
 
-  .sl-week:nth-of-type(1) { top: 198px; }
-  .sl-week:nth-of-type(2) { top: 206px; }
-  .sl-week:nth-of-type(3) { top: 214px; }
-  .sl-week:nth-of-type(4) { top: 222px; }
+  /* Each card locks just below the pinned guide, stepping 8px further down
+     than the one before so a sliver of every card underneath stays visible —
+     that sliver is what makes it read as a stack rather than a swap. */
+  .sl-week:nth-of-type(1) { top: calc(var(--sl-nav-h) + var(--sl-guide-h) + 10px); }
+  .sl-week:nth-of-type(2) { top: calc(var(--sl-nav-h) + var(--sl-guide-h) + 18px); }
+  .sl-week:nth-of-type(3) { top: calc(var(--sl-nav-h) + var(--sl-guide-h) + 26px); }
+  .sl-week:nth-of-type(4) { top: calc(var(--sl-nav-h) + var(--sl-guide-h) + 34px); }
 
   /* The last card has nothing stacking over it, so give it room to breathe
      rather than leaving a gap the stack never fills. */
