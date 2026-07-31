@@ -30,6 +30,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <link rel="preload" as="font" type="font/woff2" href="https://fonts.gstatic.com/s/outfit/v14/QGYsz_wNahGAdqQ43Rh_fKDptfpM.woff2" crossorigin>
   
   <link rel="stylesheet" href="style.css?v=20260724">
+  <link rel="stylesheet" href="course-guide.css?v=20260731">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <style>
     /* Course Details Page specific layout */
@@ -456,6 +457,118 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </header>
 
+  <!-- ─── GUIDED 8-WEEK JOURNEY ───────────────────────────────────────────
+       Sits before the detail cards on purpose: the page used to open with six
+       grey spec boxes, which told a visitor what the program *contains* before
+       anything made them want it. The guide walks them through what the eight
+       weeks actually feel like first; the specs and the price follow. -->
+  <section class="sl-journey-section" id="journey">
+    <div class="sl-journey-card">
+      <div class="sl-journey-head">
+        <h2>Your 8-Week Journey</h2>
+        <p>Scroll, and your guide will walk you through what actually happens — week by week.</p>
+      </div>
+
+      <div class="sl-journey">
+        <!-- Guide -->
+        <div class="sl-guide-col">
+          <div class="sl-guide">
+            <svg class="sl-coach" viewBox="0 0 200 220" role="img" aria-label="Your SpeakLab guide">
+              <ellipse class="sl-shadow" cx="100" cy="209" rx="46" ry="7"/>
+
+              <g class="sl-figure">
+                <!-- Body -->
+                <path class="sl-body" d="M50 212 C50 168 72 146 100 146 C128 146 150 168 150 212 Z"/>
+                <path class="sl-collar" d="M85 148 L100 170 L115 148 L108 144 L100 158 L92 144 Z"/>
+                <rect class="sl-badge" x="115" y="176" width="24" height="15" rx="4"/>
+                <text x="127" y="187" font-family="Outfit, sans-serif" font-size="9"
+                      font-weight="800" fill="#fff" text-anchor="middle">SL</text>
+
+                <!-- Waving arm -->
+                <g class="sl-arm">
+                  <path d="M145 180 C160 172 169 152 166 138" fill="none"
+                        stroke="#1e3a8a" stroke-width="15" stroke-linecap="round"/>
+                  <circle class="sl-skin" cx="166" cy="132" r="10"/>
+                </g>
+
+                <!-- Neck -->
+                <rect class="sl-skin" x="91" y="126" width="18" height="26" rx="9"/>
+
+                <!-- Head -->
+                <circle class="sl-skin" cx="100" cy="97" r="38"/>
+                <circle class="sl-skin" cx="62" cy="100" r="7"/>
+                <circle class="sl-skin" cx="138" cy="100" r="7"/>
+                <path class="sl-hair" d="M61 94 C61 62 79 50 100 50 C121 50 139 62 139 94 C139 78 124 71 100 71 C76 71 61 78 61 94 Z"/>
+
+                <g class="sl-eyes">
+                  <ellipse class="sl-eye" cx="86" cy="96" rx="4.6" ry="6"/>
+                  <ellipse class="sl-eye" cx="114" cy="96" rx="4.6" ry="6"/>
+                </g>
+
+                <path class="sl-brow" d="M79 83 Q86 79 93 83"/>
+                <path class="sl-brow" d="M107 83 Q114 79 121 83"/>
+
+                <ellipse class="sl-mouth" cx="100" cy="116" rx="11" ry="6"/>
+              </g>
+            </svg>
+
+            <div class="sl-bubble">
+              <p id="sl-line">Hi — I'm your SpeakLab guide. Scroll down and I'll show you how these eight weeks actually go.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weeks -->
+        <ol class="sl-weeks">
+          <div class="sl-rail-fill" aria-hidden="true"></div>
+
+          <li class="sl-week" data-line="Weeks 1 and 2 are about breaking the silence. You speak from the very first class — broken English is fine, staying quiet is not.">
+            <span class="sl-week-tag">Weeks 1–2</span>
+            <h3>Breaking the hesitation</h3>
+            <p>The hardest part is not grammar — it is opening your mouth. You start speaking on day one, in a room of twenty people who are just as nervous as you.</p>
+            <div class="sl-week-win">✓ You will speak English in front of a group for the first time</div>
+          </li>
+
+          <li class="sl-week" data-line="By weeks 3 and 4 the sentences stop being rehearsed. Introductions, opinions, disagreements — the everyday stuff.">
+            <span class="sl-week-tag">Weeks 3–4</span>
+            <h3>Everyday fluency</h3>
+            <p>Introductions, opinions, small talk, disagreeing politely. We drill the conversations you actually have — not textbook dialogues you never will.</p>
+            <div class="sl-week-win">✓ You stop translating in your head before you speak</div>
+          </li>
+
+          <li class="sl-week" data-line="Weeks 5 and 6 turn professional. Interviews, presentations, and the English your workplace expects from you.">
+            <span class="sl-week-tag">Weeks 5–6</span>
+            <h3>Professional communication</h3>
+            <p>Interview practice, presenting an idea, email and meeting etiquette. This is the block that changes how you are treated at work.</p>
+            <div class="sl-week-win">✓ You handle a full mock interview in English</div>
+          </li>
+
+          <li class="sl-week" data-line="The last two weeks put you on your feet. Public speaking, thinking on the spot, and a final presentation in front of everyone.">
+            <span class="sl-week-tag">Weeks 7–8</span>
+            <h3>Stage &amp; leadership</h3>
+            <p>Public speaking, thinking on your feet, and handling questions you did not prepare for. You finish with a final presentation in front of the whole batch.</p>
+            <div class="sl-week-win">✓ You deliver a full presentation — and enjoy it</div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="sl-counters">
+        <div class="sl-counter">
+          <span class="sl-counter-num" data-count="8">0</span>
+          <span class="sl-counter-label">Weeks</span>
+        </div>
+        <div class="sl-counter">
+          <span class="sl-counter-num" data-count="24">0</span>
+          <span class="sl-counter-label">Sessions</span>
+        </div>
+        <div class="sl-counter">
+          <span class="sl-counter-num" data-count="20">0</span>
+          <span class="sl-counter-label">Seats Only</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Content section with matched texture & gradient styling -->
   <main class="detail-wrapper">
 
@@ -463,7 +576,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="main-details">
 
       <!-- Overview Card -->
-      <section id="overview" class="detail-card theme-1">
+      <section id="overview" class="detail-card theme-1 sl-reveal">
         <div class="detail-content">
           <h2>PROGRAM OVERVIEW</h2>
           <div class="overview-grid">
@@ -478,7 +591,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </section>
 
       <!-- Curriculum Card -->
-      <section id="curriculum" class="detail-card theme-2">
+      <section id="curriculum" class="detail-card theme-2 sl-reveal">
         <div class="detail-content">
           <h2>WHAT YOU'LL LEARN</h2>
           <div class="curriculum-list" id="curriculum-container">
@@ -550,7 +663,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- Right Column: Pricing Sidebar -->
     <aside class="sidebar">
-      <div id="pricing" class="detail-card theme-3">
+      <div id="pricing" class="detail-card theme-3 sl-reveal">
         <div class="detail-content">
           
           <div class="price-box">
@@ -692,6 +805,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   box-shadow: 0 15px 35px rgba(37, 211, 102, 0.6), 0 5px 15px rgba(0,0,0,0.2) !important;
 }
 </style>
+  <script defer src="course-guide.js?v=20260731"></script>
   <script defer src="seminar-popup.js?v=20260731"></script>
   <script defer src="community-bell.js?v=20260724"></script>
 </body>

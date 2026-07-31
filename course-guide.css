@@ -1,0 +1,384 @@
+/* SpeakLab — Course guide
+   The animated guide character and the 8-week journey on course-details.html.
+   Kept in its own file because course-details.html already carries a long
+   inline <style>, and this is a self-contained feature that should be easy to
+   lift out again if it ever stops earning its place.
+
+   Colour tokens match the rest of the site: navy #1e3a8a, blue #3b82f6,
+   teal #0f766e, gold #d97706. */
+
+.sl-journey-section {
+  max-width: 1200px;
+  width: 92%;
+  margin: 0 auto 30px;
+}
+
+.sl-journey-card {
+  position: relative;
+  border-radius: 35px;
+  padding: 46px 44px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+  /* Same recipe as .theme-1 on this page, rotated to blue so the journey reads
+     as its own chapter without leaving the palette. */
+  background:
+    radial-gradient(circle at 12% 100%, rgba(59, 130, 246, 0.55) 0%, transparent 58%),
+    linear-gradient(135deg, #e2e8f0 0%, #eef2f7 100%);
+}
+
+.sl-journey-head {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto 38px;
+}
+
+.sl-journey-head h2 {
+  font-size: clamp(1.7rem, 4.5vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 10px;
+  color: #111;
+}
+
+.sl-journey-head p {
+  color: #475569;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+/* ── Layout: guide on the left, weeks scrolling past on the right ────────── */
+.sl-journey {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* The guide follows you down the section instead of scrolling away, which is
+   what makes it feel like a guide rather than a picture. */
+.sl-guide {
+  position: sticky;
+  top: 96px;
+  text-align: center;
+}
+
+.sl-coach {
+  width: 190px;
+  height: 210px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ── Speech bubble ───────────────────────────────────────────────────────── */
+.sl-bubble {
+  position: relative;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 16px 18px;
+  margin-top: 14px;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+  min-height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sl-bubble::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-left: 1px solid #e2e8f0;
+  border-top: 1px solid #e2e8f0;
+  border-radius: 3px;
+}
+
+.sl-bubble p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #1e293b;
+  font-weight: 500;
+  margin: 0;
+  transition: opacity 0.25s ease;
+}
+
+.sl-bubble p.is-swapping { opacity: 0; }
+
+/* ── Character animation ─────────────────────────────────────────────────── */
+.sl-shadow { fill: rgba(15, 23, 42, 0.10); }
+.sl-skin   { fill: #f2c6a0; }
+.sl-hair   { fill: #23282f; }
+.sl-body   { fill: #1e3a8a; }
+.sl-collar { fill: #ffffff; }
+.sl-badge  { fill: #d97706; }
+.sl-eye    { fill: #23282f; }
+.sl-brow   { stroke: #23282f; stroke-width: 3; stroke-linecap: round; fill: none; }
+.sl-mouth  { fill: #8c4a3f; }
+
+/* Gentle idle bob — the single cheapest thing that stops a drawing looking
+   like a sticker. */
+.sl-figure { animation: sl-bob 3.6s ease-in-out infinite; transform-origin: 100px 210px; }
+@keyframes sl-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+/* Blink: a fast scaleY on both eyes, with a long pause between. */
+.sl-eyes { animation: sl-blink 5.2s infinite; transform-origin: 100px 96px; }
+@keyframes sl-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%           { transform: scaleY(0.08); }
+}
+
+/* Waving arm, at a different period from the bob so the two never lock into
+   an obviously repeating loop. */
+.sl-arm { animation: sl-wave 4.3s ease-in-out infinite; transform-origin: 146px 176px; }
+@keyframes sl-wave {
+  0%, 62%, 100% { transform: rotate(0deg); }
+  70%           { transform: rotate(-16deg); }
+  78%           { transform: rotate(4deg); }
+  86%           { transform: rotate(-12deg); }
+}
+
+/* The mouth only moves while a new line is being "spoken" — JS adds the class
+   for about a second when the bubble text changes. */
+.sl-mouth { transform-origin: 100px 116px; }
+.sl-coach.is-talking .sl-mouth { animation: sl-talk 0.26s ease-in-out infinite; }
+@keyframes sl-talk {
+  0%, 100% { transform: scaleY(0.45); }
+  50%      { transform: scaleY(1.15); }
+}
+
+/* ── Week cards ──────────────────────────────────────────────────────────── */
+.sl-weeks {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 40px;
+  position: relative;
+  counter-reset: sl-week;
+}
+
+/* The rail behind the dots, and the coloured line that fills as you scroll. */
+.sl-weeks::before {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 12px;
+  bottom: 12px;
+  width: 3px;
+  border-radius: 999px;
+  background: #dbe2ec;
+}
+
+.sl-rail-fill {
+  position: absolute;
+  left: 13px;
+  top: 12px;
+  width: 3px;
+  height: 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #1e3a8a, #3b82f6, #0f766e);
+  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sl-week {
+  position: relative;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 22px;
+  padding: 24px 26px;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  /* Reveal state — JS flips .is-in when the card scrolls into view. */
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.sl-week.is-in { opacity: 1; transform: translateY(0); }
+
+.sl-week.is-active {
+  border-color: #3b82f6;
+  box-shadow: 0 14px 34px rgba(30, 58, 138, 0.16);
+}
+
+/* The dot on the rail. */
+.sl-week::before {
+  content: "";
+  position: absolute;
+  left: -34px;
+  top: 30px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #cbd5e1;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.sl-week.is-active::before {
+  border-color: #3b82f6;
+  transform: scale(1.25);
+}
+
+.sl-week-tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1e3a8a;
+  background: #eff6ff;
+  border-radius: 999px;
+  padding: 5px 13px;
+  margin-bottom: 10px;
+}
+
+.sl-week h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+  color: #0f172a;
+}
+
+.sl-week p {
+  font-size: 0.94rem;
+  line-height: 1.65;
+  color: #475569;
+  margin: 0;
+}
+
+.sl-week-win {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed #e2e8f0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: #0f766e;
+  font-weight: 600;
+}
+
+/* ── Counters ────────────────────────────────────────────────────────────── */
+.sl-counters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 34px;
+}
+
+.sl-counter {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 22px 16px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+.sl-counter-num {
+  display: block;
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sl-counter-label {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+/* ── Generic scroll reveal, used on the existing cards further down ───────── */
+.sl-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.sl-reveal.is-in { opacity: 1; transform: translateY(0); }
+
+/* ── Mobile ──────────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .sl-journey { grid-template-columns: 1fr; gap: 22px; }
+
+  /* On a phone the guide sits at the top of the section and stays there while
+     the weeks scroll under it — a side column would be far too narrow, and a
+     floating mascot would cover the content. */
+  .sl-guide {
+    top: 74px;
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 12px 14px;
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+    z-index: 5;
+  }
+
+  .sl-coach { width: 92px; height: 102px; margin: 0; }
+
+  .sl-bubble {
+    margin-top: 0;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    min-height: 0;
+    background: transparent;
+    text-align: left;
+  }
+  .sl-bubble::before { display: none; }
+  .sl-bubble p { font-size: 0.89rem; line-height: 1.55; }
+}
+
+@media (max-width: 640px) {
+  .sl-journey-section { width: 94%; }
+  .sl-journey-card { padding: 28px 18px; border-radius: 26px; }
+  .sl-journey-head { margin-bottom: 24px; }
+  .sl-journey-head p { font-size: 0.93rem; }
+
+  .sl-weeks { padding-left: 30px; }
+  .sl-weeks::before, .sl-rail-fill { left: 9px; }
+  .sl-week { padding: 20px 18px; border-radius: 18px; margin-bottom: 14px; }
+  .sl-week::before { left: -27px; top: 26px; width: 13px; height: 13px; }
+  .sl-week h3 { font-size: 1.1rem; }
+  .sl-week p { font-size: 0.89rem; }
+  .sl-week-win { font-size: 0.82rem; }
+
+  .sl-counters { gap: 10px; margin-top: 24px; }
+  .sl-counter { padding: 16px 8px; border-radius: 16px; }
+  .sl-counter-label { font-size: 0.62rem; letter-spacing: 0.05em; }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────── */
+/* The character idles, blinks and waves forever. Hold all of it still for
+   anyone who has asked the OS for less movement, and show every revealed
+   element outright rather than leaving it invisible. */
+@media (prefers-reduced-motion: reduce) {
+  .sl-figure, .sl-eyes, .sl-arm, .sl-coach.is-talking .sl-mouth { animation: none; }
+  .sl-week, .sl-reveal { opacity: 1; transform: none; transition: none; }
+  .sl-rail-fill { transition: none; }
+  .sl-bubble p { transition: none; }
+}
