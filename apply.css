@@ -6,6 +6,13 @@
    Keeping it additive means a change to the level test's look carries over
    here automatically, which is the point. */
 
+/* ── Nav buttons ──────────────────────────────────────────────────────── */
+/* .lt-btn sets `display:inline-flex`, and an author class rule beats the UA's
+   `[hidden]{display:none}` at equal specificity — so the plain `hidden`
+   attribute did nothing and "Back" and "Submit Application" both showed on
+   step 1. Adding the attribute to the selector wins it back without !important. */
+.lt-btn[hidden] { display: none; }
+
 /* ── Step panes ───────────────────────────────────────────────────────── */
 /* .lt-form is a grid and its gap spaces its own children — but here the only
    child is the step pane, so the fields inside it need their own rhythm.
