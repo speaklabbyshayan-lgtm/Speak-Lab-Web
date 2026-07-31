@@ -460,7 +460,12 @@
      the guide pins below it; the cards then pin below the guide. Change these
      two and everything else follows. */
   .sl-journey {
-    --sl-nav-h: 74px;
+    /* How far below the top of the screen everything locks. The site header is
+       sticky and about 58px tall on a phone, so this leaves a deliberate gap
+       under it — at 74px the guide tucked right against the header and looked
+       jammed. Raise this number to lock lower, lower it to lock higher; the
+       cards follow automatically. */
+    --sl-lock-top: 96px;
     --sl-guide-h: 158px;
     /* Block, not grid. A grid item's sticky travel is limited to its own grid
        area — one row tall here — so the guide could never follow the scroll.
@@ -476,7 +481,7 @@
   /* On a phone the guide locks under the header and stays there while the
      weeks slide up underneath it. */
   .sl-guide {
-    top: var(--sl-nav-h);
+    top: var(--sl-lock-top);
     margin-bottom: 18px;
     display: grid;
     grid-template-columns: 84px 1fr;
@@ -536,10 +541,10 @@
   /* Each card locks just below the pinned guide, stepping 8px further down
      than the one before so a sliver of every card underneath stays visible —
      that sliver is what makes it read as a stack rather than a swap. */
-  .sl-week:nth-of-type(1) { top: calc(var(--sl-nav-h) + var(--sl-guide-h) + 10px); }
-  .sl-week:nth-of-type(2) { top: calc(var(--sl-nav-h) + var(--sl-guide-h) + 18px); }
-  .sl-week:nth-of-type(3) { top: calc(var(--sl-nav-h) + var(--sl-guide-h) + 26px); }
-  .sl-week:nth-of-type(4) { top: calc(var(--sl-nav-h) + var(--sl-guide-h) + 34px); }
+  .sl-week:nth-of-type(1) { top: calc(var(--sl-lock-top) + var(--sl-guide-h) + 10px); }
+  .sl-week:nth-of-type(2) { top: calc(var(--sl-lock-top) + var(--sl-guide-h) + 18px); }
+  .sl-week:nth-of-type(3) { top: calc(var(--sl-lock-top) + var(--sl-guide-h) + 26px); }
+  .sl-week:nth-of-type(4) { top: calc(var(--sl-lock-top) + var(--sl-guide-h) + 34px); }
 
   /* The last card has nothing stacking over it, so give it room to breathe
      rather than leaving a gap the stack never fills. */
