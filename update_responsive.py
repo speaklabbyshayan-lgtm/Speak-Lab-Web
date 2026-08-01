@@ -50,7 +50,7 @@ new_cta = """  <!-- Final CTA Section -->
         
         <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
           <a href="enroll.html" class="btn-primary" style="background: #fff; color: #000; padding: 12px 25px; font-size: 0.9rem;">ENROLL NOW — JULY BATCH</a>
-          <a href="https://wa.me/923044881260" class="btn-outline" style="border-color: #333; color: #fff; padding: 12px 25px; font-size: 0.9rem;" target="_blank">ASK US ANYTHING ON WHATSAPP</a>
+          <a href="https://wa.me/923204307432" class="btn-outline" style="border-color: #333; color: #fff; padding: 12px 25px; font-size: 0.9rem;" target="_blank">ASK US ANYTHING ON WHATSAPP</a>
         </div>
       </div>
     </div>

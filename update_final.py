@@ -16,7 +16,7 @@ new_faqs = """
           </div>
           <div class="faq-item">
             <button class="faq-question">Can I pay in installments?<span class="faq-icon">+</span></button>
-            <div class="faq-answer"><p>Yes — contact us on WhatsApp and we'll work something out: wa.me/923044881260</p></div>
+            <div class="faq-answer"><p>Yes — contact us on WhatsApp and we'll work something out: wa.me/923204307432</p></div>
           </div>
           <div class="faq-item">
             <button class="faq-question">What's the class schedule?<span class="faq-icon">+</span></button>
@@ -43,18 +43,18 @@ ty_path = r"e:\speaklabs\thank-you.html"
 with open(ty_path, "r", encoding="utf-8") as f:
     ty = f.read()
 
-# Add WhatsApp redirect: "Meanwhile, join our student WhatsApp group for updates" → https://wa.me/923044881260
+# Add WhatsApp redirect: "Meanwhile, join our student WhatsApp group for updates" → https://wa.me/923204307432
 # The instruction is to add this. We can put it in the Hero section or Next Step card.
 ty = re.sub(
     r'<a href="index.html" class="speaklab-join-btn">Back to Home</a>',
-    '<a href="https://wa.me/923044881260" class="speaklab-join-btn" target="_blank" style="margin-right: 15px; margin-bottom: 15px;">Meanwhile, join our student WhatsApp group for updates</a>\n      <a href="index.html" class="speaklab-join-btn" style="background: transparent; border: 1px solid #fff; color: #fff;">Back to Home</a>',
+    '<a href="https://wa.me/923204307432" class="speaklab-join-btn" target="_blank" style="margin-right: 15px; margin-bottom: 15px;">Meanwhile, join our student WhatsApp group for updates</a>\n      <a href="index.html" class="speaklab-join-btn" style="background: transparent; border: 1px solid #fff; color: #fff;">Back to Home</a>',
     ty
 )
 
-# Add: "Questions? Email us at info@speaklabbyshayan.com or WhatsApp +92 304 4881260"
+# Add: "Questions? Email us at info@speaklabbyshayan.com or WhatsApp +92 320 4307432"
 ty = re.sub(
     r'<h3 style="font-size: 1.8rem; margin-bottom: 15px;">Questions\?</h3>\s*<p style="font-size: 1.1rem; line-height: 1.6;">Email us at <span id="contact-email-text">[^<]*</span></p>',
-    '<h3 style="font-size: 1.8rem; margin-bottom: 15px;">Questions?</h3>\n        <p style="font-size: 1.1rem; line-height: 1.6;">Email us at <span id="contact-email-text">info@speaklabbyshayan.com</span> or WhatsApp +92 304 4881260</p>',
+    '<h3 style="font-size: 1.8rem; margin-bottom: 15px;">Questions?</h3>\n        <p style="font-size: 1.1rem; line-height: 1.6;">Email us at <span id="contact-email-text">info@speaklabbyshayan.com</span> or WhatsApp +92 320 4307432</p>',
     ty, flags=re.DOTALL
 )
 with open(ty_path, "w", encoding="utf-8") as f:
@@ -77,7 +77,7 @@ if os.path.exists(dj_path):
             },
             {
                 "q": "Can I pay in installments?",
-                "a": "Yes — contact us on WhatsApp and we'll work something out: wa.me/923044881260"
+                "a": "Yes — contact us on WhatsApp and we'll work something out: wa.me/923204307432"
             },
             {
                 "q": "What's the class schedule?",
