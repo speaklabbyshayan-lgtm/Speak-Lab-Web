@@ -106,13 +106,33 @@ document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('.top-nav');
   if (nav) {
     nav.style.transition = 'box-shadow 0.3s ease';
+    let navScrolled = null;
+    let navTicking = false;
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 10) {
-        nav.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
-      } else {
-        nav.style.boxShadow = 'none';
-      }
-    });
+      if (navTicking) return;
+      navTicking = true;
+      requestAnimationFrame(() => {
+        navTicking = false;
+        const scrolled = window.scrollY > 10;
+        if (scrolled === navScrolled) return;
+        navScrolled = scrolled;
+        nav.style.boxShadow = scrolled ? '0 4px 20px rgba(0,0,0,0.1)' : 'none';
+      });
+    }, { passive: true });
+  }
+
+  // 4b. PAUSE PAINT-HEAVY ANIMATIONS WHEN OFFSCREEN
+  // colorFlow (background-position) and blob-morph (border-radius) repaint every
+  // frame; keep them running only while their element is actually visible.
+  let paintAnimObserver = null;
+  if ('IntersectionObserver' in window) {
+    paintAnimObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        entry.target.style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
+      });
+    }, { rootMargin: '100px' });
+    document.querySelectorAll('.gradient-heading, .ai-premium-card')
+      .forEach(el => paintAnimObserver.observe(el));
   }
 
   // 5. ENROLL BUTTON PULSE
@@ -120,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
   elements.forEach(el => {
     if (el.textContent.trim().toUpperCase() === 'ENROLL NOW') {
       el.classList.add('btn-pulse');
+      if (paintAnimObserver) paintAnimObserver.observe(el);
     }
   });
 
@@ -502,14 +523,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (scrolledPast50) showSmartReviewPopup();
       }, 45000);
 
-      window.addEventListener('scroll', () => {
-        if (scrolledPast50) return;
-        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        if (docHeight > 0 && (window.scrollY / docHeight) > 0.5) {
-          scrolledPast50 = true;
-          if (timeSpent45s) showSmartReviewPopup();
-        }
-      });
+      let reviewTicking = false;
+      const onReviewScroll = () => {
+        if (scrolledPast50 || reviewTicking) return;
+        reviewTicking = true;
+        requestAnimationFrame(() => {
+          reviewTicking = false;
+          if (scrolledPast50) return;
+          const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          if (docHeight > 0 && (window.scrollY / docHeight) > 0.5) {
+            scrolledPast50 = true;
+            window.removeEventListener('scroll', onReviewScroll);
+            if (timeSpent45s) showSmartReviewPopup();
+          }
+        });
+      };
+      window.addEventListener('scroll', onReviewScroll, { passive: true });
     }
     
     if (isContact) {
