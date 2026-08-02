@@ -5,6 +5,25 @@ const { getZoomAccessToken } = require('../lib/zoom-auth.js');
 const MONTHS_BACK = 2;
 
 /**
+ * Zoom protects shared cloud recordings with a passcode by default, and
+ * share_url on its own does not carry it — students landed on a Zoom page
+ * asking them for a password nobody had given them.
+ *
+ * recording_play_passcode is the pre-encrypted form Zoom expects in ?pwd=, so
+ * appending it opens the recording directly while leaving the protection on.
+ */
+function playUrl(meeting) {
+  if (!meeting.recording_play_passcode) return meeting.share_url;
+  try {
+    const url = new URL(meeting.share_url);
+    url.searchParams.set('pwd', meeting.recording_play_passcode);
+    return url.toString();
+  } catch {
+    return meeting.share_url;
+  }
+}
+
+/**
  * The class recordings feed for live-class.html.
  *
  * Recordings are paid course content, so the caller must present a valid
@@ -63,7 +82,10 @@ export default async function handler(req, res) {
         topic:         meeting.topic || 'SpeakLab Session',
         start_time:    meeting.start_time,
         duration:      meeting.duration,
-        play_url:      meeting.share_url,
+        play_url:      playUrl(meeting),
+        // Only ever set when the link could not carry the passcode itself, so
+        // the student has something to paste instead of a dead end.
+        passcode:      meeting.recording_play_passcode ? '' : (meeting.password || ''),
       }))
       .sort((a, b) => new Date(b.start_time) - new Date(a.start_time));
 

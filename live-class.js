@@ -513,6 +513,16 @@
       meta.appendChild(watch);
       info.appendChild(meta);
 
+      // Normally the link carries the passcode itself. When Zoom does not
+      // supply one to embed, showing it beats sending the student to a
+      // password prompt with nothing to type.
+      if (rec.passcode) {
+        const hint = el('div', 'recording-passcode');
+        hint.appendChild(el('span', null, 'Passcode: '));
+        hint.appendChild(el('code', null, rec.passcode));
+        info.appendChild(hint);
+      }
+
       card.appendChild(info);
       grid.appendChild(card);
     });
