@@ -684,6 +684,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <h3>Applications to Review</h3>
         <div class="stat-val" id="stat-apps-pending">0</div>
       </div>
+      <div class="stat-card" style="border-top-color:#2D8CFF;">
+        <h3>Next Class</h3>
+        <div class="stat-val" id="stat-next-class" style="font-size:1rem;line-height:1.4;">—</div>
+      </div>
     </div>
 
     <div class="admin-section">
@@ -859,7 +863,123 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </table>
       </div>
     </div>
+
+    <!-- Live Classes -->
+    <div class="admin-section">
+      <div class="journey-section-header">
+        <h2>🎥 Live Classes</h2>
+        <button onclick="loadLiveClasses()" style="padding:8px 16px;border-radius:8px;border:1px solid #ccc;cursor:pointer;font-family:inherit;">🔄 Refresh</button>
+      </div>
+      <p style="color:#64748b;margin-bottom:20px;font-size:0.9rem;">
+        Schedule a class here and it appears in every enrolled student's portal. Create the meeting in Zoom first,
+        then paste its <strong>Meeting ID</strong> and <strong>passcode</strong> below — students join inside the
+        SpeakLab page, and the join button unlocks 15 minutes before the start time.
+      </p>
+
+      <form id="class-form" onsubmit="saveLiveClass(event)"
+        style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:24px;padding:20px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;">
+        <input type="hidden" id="class-id">
+
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:0.85rem;font-weight:600;color:#334155;">
+          Topic *
+          <input id="class-topic" required maxlength="120" placeholder="Week 3 — Storytelling"
+            style="padding:9px 12px;border-radius:8px;border:1px solid #cbd5e1;font-family:inherit;font-size:0.9rem;">
+        </label>
+
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:0.85rem;font-weight:600;color:#334155;">
+          Batch
+          <select id="class-batch"
+            style="padding:9px 12px;border-radius:8px;border:1px solid #cbd5e1;font-family:inherit;font-size:0.9rem;min-height:38px;">
+            <option value="">All batches</option>
+            <option value="weekday">Evening (Tue, Thu, Sat)</option>
+            <option value="weekend">Weekend (Sat–Sun)</option>
+            <option value="flexible">Either / flexible</option>
+          </select>
+        </label>
+
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:0.85rem;font-weight:600;color:#334155;">
+          Starts at * <span style="font-weight:400;color:#94a3b8;">(your local time)</span>
+          <input id="class-starts-at" type="datetime-local" required
+            style="padding:9px 12px;border-radius:8px;border:1px solid #cbd5e1;font-family:inherit;font-size:0.9rem;">
+        </label>
+
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:0.85rem;font-weight:600;color:#334155;">
+          Duration (mins)
+          <input id="class-duration" type="number" min="10" max="600" value="90"
+            style="padding:9px 12px;border-radius:8px;border:1px solid #cbd5e1;font-family:inherit;font-size:0.9rem;">
+        </label>
+
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:0.85rem;font-weight:600;color:#334155;">
+          Zoom Meeting ID *
+          <input id="class-meeting-number" required placeholder="812 3456 7890" inputmode="numeric"
+            style="padding:9px 12px;border-radius:8px;border:1px solid #cbd5e1;font-family:inherit;font-size:0.9rem;">
+        </label>
+
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:0.85rem;font-weight:600;color:#334155;">
+          Passcode
+          <input id="class-passcode" maxlength="20" placeholder="Leave blank if none"
+            style="padding:9px 12px;border-radius:8px;border:1px solid #cbd5e1;font-family:inherit;font-size:0.9rem;">
+        </label>
+
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:0.85rem;font-weight:600;color:#334155;grid-column:1/-1;">
+          Zoom join link <span style="font-weight:400;color:#94a3b8;">— the fallback for iPhones and any browser where the in-page player fails. Paste it.</span>
+          <input id="class-join-url" type="url" placeholder="https://us02web.zoom.us/j/81234567890?pwd=..."
+            style="padding:9px 12px;border-radius:8px;border:1px solid #cbd5e1;font-family:inherit;font-size:0.9rem;">
+        </label>
+
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:0.85rem;font-weight:600;color:#334155;grid-column:1/-1;">
+          Description <span style="font-weight:400;color:#94a3b8;">(optional)</span>
+          <input id="class-description" maxlength="240" placeholder="What students will practise this session"
+            style="padding:9px 12px;border-radius:8px;border:1px solid #cbd5e1;font-family:inherit;font-size:0.9rem;">
+        </label>
+
+        <div style="grid-column:1/-1;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <button type="submit" id="class-save-btn"
+            style="padding:10px 22px;border-radius:8px;border:none;background:#2D8CFF;color:#fff;font-weight:700;font-family:inherit;cursor:pointer;min-height:40px;">
+            Schedule class
+          </button>
+          <button type="button" onclick="resetClassForm()"
+            style="padding:10px 18px;border-radius:8px;border:1px solid #cbd5e1;background:#fff;color:#475569;font-weight:600;font-family:inherit;cursor:pointer;min-height:40px;">
+            Clear
+          </button>
+          <span id="class-form-msg" style="font-size:0.85rem;"></span>
+        </div>
+      </form>
+
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>When</th>
+              <th>Topic</th>
+              <th>Batch</th>
+              <th>Meeting ID</th>
+              <th>Status</th>
+              <th>Attended</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="classes-body">
+            <tr><td colspan="7">Loading classes...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </main>
+
+  <!-- Attendance roster -->
+  <div class="lt-modal" id="roster-modal" onclick="if (event.target === this) closeRoster()">
+    <div class="lt-modal-card" role="dialog" aria-modal="true" aria-labelledby="roster-title">
+      <div class="lt-modal-head">
+        <div>
+          <h3 id="roster-title">Attendance</h3>
+          <p class="lt-modal-sub" id="roster-meta"></p>
+        </div>
+        <button class="lt-modal-close" onclick="closeRoster()" aria-label="Close">&times;</button>
+      </div>
+      <div id="roster-body"></div>
+    </div>
+  </div>
 
   <!-- Level test report modal -->
   <div class="lt-modal" id="report-modal" onclick="if (event.target === this) closeReport()">
@@ -1800,6 +1920,274 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
     };
 
+    // ─── LIVE CLASSES ────────────────────────────────────────────────────────
+    // Classes used to exist only inside Zoom, so the portal could not show a
+    // schedule and nobody could tell who turned up. Both now live in
+    // public.live_classes / public.class_attendance (supabase-live-classes.sql).
+
+    const BATCH_LABELS = {
+      weekday: 'Evening',
+      weekend: 'Weekend',
+      flexible: 'Flexible',
+    };
+
+    /** <input type="datetime-local"> gives local wall-clock time; the column is timestamptz. */
+    const localInputToIso = (value) => (value ? new Date(value).toISOString() : null);
+
+    const isoToLocalInput = (iso) => {
+      const d = new Date(iso);
+      const pad = (n) => String(n).padStart(2, '0');
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    };
+
+    const classPhase = (cls) => {
+      if (cls.status === 'cancelled') return 'cancelled';
+      const start = new Date(cls.starts_at).getTime();
+      const end = start + (Number(cls.duration_minutes) || 90) * 60000;
+      const now = Date.now();
+      if (now < start - 15 * 60000) return 'scheduled';
+      if (now <= end + 30 * 60000) return 'live';
+      return 'finished';
+    };
+
+    // Kept around so the Edit button can pass an id instead of a serialised row
+    // through an HTML attribute.
+    let liveClasses = [];
+
+    window.loadLiveClasses = async () => {
+      if (!window.supabaseClient) return;
+      const body = document.getElementById('classes-body');
+      try {
+        const { data: classes, error } = await window.supabaseClient
+          .from('live_classes')
+          .select('*')
+          .order('starts_at', { ascending: false })
+          .limit(100);
+
+        if (error) throw error;
+        liveClasses = classes || [];
+
+        if (!classes || classes.length === 0) {
+          body.innerHTML = '<tr><td colspan="7" style="color:#64748b;">No classes scheduled yet. Add one above.</td></tr>';
+          document.getElementById('stat-next-class').textContent = '—';
+          return;
+        }
+
+        const upcoming = [...classes]
+          .filter((c) => c.status !== 'cancelled' && classPhase(c) !== 'finished')
+          .sort((a, b) => new Date(a.starts_at) - new Date(b.starts_at))[0];
+        document.getElementById('stat-next-class').textContent = !upcoming
+          ? '—'
+          : classPhase(upcoming) === 'live'
+            ? 'Live now'
+            : new Date(upcoming.starts_at).toLocaleString('en-US', {
+                weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+              });
+
+        // One grouped count instead of a query per row.
+        const counts = {};
+        const { data: attendance } = await window.supabaseClient
+          .from('class_attendance')
+          .select('class_id');
+        (attendance || []).forEach((a) => { counts[a.class_id] = (counts[a.class_id] || 0) + 1; });
+
+        body.innerHTML = '';
+        for (const cls of classes) {
+          const phase = classPhase(cls);
+          const badge = {
+            live:      '<span style="color:#dc2626;font-weight:700;">● Live now</span>',
+            scheduled: '<span style="color:#2563eb;font-weight:600;">Scheduled</span>',
+            finished:  '<span style="color:#64748b;">Finished</span>',
+            cancelled: '<span style="color:#94a3b8;">Cancelled</span>',
+          }[phase];
+
+          const attended = counts[cls.id] || 0;
+
+          body.innerHTML += `
+            <tr${phase === 'cancelled' ? ' style="opacity:0.6;"' : ''}>
+              <td style="font-size:0.85rem;white-space:nowrap;">
+                ${esc(new Date(cls.starts_at).toLocaleString('en-US', {
+                  weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+                }))}
+                <div style="color:#94a3b8;font-size:0.75rem;">${esc(cls.duration_minutes || 90)} mins</div>
+              </td>
+              <td><strong>${esc(cls.topic)}</strong></td>
+              <td style="font-size:0.85rem;">${esc(cls.batch ? (BATCH_LABELS[cls.batch] || cls.batch) : 'All')}</td>
+              <td style="font-size:0.8rem;color:#475569;">${esc(cls.zoom_meeting_number)}</td>
+              <td style="font-size:0.85rem;">${badge}</td>
+              <td>
+                <button onclick="openRoster('${esc(cls.id)}', '${esc(cls.topic)}')"
+                  style="padding:5px 12px;border-radius:8px;border:1px solid #cbd5e1;background:#fff;color:#334155;font-weight:600;font-size:0.8rem;cursor:pointer;font-family:inherit;">
+                  👥 ${attended}
+                </button>
+              </td>
+              <td style="white-space:nowrap;">
+                <button onclick="editLiveClass('${esc(cls.id)}')"
+                  style="padding:5px 12px;border-radius:8px;border:1px solid #cbd5e1;background:#fff;color:#334155;font-weight:600;font-size:0.8rem;cursor:pointer;font-family:inherit;">✏️ Edit</button>
+                ${cls.status !== 'cancelled' ? `
+                <button onclick="cancelLiveClass('${esc(cls.id)}', this)"
+                  style="padding:5px 12px;border-radius:8px;border:1px solid #fed7aa;background:#fff7ed;color:#c2410c;font-weight:600;font-size:0.8rem;cursor:pointer;font-family:inherit;margin-left:4px;">Cancel</button>` : ''}
+                <button onclick="deleteLiveClass('${esc(cls.id)}', '${esc(cls.topic)}', this)"
+                  style="padding:5px 12px;border-radius:8px;border:1px solid #fecaca;background:#fef2f2;color:#dc2626;font-weight:600;font-size:0.8rem;cursor:pointer;font-family:inherit;margin-left:4px;">🗑</button>
+              </td>
+            </tr>`;
+        }
+      } catch (err) {
+        body.innerHTML = `<tr><td colspan="7" style="color:red;">Error: ${esc(err.message)}</td></tr>`;
+        console.error('Live classes load error:', err);
+      }
+    };
+
+    window.saveLiveClass = async (event) => {
+      event.preventDefault();
+      const msg = document.getElementById('class-form-msg');
+      const btn = document.getElementById('class-save-btn');
+      const id  = document.getElementById('class-id').value;
+
+      // Digits only: Zoom shows the ID grouped ("812 3456 7890") but the SDK
+      // and the API both want it bare.
+      const meetingNumber = document.getElementById('class-meeting-number').value.replace(/\D/g, '');
+      if (meetingNumber.length < 9) {
+        msg.style.color = '#dc2626';
+        msg.textContent = 'That does not look like a Zoom Meeting ID.';
+        return;
+      }
+
+      const payload = {
+        topic:               document.getElementById('class-topic').value.trim(),
+        description:         document.getElementById('class-description').value.trim() || null,
+        batch:               document.getElementById('class-batch').value || null,
+        starts_at:           localInputToIso(document.getElementById('class-starts-at').value),
+        duration_minutes:    Number(document.getElementById('class-duration').value) || 90,
+        zoom_meeting_number: meetingNumber,
+        zoom_passcode:       document.getElementById('class-passcode').value.trim() || null,
+        zoom_join_url:       document.getElementById('class-join-url').value.trim() || null,
+      };
+
+      btn.disabled = true;
+      msg.style.color = '#64748b';
+      msg.textContent = 'Saving…';
+
+      try {
+        const sb = window.supabaseClient;
+        const { error } = id
+          ? await sb.from('live_classes').update(payload).eq('id', id)
+          : await sb.from('live_classes').insert([{
+              ...payload,
+              created_by: (await sb.auth.getUser()).data.user?.id || null,
+            }]);
+
+        if (error) throw error;
+
+        msg.style.color = '#16a34a';
+        msg.textContent = id ? 'Class updated.' : 'Class scheduled — it is live in the student portal now.';
+        resetClassForm();
+        loadLiveClasses();
+      } catch (err) {
+        msg.style.color = '#dc2626';
+        msg.textContent = `Could not save: ${err.message}`;
+        console.error('Save class error:', err);
+      } finally {
+        btn.disabled = false;
+      }
+    };
+
+    window.editLiveClass = (id) => {
+      const cls = liveClasses.find((c) => c.id === id);
+      if (!cls) return;
+
+      document.getElementById('class-id').value             = cls.id;
+      document.getElementById('class-topic').value          = cls.topic || '';
+      document.getElementById('class-description').value    = cls.description || '';
+      document.getElementById('class-batch').value          = cls.batch || '';
+      document.getElementById('class-starts-at').value      = isoToLocalInput(cls.starts_at);
+      document.getElementById('class-duration').value       = cls.duration_minutes || 90;
+      document.getElementById('class-meeting-number').value = cls.zoom_meeting_number || '';
+      document.getElementById('class-passcode').value       = cls.zoom_passcode || '';
+      document.getElementById('class-join-url').value       = cls.zoom_join_url || '';
+      document.getElementById('class-save-btn').textContent = 'Update class';
+      document.getElementById('class-form-msg').textContent = '';
+      document.getElementById('class-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+
+    window.resetClassForm = () => {
+      document.getElementById('class-form').reset();
+      document.getElementById('class-id').value = '';
+      document.getElementById('class-duration').value = 90;
+      document.getElementById('class-save-btn').textContent = 'Schedule class';
+    };
+
+    /** Cancelling keeps the row (and its attendance) but stops anyone joining. */
+    window.cancelLiveClass = async (id, btn) => {
+      if (!confirm('Mark this class as cancelled?\n\nStudents will see it as cancelled and cannot join.')) return;
+      btn.disabled = true;
+      try {
+        const { error } = await window.supabaseClient
+          .from('live_classes').update({ status: 'cancelled' }).eq('id', id);
+        if (error) throw error;
+        loadLiveClasses();
+      } catch (err) {
+        alert(`Could not cancel: ${err.message}`);
+        btn.disabled = false;
+      }
+    };
+
+    window.deleteLiveClass = async (id, topic, btn) => {
+      if (!confirm(`Delete "${topic}"?\n\nIts attendance records go with it. This cannot be undone.`)) return;
+      btn.disabled = true;
+      try {
+        const { error } = await window.supabaseClient.from('live_classes').delete().eq('id', id);
+        if (error) throw error;
+        loadLiveClasses();
+      } catch (err) {
+        alert(`Could not delete: ${err.message}`);
+        btn.disabled = false;
+      }
+    };
+
+    window.openRoster = async (classId, topic) => {
+      const modal = document.getElementById('roster-modal');
+      const body  = document.getElementById('roster-body');
+      document.getElementById('roster-title').textContent = 'Attendance';
+      document.getElementById('roster-meta').textContent  = topic;
+      body.innerHTML = '<p style="color:#64748b;">Loading…</p>';
+      modal.classList.add('open');
+
+      try {
+        // class_roster() joins auth.users for the email, which PostgREST cannot
+        // reach on its own. It re-checks is_admin() server-side.
+        const { data, error } = await window.supabaseClient.rpc('class_roster', { p_class_id: classId });
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+          body.innerHTML = '<p style="color:#64748b;">Nobody joined this class from the portal.</p>';
+          return;
+        }
+
+        body.innerHTML = `
+          <p style="color:#475569;margin-bottom:14px;"><strong>${data.length}</strong> student${data.length === 1 ? '' : 's'} joined.</p>
+          <table style="width:100%;">
+            <thead><tr><th>Name</th><th>Email</th><th>Joined</th></tr></thead>
+            <tbody>
+              ${data.map((r) => `
+                <tr>
+                  <td>${esc(r.full_name)}</td>
+                  <td style="font-size:0.85rem;color:#475569;">${esc(r.email || '—')}</td>
+                  <td style="font-size:0.85rem;white-space:nowrap;">${esc(new Date(r.joined_at).toLocaleString('en-US', {
+                    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+                  }))}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>`;
+      } catch (err) {
+        body.innerHTML = `<p style="color:#dc2626;">Could not load attendance: ${esc(err.message)}</p>`;
+        console.error('Roster error:', err);
+      }
+    };
+
+    window.closeRoster = () => document.getElementById('roster-modal').classList.remove('open');
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeRoster(); });
+
     // Initial Load & Auto Refresh — only ever after the admin check passes, so
     // a non-admin never even fires the queries.
     requireAdmin().then((ok) => {
@@ -1808,9 +2196,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       loadStudentJourney();
       loadLevelTests();
       loadApplications();
+      loadLiveClasses();
       setInterval(loadDashboard, 30000);
       setInterval(loadLevelTests, 30000);
       setInterval(loadApplications, 30000);
+      setInterval(loadLiveClasses, 60000);
     });
 
     // Signing out in another tab should not leave this one showing data.
