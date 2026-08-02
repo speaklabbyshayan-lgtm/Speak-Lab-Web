@@ -151,6 +151,79 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       margin-bottom: 40px;
     }
     .admin-section h2 { margin-bottom: 20px; font-size: 1.8rem; }
+
+    /* ── Section switcher ────────────────────────────────────────────────
+       Six sections stacked vertically meant a lot of scrolling to reach the
+       last one. They are now panels behind a sticky left nav — one visible at
+       a time, so every screen starts at the top. */
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+    .admin-nav {
+      position: sticky;
+      top: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .admin-nav button {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      text-align: left;
+      padding: 11px 14px;
+      border: none;
+      background: transparent;
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+      min-height: 42px;
+    }
+    .admin-nav button:hover { background: #f1f5f9; color: #111; }
+    .admin-nav button.active { background: #111; color: #fff; }
+    .admin-nav .nav-count {
+      margin-left: auto;
+      font-size: 0.75rem;
+      font-weight: 800;
+      background: #f1f5f9;
+      color: #475569;
+      border-radius: 20px;
+      padding: 2px 8px;
+      min-width: 22px;
+      text-align: center;
+    }
+    .admin-nav button.active .nav-count { background: rgba(255,255,255,0.2); color: #fff; }
+    .admin-nav .nav-count:empty { display: none; }
+
+    .admin-panels > .admin-section { margin-bottom: 0; }
+    .admin-panels > .admin-section[hidden] { display: none; }
+
+    /* Below the grid breakpoint the nav becomes a scrollable strip of chips —
+       still one tap per section, no 220px column eating the phone screen. */
+    @media (max-width: 860px) {
+      .admin-layout { grid-template-columns: 1fr; gap: 18px; }
+      .admin-nav {
+        position: static;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 6px;
+        padding: 8px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .admin-nav button { width: auto; white-space: nowrap; padding: 9px 14px; }
+    }
     table { width: 100%; border-collapse: collapse; text-align: left; }
     th, td { padding: 12px 15px; border-bottom: 1px solid #ddd; }
     th { background-color: #f8f9fa; font-weight: bold; }
@@ -690,7 +763,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
 
-    <div class="admin-section">
+    <div class="admin-layout">
+      <aside class="admin-nav" id="admin-nav">
+        <button type="button" data-panel="enrollments">👥 Enrollments<span class="nav-count" id="nav-count-enrollments"></span></button>
+        <button type="button" data-panel="applications">📝 Applications<span class="nav-count" id="nav-count-applications"></span></button>
+        <button type="button" data-panel="level-tests">🎯 Level Tests<span class="nav-count" id="nav-count-level-tests"></span></button>
+        <button type="button" data-panel="messages">✉️ Messages<span class="nav-count" id="nav-count-messages"></span></button>
+        <button type="button" data-panel="journey">✈️ Journey<span class="nav-count" id="nav-count-journey"></span></button>
+        <button type="button" data-panel="live-classes">🎥 Live Classes<span class="nav-count" id="nav-count-live-classes"></span></button>
+      </aside>
+
+      <div class="admin-panels">
+
+    <div class="admin-section" id="panel-enrollments">
       <div class="journey-section-header">
         <h2 style="margin-bottom:0;">Enrollments</h2>
         <select id="enroll-filter-batch" onchange="loadDashboard()" style="padding:8px 12px;border-radius:8px;border:1px solid #ccc;font-family:inherit;font-size:0.9rem;min-height:38px;">
@@ -728,7 +813,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- Entry Test Applications (public funnel — apply.html) -->
-    <div class="admin-section">
+    <div class="admin-section" id="panel-applications" hidden>
       <div class="journey-section-header">
         <h2 style="margin-bottom:0;">📝 Applications · Entry Test</h2>
         <div style="display:flex;gap:8px;">
@@ -763,7 +848,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- Level Test Results -->
-    <div class="admin-section">
+    <div class="admin-section" id="panel-level-tests" hidden>
       <div class="journey-section-header">
         <h2 style="margin-bottom:0;">🎯 Level Test Results</h2>
         <div style="display:flex;gap:8px;">
@@ -818,7 +903,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
 
-    <div class="admin-section">
+    <div class="admin-section" id="panel-messages" hidden>
       <h2>Contact Messages</h2>
       <div style="overflow-x:auto;">
         <table>
@@ -839,7 +924,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
     <!-- Student Journey Management Section -->
-    <div class="admin-section">
+    <div class="admin-section" id="panel-journey" hidden>
       <div class="journey-section-header">
         <h2>✈️ Student Journey Control</h2>
         <button onclick="loadStudentJourney()" style="padding:8px 16px;border-radius:8px;border:1px solid #ccc;cursor:pointer;font-family:inherit;">🔄 Refresh</button>
@@ -865,7 +950,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <!-- Live Classes -->
-    <div class="admin-section">
+    <div class="admin-section" id="panel-live-classes" hidden>
       <div class="journey-section-header">
         <h2>🎥 Live Classes</h2>
         <button onclick="loadLiveClasses()" style="padding:8px 16px;border-radius:8px;border:1px solid #ccc;cursor:pointer;font-family:inherit;">🔄 Refresh</button>
@@ -965,6 +1050,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </table>
       </div>
     </div>
+
+      </div><!-- /.admin-panels -->
+    </div><!-- /.admin-layout -->
   </main>
 
   <!-- Attendance roster -->
@@ -1094,6 +1182,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('stat-confirmed').textContent = confirmed;
         document.getElementById('stat-pending').textContent = pending;
         document.getElementById('stat-messages').textContent = unread;
+
+        // Unread messages are the one thing that needs chasing from any tab.
+        setNavCount('messages', unread);
 
         // Feeds the "Awaiting Test" stat.
         enrolledEmails = [...new Set(
@@ -1567,6 +1658,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         document.getElementById('count-' + k).textContent = counts[k];
       });
       document.getElementById('stat-apps-pending').textContent = counts.pending;
+      setNavCount('applications', counts.pending);
 
       const rows = visibleApplications();
       if (!rows.length) {
@@ -1973,9 +2065,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           return;
         }
 
-        const upcoming = [...classes]
+        const pendingClasses = [...classes]
           .filter((c) => c.status !== 'cancelled' && classPhase(c) !== 'finished')
-          .sort((a, b) => new Date(a.starts_at) - new Date(b.starts_at))[0];
+          .sort((a, b) => new Date(a.starts_at) - new Date(b.starts_at));
+        setNavCount('live-classes', pendingClasses.length);
+
+        const upcoming = pendingClasses[0];
         document.getElementById('stat-next-class').textContent = !upcoming
           ? '—'
           : classPhase(upcoming) === 'live'
@@ -2188,10 +2283,58 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     window.closeRoster = () => document.getElementById('roster-modal').classList.remove('open');
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeRoster(); });
 
+    // ─── SECTION SWITCHER ────────────────────────────────────────────────────
+    // Only one panel is in the document flow at a time. The data behind every
+    // panel still loads and refreshes on its own timer, so switching is instant
+    // and a hidden panel is never stale when you come back to it.
+
+    const PANELS = ['enrollments', 'applications', 'level-tests', 'messages', 'journey', 'live-classes'];
+
+    window.showPanel = (name, push = true) => {
+      if (!PANELS.includes(name)) name = PANELS[0];
+
+      PANELS.forEach((p) => {
+        const panel = document.getElementById(`panel-${p}`);
+        if (panel) panel.hidden = p !== name;
+      });
+
+      document.querySelectorAll('#admin-nav button').forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.panel === name);
+      });
+
+      // The hash survives a refresh, so the tab you were working in is still
+      // the tab you land on.
+      if (push && location.hash.slice(1) !== name) location.hash = name;
+      try { localStorage.setItem('speaklab_admin_panel', name); } catch (e) {}
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    document.getElementById('admin-nav').addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-panel]');
+      if (btn) showPanel(btn.dataset.panel);
+    });
+
+    window.addEventListener('hashchange', () => showPanel(location.hash.slice(1), false));
+
+    /** Small count next to a nav item, so a hidden panel can still say "3 new". */
+    window.setNavCount = (panel, value) => {
+      const node = document.getElementById(`nav-count-${panel}`);
+      if (node) node.textContent = value > 0 ? String(value) : '';
+    };
+
     // Initial Load & Auto Refresh — only ever after the admin check passes, so
     // a non-admin never even fires the queries.
     requireAdmin().then((ok) => {
       if (!ok) return;
+      // Deep link wins (#live-classes in a bookmark), then wherever you were
+      // last, then Enrollments.
+      let startPanel = location.hash.slice(1);
+      if (!startPanel) {
+        try { startPanel = localStorage.getItem('speaklab_admin_panel') || ''; } catch (e) {}
+      }
+      showPanel(startPanel || 'enrollments', false);
+
       loadDashboard();
       loadStudentJourney();
       loadLevelTests();
