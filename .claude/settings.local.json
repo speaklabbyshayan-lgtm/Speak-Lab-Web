@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm -f verify.js.tmp)",
+      "Bash(node verify.js)",
+      "Bash(export SCRATCH=\"C:/Users/ahsan/AppData/Local/Temp/claude/e--speaklabs/1c0621fc-8439-4125-b058-fe0b274aa3ea/scratchpad\")",
+      "Bash(node -e ' *)",
+      "Bash(node run-chat-tests.mjs)",
+      "Bash(GEMINI_API_KEY=k NVIDIA_API_KEY=k LEVEL_TEST_LLM_BUDGET_MS=2000 node --input-type=module -e ' *)",
+      "Bash(node analytics-test.js)"
+    ]
+  }
+}

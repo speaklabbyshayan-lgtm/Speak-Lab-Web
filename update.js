@@ -3,21 +3,21 @@ const data = require('./data.json');
 
 const metaTags = `
   <meta property="og:title" content="SpeakLab - Communication & Confidence Program">
-  <meta property="og:description" content="Master Spoken English in 8 weeks. In-person classes at Punjab Tianjin University of Technology, Lahore. Only 20 seats available.">
+  <meta property="og:description" content="Build the confidence to speak up in 8 weeks. In-person classes at Punjab Tianjin University of Technology, Lahore. Only 20 seats available.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://speaklab.pk">
   <meta property="og:image" content="https://speaklab.pk/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SpeakLab - Speak English with Confidence">
+  <meta name="twitter:title" content="SpeakLab - Speak Up With Confidence">
   <meta name="twitter:description" content="8-week Communication & Confidence Program in Lahore. PKR 20,000 only.">
-  <meta name="description" content="SpeakLab offers an intensive 8-week Communication & Confidence Program in Lahore at Punjab Tianjin University of Technology. Learn Spoken English, Public Speaking, and Interview Skills.">
+  <meta name="description" content="SpeakLab offers an intensive 8-week Communication & Confidence Program in Lahore at Punjab Tianjin University of Technology. Fearless Speaking, Public Speaking, and Interview Skills.">
 `;
 
 const schema1 = `{
   "@context": "https://schema.org",
   "@type": "Course",
   "name": "Communication & Confidence Program",
-  "description": "An intensive 8-week English communication program focused on Spoken English, Confidence Building, Public Speaking, Interview Preparation, and Critical Thinking.",
+  "description": "An intensive 8-week communication and confidence program focused on Fearless Speaking, Confidence Building, Public Speaking, Interview Preparation, and Critical Thinking. Sessions are conducted in English with Urdu support.",
   "provider": {
     "@type": "Organization",
     "name": "SpeakLab",

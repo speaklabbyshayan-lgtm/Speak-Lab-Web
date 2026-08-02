@@ -479,6 +479,16 @@ body {
   from { transform: scale(0.5); opacity: 0; }
   to   { transform: scale(1); opacity: 1; }
 }
+/* The badge still carries the CEFR letter, but it is a supporting detail now —
+   the headline result is the confidence read, not the language level. */
+.lt-badge-caption {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lt-muted);
+  margin: -6px 0 14px;
+}
 .lt-result-label {
   font-size: 1.7rem;
   font-weight: 800;

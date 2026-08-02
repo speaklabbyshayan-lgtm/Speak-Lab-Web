@@ -476,7 +476,7 @@
     var messages = [
       'Checking your grammar answers',
       'Listening to your speaking responses',
-      'Working out your CEFR level',
+      'Working out your result',
       'Writing your personalised report',
     ];
     var step = 0;
