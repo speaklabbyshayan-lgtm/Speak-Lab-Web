@@ -176,6 +176,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       /* iteration-count 1 zaroori hai: warna infinite animations 0.01ms par
          loop karte reh jaate hain aur strobe/blink karte hain. */
       *,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;scroll-behavior:auto !important}
+      /* Gradient text/bg sirf rang badalte hain, hilte nahi — inhe chalne do. */
+      .gradient-heading,.tilt-color-bg{animation-duration:8s !important;animation-iteration-count:infinite !important}
     }
   </style>
 
@@ -184,8 +186,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
        the hero). noscript fallback keeps it working without JS. -->
   <!-- ?v= busts the year-long immutable cache (vercel.json) — bump it whenever
        style.css changes. -->
-  <link rel="preload" href="style.css?v=20260804" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="style.css?v=20260804"></noscript>
+  <link rel="preload" href="style.css?v=20260804b" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="style.css?v=20260804b"></noscript>
 
   <!-- Announcement Bar styles (inline so they always load fresh, no cache issues) -->
   <style>
