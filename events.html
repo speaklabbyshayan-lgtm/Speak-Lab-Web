@@ -792,6 +792,97 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   src="https://www.facebook.com/tr?id=2246859136132897&ev=PageView&noscript=1"
   /></noscript>
   <!-- End Meta Pixel Code -->
+
+  <!-- ═══ Scroll-reveal system (scoped .ev-anim / .is-in) ══════════════════
+       The flag goes on <html> synchronously here, before the body paints, so
+       elements start hidden with no flash. The observer at the end of <body>
+       reveals them as they enter view. Everything degrades safely: if JS
+       fails or IntersectionObserver is missing, the failsafe reveals all, and
+       reduced-motion users are forced visible by the media query below. -->
+  <script>document.documentElement.className += ' ev-anim';</script>
+  <style>
+    /* ── Single blocks ────────────────────────────────────────────────────
+       Hidden state is gated on :not(.is-in) so that once revealed the element
+       carries no leftover high-specificity transform — anything with its own
+       hover transform keeps it. None of these six have a hover transform, but
+       the pattern keeps them consistent with the cards below. */
+    .ev-anim .ev-section-head,
+    .ev-anim .evsat-card,
+    .ev-anim .ev-open,
+    .ev-anim .ev-register-copy,
+    .ev-anim .ev-form,
+    .ev-anim .ev-wa {
+      transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+    .ev-anim .ev-section-head:not(.is-in),
+    .ev-anim .evsat-card:not(.is-in),
+    .ev-anim .ev-wa:not(.is-in) { opacity: 0; transform: translateY(14px); }
+    /* Directional variety so the register block assembles from both sides. */
+    .ev-anim .ev-register-copy:not(.is-in) { opacity: 0; transform: translateX(-16px); }
+    .ev-anim .ev-form:not(.is-in) { opacity: 0; transform: translateX(16px); }
+    .ev-anim .ev-open:not(.is-in) { opacity: 0; transform: scale(0.97); }
+
+    /* ── Trust strip, who-cards, register steps ──────────────────────────
+       These have no hover transform, so a full slide+scale reveal is safe. */
+    .ev-anim .ev-strip > span,
+    .ev-anim .ev-who > .ev-who-card,
+    .ev-anim .ev-steps > li {
+      transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: opacity, transform;
+    }
+    .ev-anim .ev-strip:not(.is-in) > span,
+    .ev-anim .ev-who:not(.is-in) > .ev-who-card,
+    .ev-anim .ev-steps:not(.is-in) > li { opacity: 0; transform: translateY(12px) scale(0.98); }
+
+    .ev-anim .ev-strip.is-in > span:nth-child(2) { transition-delay: 0.07s; }
+    .ev-anim .ev-strip.is-in > span:nth-child(3) { transition-delay: 0.14s; }
+    .ev-anim .ev-strip.is-in > span:nth-child(4) { transition-delay: 0.21s; }
+    .ev-anim .ev-who.is-in > .ev-who-card:nth-child(2) { transition-delay: 0.12s; }
+    .ev-anim .ev-steps.is-in > li:nth-child(2) { transition-delay: 0.10s; }
+    .ev-anim .ev-steps.is-in > li:nth-child(3) { transition-delay: 0.20s; }
+
+    /* ── Event cards ─────────────────────────────────────────────────────
+       The three cards keep their own hover-lift and animated border, so we
+       reveal them with a staggered FADE only. The multi-value transition-delay
+       delays just the opacity — transform and box-shadow (the hover feel)
+       stay instant. */
+    .ev-anim .ev-grid > .ev-card {
+      transition: opacity 0.6s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .ev-anim .ev-grid:not(.is-in) > .ev-card { opacity: 0; }
+    .ev-anim .ev-grid.is-in > .ev-card:nth-child(2) { transition-delay: 0.12s, 0s, 0s; }
+    .ev-anim .ev-grid.is-in > .ev-card:nth-child(3) { transition-delay: 0.24s, 0s, 0s; }
+
+    /* Gentle bob on the event-card icons, so the grid feels alive. */
+    .ev-icon { animation: ev-bob 3.6s ease-in-out infinite; }
+    .ev-card.ev-mic .ev-icon { animation-duration: 4.2s; animation-delay: 0.3s; }
+    .ev-card.ev-workshop .ev-icon { animation-duration: 3.9s; animation-delay: 0.6s; }
+    @keyframes ev-bob { 50% { transform: translateY(-6px) rotate(-4deg); } }
+
+    /* Reading progress bar, matched to the site's navy→gold→teal gradient. */
+    .ev-progress-top {
+      position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 200;
+      background: linear-gradient(90deg, #f59e0b, #d97706, #1e3a8a, #0f766e);
+      box-shadow: 0 1px 6px rgba(217, 119, 6, 0.4);
+      transition: width 0.1s linear; will-change: width;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ev-anim .ev-section-head,
+      .ev-anim .evsat-card,
+      .ev-anim .ev-open,
+      .ev-anim .ev-register-copy,
+      .ev-anim .ev-form,
+      .ev-anim .ev-wa,
+      .ev-anim .ev-strip > span,
+      .ev-anim .ev-grid > .ev-card,
+      .ev-anim .ev-who > .ev-who-card,
+      .ev-anim .ev-steps > li { opacity: 1 !important; transform: none !important; }
+      .ev-icon { animation: none; }
+      .ev-progress-top { display: none; }
+    }
+  </style>
 </head>
 
 <body>
@@ -799,6 +890,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PBGJBFP2"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+
+  <div class="ev-progress-top" id="ev-progress-top" aria-hidden="true"></div>
 
   <!-- Top Navigation (Light Theme) -->
   <nav class="top-nav">
@@ -819,6 +912,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <li><a href="about.html">About Us</a></li>
             <li><a href="course-details.html">Our Program</a></li>
             <li><a href="trial-classes.html">Free Trial Classes</a></li>
+            <li><a href="saturdays.html">SpeakLab Saturdays</a></li>
             <li><a href="events.html">Events</a></li>
             <li><a href="contact.html">Contact Us</a></li>
             <li><a href="venue.html">Venue</a></li>
@@ -859,6 +953,158 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </header>
 
   <main>
+    <!-- ─── SPEAKLAB SATURDAYS (flagship) ───────────────────────────────────
+         Sits above the three recurring event types because it is the one
+         thing running every week and the one with an application deadline.
+         Styles are scoped to .evsat- so nothing leaks into the ev- cards. -->
+    <style>
+      .evsat {
+        max-width: 1150px;
+        margin: 34px auto 0;
+        padding-inline: 20px;
+      }
+      /* White card with an animated gradient border, matching the ev-cards
+         below it, so the flagship sits on-theme with the light page instead
+         of dropping a dark block into the middle of it. */
+      .evsat-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 26px;
+        padding: 30px 24px;
+        border: 2px solid transparent;
+        background:
+          radial-gradient(560px 340px at 10% 0%, rgba(217, 119, 6, 0.07), transparent 62%) padding-box,
+          linear-gradient(#fff, #fff) padding-box,
+          linear-gradient(120deg, #1e3a8a, #d97706, #0f766e, #d97706, #1e3a8a) border-box;
+        background-size: auto, auto, 300% 300%;
+        animation: evsat-border 9s linear infinite;
+        box-shadow: 0 18px 44px -20px rgba(15, 23, 42, 0.22);
+      }
+      @keyframes evsat-border {
+        0% { background-position: 0 0, 0 0, 0% 50%; }
+        100% { background-position: 0 0, 0 0, 300% 50%; }
+      }
+      .evsat-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.63rem;
+        font-weight: 800;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: #d97706;
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+        padding: 7px 13px;
+        border-radius: 999px;
+      }
+      .evsat-eyebrow .dot {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: #16a34a;
+        box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.55);
+        animation: evsat-pulse 2.2s infinite;
+      }
+      @keyframes evsat-pulse {
+        70% { box-shadow: 0 0 0 9px rgba(22, 163, 74, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+      }
+      .evsat-card h2 {
+        font-size: clamp(1.8rem, 8vw, 2.6rem);
+        font-weight: 800;
+        letter-spacing: -0.035em;
+        line-height: 1.08;
+        margin: 16px 0 0;
+        color: #111;
+      }
+      .evsat-gold {
+        background: linear-gradient(90deg, #1e3a8a 0%, #d97706 33%, #0f766e 66%, #1e3a8a 100%);
+        background-size: 300% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        animation: evsat-flow 8s linear infinite;
+      }
+      @keyframes evsat-flow { to { background-position: 300% center; } }
+      .evsat-card > p {
+        color: #555;
+        font-size: 1rem;
+        line-height: 1.68;
+        margin: 14px 0 0;
+        max-width: 580px;
+      }
+      .evsat-tags {
+        display: flex;
+        gap: 8px;
+        margin-top: 20px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+        /* Scrolls rather than wraps on a phone so the row stays one clean
+           line instead of stacking into a block of pills. */
+        -webkit-overflow-scrolling: touch;
+      }
+      .evsat-tags::-webkit-scrollbar { display: none; }
+      .evsat-tags span {
+        flex: none;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #1e293b;
+        white-space: nowrap;
+        background: #f8fafc;
+        border: 1px solid #e6e8f0;
+        border-radius: 999px;
+        padding: 9px 15px;
+      }
+      .evsat-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        min-height: 54px;
+        margin-top: 24px;
+        padding: 16px 28px;
+        font-size: 0.92rem;
+        font-weight: 800;
+        color: #fff !important;
+        text-decoration: none;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        box-shadow: 0 12px 30px -10px rgba(217, 119, 6, 0.55);
+        transition: transform 0.2s ease, box-shadow 0.25s ease, filter 0.2s;
+      }
+      .evsat-cta:active { transform: scale(0.975); }
+      .evsat-cta:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -10px rgba(217, 119, 6, 0.65); filter: brightness(1.05); }
+      .evsat-note { font-size: 0.78rem; color: #94a3b8; margin-top: 12px; }
+      @media (min-width: 760px) {
+        .evsat-card { padding: 44px 40px; }
+        .evsat-cta { width: auto; }
+        .evsat-tags { flex-wrap: wrap; overflow: visible; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .evsat-eyebrow .dot, .evsat-card, .evsat-gold { animation: none; }
+      }
+    </style>
+    <section class="evsat" aria-labelledby="evsat-title">
+      <div class="evsat-card">
+        <span class="evsat-eyebrow"><span class="dot" aria-hidden="true"></span> Every Saturday · Applications open</span>
+        <h2 id="evsat-title">SpeakLab <span class="evsat-gold">Saturdays</span></h2>
+        <p>A different communication experience every weekend — improvisation, city walks, storytelling, coffee
+          conversations. Twelve people, one Saturday, no lectures. This is the one to start with.</p>
+        <div class="evsat-tags">
+          <span>🎤 Think on Your Feet</span>
+          <span>🚶 Communication Walk</span>
+          <span>☕ Coffee Conversations</span>
+          <span>📖 Storytelling Lab</span>
+          <span>🎭 Confidence Challenge</span>
+          <span>🧠 Ideas in Motion</span>
+        </div>
+        <a href="saturdays.html" class="evsat-cta">See this Saturday →</a>
+        <p class="evsat-note">By application · Small groups · Payment only after you're accepted</p>
+      </div>
+    </section>
+
     <!-- ─── EVENT CARDS ─────────────────────────────────────────────────── -->
     <section class="ev-section" id="what-we-run">
       <div class="ev-section-head">
@@ -1170,6 +1416,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="dtl-col">
           <h3>EVENTS</h3>
           <ul>
+            <li><a href="saturdays.html">SpeakLab Saturdays</a></li>
             <li><a href="events.html#what-we-run">Communication Walks</a></li>
             <li><a href="events.html#what-we-run">Open Mics</a></li>
             <li><a href="events.html#what-we-run">One-Day Workshop</a></li>
@@ -1273,6 +1520,50 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         btn.disabled = false;
       }
     });
+  </script>
+  <!-- Scroll-reveal + reading-progress driver. Self-contained and guarded so
+       a failure here can never leave content hidden. -->
+  <script>
+    (function () {
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Reading progress — turns a long page into one with a visible finish line.
+      var bar = document.getElementById('ev-progress-top');
+      if (bar && !reduce) {
+        var ticking = false;
+        var draw = function () {
+          ticking = false;
+          var doc = document.documentElement;
+          var max = doc.scrollHeight - doc.clientHeight;
+          bar.style.width = (max > 0 ? Math.min(1, (doc.scrollTop || document.body.scrollTop) / max) : 0) * 100 + '%';
+        };
+        window.addEventListener('scroll', function () {
+          if (ticking) return; ticking = true; requestAnimationFrame(draw);
+        }, { passive: true });
+        window.addEventListener('resize', draw, { passive: true });
+        draw();
+      }
+
+      var singles = '.ev-section-head, .evsat-card, .ev-open, .ev-register-copy, .ev-form, .ev-wa';
+      var rows = '.ev-strip, .ev-grid, .ev-who, .ev-steps';
+      var targets = [].slice.call(document.querySelectorAll(singles + ', ' + rows));
+
+      // Failsafe: no observer support (or reduced motion) → show everything now.
+      if (reduce || !('IntersectionObserver' in window)) {
+        targets.forEach(function (el) { el.classList.add('is-in'); });
+        return;
+      }
+
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          // Toggle, not add-once: the reveal replays every time the element
+          // scrolls back into view.
+          e.target.classList.toggle('is-in', e.isIntersecting);
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
+
+      targets.forEach(function (el) { io.observe(el); });
+    })();
   </script>
   <script src="script.js?v=20260801"></script>
 </body>

@@ -657,6 +657,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <li><a href="about.html">About Us</a></li>
             <li><a href="course-details.html">Our Program</a></li>
             <li><a href="trial-classes.html">Free Trial Classes</a></li>
+            <li><a href="saturdays.html">SpeakLab Saturdays</a></li>
             <li><a href="events.html">Events</a></li>
             <li><a href="about.html#team">Meet The Team</a></li>
             <li><a href="contact.html">Contact Us</a></li>
@@ -709,6 +710,231 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
   </header>
+
+  <!-- ═══ SpeakLab Saturdays ═══════════════════════════════════════════════
+       A light, warm section directly under the hero, matched to the site's
+       theme (#fafafa canvas, navy→gold→teal gradient heading). It reads as a
+       distinct product from the 8-week program without breaking the page's
+       light look. Styles are scoped to .slsat- so nothing here can leak into
+       style.css's marketing components. -->
+  <style>
+    .slsat-band {
+      position: relative;
+      overflow: hidden;
+      padding: 54px 20px;
+      background:
+        radial-gradient(760px 420px at 12% 0%, rgba(217, 119, 6, 0.10), transparent 62%),
+        radial-gradient(620px 420px at 96% 100%, rgba(30, 58, 138, 0.08), transparent 62%),
+        #fafafa;
+    }
+    /* The card holds the content on a clean white surface with an animated
+       gradient border — the same trick the events cards use — so it stands
+       out from the sections above and below without a heavy colour block. */
+    .slsat-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      border-radius: 26px;
+      padding: 34px 26px;
+      border: 2px solid transparent;
+      background:
+        linear-gradient(#fff, #fff) padding-box,
+        linear-gradient(120deg, #1e3a8a, #d97706, #0f766e, #d97706, #1e3a8a) border-box;
+      background-size: auto, 300% 300%;
+      animation: slsat-border 9s linear infinite;
+      box-shadow: 0 18px 44px -20px rgba(15, 23, 42, 0.22);
+    }
+    @keyframes slsat-border {
+      0% { background-position: 0 0, 0% 50%; }
+      100% { background-position: 0 0, 300% 50%; }
+    }
+    .slsat-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.64rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #d97706;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      padding: 8px 14px;
+      border-radius: 999px;
+    }
+    .slsat-eyebrow .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #16a34a;
+      box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.55);
+      animation: slsat-pulse 2.2s infinite;
+    }
+    @keyframes slsat-pulse {
+      70% { box-shadow: 0 0 0 9px rgba(22, 163, 74, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+    }
+    .slsat-band h2 {
+      font-size: clamp(2rem, 9vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin: 18px 0 0;
+      color: #111;
+    }
+    .slsat-grad {
+      background: linear-gradient(90deg, #1e3a8a 0%, #d97706 33%, #0f766e 66%, #1e3a8a 100%);
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: slsat-flow 8s linear infinite;
+    }
+    @keyframes slsat-flow { to { background-position: 300% center; } }
+    .slsat-band p.slsat-copy {
+      color: #555;
+      font-size: 1.02rem;
+      line-height: 1.7;
+      margin: 16px 0 0;
+      max-width: 560px;
+    }
+    .slsat-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 22px;
+    }
+    .slsat-tags span {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #1e293b;
+      background: #f8fafc;
+      border: 1px solid #e6e8f0;
+      border-radius: 999px;
+      padding: 9px 15px;
+    }
+    .slsat-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      width: 100%;
+      min-height: 56px;
+      margin-top: 26px;
+      padding: 17px 28px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #fff !important;
+      text-decoration: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      box-shadow: 0 12px 30px -10px rgba(217, 119, 6, 0.55);
+      transition: transform 0.2s ease, box-shadow 0.25s ease, filter 0.2s;
+    }
+    .slsat-cta:active { transform: scale(0.975); }
+    .slsat-cta:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -10px rgba(217, 119, 6, 0.65); filter: brightness(1.05); }
+    .slsat-note {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin-top: 12px;
+    }
+    @media (min-width: 760px) {
+      .slsat-band { padding: 76px 32px; }
+      .slsat-inner { padding: 48px 44px; }
+      .slsat-cta { width: auto; }
+      .slsat-note { margin-top: 14px; }
+    }
+    /* Tags in one scrollable line rather than wrapping into four rows — this
+       is most of the height the band used to waste. */
+    .slsat-tags {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 2px;
+    }
+    .slsat-tags::-webkit-scrollbar { display: none; }
+    .slsat-tags span { flex: none; white-space: nowrap; }
+
+    /* Collapsible detail. */
+    .slsat-more {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      margin-top: 0;
+      transition: max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease, margin-top 0.4s ease;
+    }
+    .slsat-more.is-open { max-height: 320px; opacity: 1; margin-top: 16px; }
+
+    .slsat-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 16px;
+      padding: 8px 0;
+      background: none;
+      border: 0;
+      color: #d97706;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+    }
+    .slsat-toggle svg { transition: transform 0.3s ease; }
+    .slsat-toggle.is-open svg { transform: rotate(180deg); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .slsat-grad, .slsat-eyebrow .dot, .slsat-inner { animation: none; }
+      .slsat-more { transition: none; }
+    }
+  </style>
+  <section class="slsat-band" aria-labelledby="slsat-title">
+    <div class="slsat-inner">
+      <span class="slsat-eyebrow"><span class="dot" aria-hidden="true"></span> A different experience every weekend</span>
+      <h2 id="slsat-title">SpeakLab <span class="slsat-grad">Saturdays</span></h2>
+      <p class="slsat-copy">Small groups. Real conversations. Not a class — an experience.</p>
+
+      <div class="slsat-tags">
+        <span>🎤 Think on Your Feet</span>
+        <span>🚶 Communication Walk</span>
+        <span>☕ Coffee Conversations</span>
+        <span>📖 Storytelling Lab</span>
+        <span>🎭 Confidence Challenge</span>
+      </div>
+
+      <!-- Collapsed by default to keep the band short; the button below reveals
+           it with a height animation. -->
+      <div class="slsat-more" id="slsat-more">
+        <p class="slsat-copy">Built for ambitious students and young professionals in Lahore. Communication challenges,
+          storytelling, city walks and coffee conversations — a different experience every weekend, kept small on
+          purpose so everyone actually takes part.</p>
+      </div>
+      <button type="button" class="slsat-toggle" id="slsat-toggle" aria-expanded="false" aria-controls="slsat-more">
+        <span>Read more</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+
+      <a href="saturdays.html" class="slsat-cta">Request an Invitation →</a>
+      <p class="slsat-note">By application · 12 seats a week · Payment only after you're accepted</p>
+    </div>
+  </section>
+  <script>
+    // Read-more toggle for the Saturdays band — expands the detail with a
+    // height animation and flips the chevron + label.
+    (function () {
+      var btn = document.getElementById('slsat-toggle');
+      var more = document.getElementById('slsat-more');
+      if (!btn || !more) return;
+      btn.addEventListener('click', function () {
+        var open = more.classList.toggle('is-open');
+        btn.classList.toggle('is-open', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.querySelector('span').textContent = open ? 'Show less' : 'Read more';
+      });
+    })();
+  </script>
 
   <!-- Stacked Cards Section -->
   <main class="stack-wrapper">
@@ -1033,6 +1259,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <li><a href="about.html">About Us</a></li>
             <li><a href="course-details.html">Our Program</a></li>
             <li><a href="trial-classes.html">Free Trial Classes</a></li>
+            <li><a href="saturdays.html">SpeakLab Saturdays</a></li>
             <li><a href="events.html">Events</a></li>
             <li><a href="about.html#team">Meet The Team</a></li>
             <li><a href="contact.html">Contact Us</a></li>
@@ -1239,6 +1466,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       window.addEventListener('resize', update);
       window.addEventListener('load', update);
       update();
+    })();
+  </script>
+
+  <!-- ═══ Stacking-card reveal ═════════════════════════════════════════════
+       The .stack-card engine already stacks the cards with position:sticky.
+       This adds a fade-and-rise as each card scrolls into view, so they don't
+       just appear — they arrive. Hidden state is gated on :not(.is-in) so the
+       cards' own hover-lift keeps working once revealed. The cards live below
+       the fold, so hiding them after load causes no visible flash. If JS or
+       IntersectionObserver is unavailable (or reduced motion), the flag is
+       never added and every card stays fully visible. -->
+  <style>
+    .stk-anim .stack-card {
+      transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, opacity 0.6s ease;
+    }
+    .stk-anim .stack-card:not(.is-in) { opacity: 0; transform: translateY(52px); }
+  </style>
+  <script>
+    (function () {
+      var cards = [].slice.call(document.querySelectorAll('.stack-card'));
+      if (!cards.length) return;
+
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Leave everything visible when we can't animate safely.
+      if (reduce || !('IntersectionObserver' in window)) return;
+
+      // Turning the hidden state on only now guarantees the cards were never
+      // hidden from a no-JS visitor.
+      document.documentElement.classList.add('stk-anim');
+
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          // Toggle, not add-once: each card re-reveals every time it scrolls
+          // back into view.
+          e.target.classList.toggle('is-in', e.isIntersecting);
+        });
+      }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
+
+      cards.forEach(function (c) { io.observe(c); });
     })();
   </script>
 </body>
