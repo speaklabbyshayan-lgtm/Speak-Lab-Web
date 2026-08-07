@@ -31,7 +31,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="saturdays.css?v=20260807g">
+  <link rel="stylesheet" href="saturdays.css?v=20260807h">
 
   <script defer src="analytics.js?v=20260801"></script>
   <script defer src="/_vercel/insights/script.js"></script>
@@ -348,21 +348,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </section>
 
-    <!-- ═══ SMALL GROUPS ══════════════════════════════════════════════════ -->
+    <!-- ═══ TWO PANELS — continuous 3D swap ═════════════════════════════════
+         The two cards sit in a small 3D deck and slowly trade places forever:
+         the front one dips back, the back one rises forward, on a loop. Pure
+         CSS transforms (see .sat-swap), so it stays smooth. Pauses on hover,
+         and without JS / under reduced motion it is a plain readable stack. -->
     <section class="sat-section-tight">
       <div class="sat-wrap">
-        <div class="sat-panel sat-reveal sat-reveal--scale">
-          <span class="sat-eyebrow">Small groups</span>
-          <h2 class="sat-h2" style="margin-top:14px;">Not everyone who applies is confirmed.</h2>
-          <p class="sat-lede">We intentionally keep each experience small. That's how every participant gets to contribute, speak and receive individual attention. Quality matters more than numbers — so we're not rejecting people, we're protecting the experience.</p>
-        </div>
+        <div class="sat-swap" id="sat-swap">
+          <div class="sat-panel">
+            <span class="sat-eyebrow">Small groups</span>
+            <h2 class="sat-h2" style="margin-top:14px;">Not everyone who applies is confirmed.</h2>
+            <p class="sat-lede">We intentionally keep each experience small. That's how every participant gets to contribute, speak and receive individual attention. Quality matters more than numbers — so we're not rejecting people, we're protecting the experience.</p>
+          </div>
 
-        <!-- Second panel shares the section so there is no dead gap between
-             the two — just a tight 14px step. -->
-        <div class="sat-panel sat-reveal sat-reveal--scale" style="margin-top:14px;">
-          <span class="sat-eyebrow">☕ After the activities</span>
-          <h2 class="sat-h2" style="margin-top:14px;">Some of the best conversations happen at the end.</h2>
-          <p class="sat-lede">Every session concludes with refreshments and informal networking. Because communication isn't only what happens during an activity — it's what happens when people genuinely connect.</p>
+          <div class="sat-panel">
+            <span class="sat-eyebrow">☕ After the activities</span>
+            <h2 class="sat-h2" style="margin-top:14px;">Some of the best conversations happen at the end.</h2>
+            <p class="sat-lede">Every session concludes with refreshments and informal networking. Because communication isn't only what happens during an activity — it's what happens when people genuinely connect.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -636,7 +640,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a href="#apply" class="sat-btn sat-btn-gold">Request</a>
   </div>
 
-  <script src="saturdays.js?v=20260807g"></script>
+  <script src="saturdays.js?v=20260807h"></script>
 </body>
 
 </html>

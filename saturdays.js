@@ -28,6 +28,7 @@
     safe(initCountdown);
     safe(initReveals);
     safe(initHstack);
+    safe(initSwap);
     safe(initSeats);
     safe(initSticky);
     safe(initForm);
@@ -264,6 +265,39 @@
     window.addEventListener('resize', onResize, { passive: true });
     window.addEventListener('load', measure);
     measure();
+  }
+
+  // ── Two-panel 3D swap ────────────────────────────────────────────────────
+  // Floats the two panels into a shared 3D space (CSS does the looping). Sets
+  // the container height to the taller panel so the absolutely-positioned
+  // cards have room. No-op under reduced motion — they stay a readable stack.
+  function initSwap() {
+    var swap = $('sat-swap');
+    if (!swap) return;
+
+    var panels = all('.sat-panel', swap);
+    if (panels.length < 2) return;
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    function layout() {
+      // Measure natural heights with the deck flattened back to normal flow.
+      swap.classList.remove('is-3d');
+      swap.style.removeProperty('--swap-h');
+
+      var h = 0;
+      panels.forEach(function (p) { if (p.offsetHeight > h) h = p.offsetHeight; });
+      swap.style.setProperty('--swap-h', h + 'px');
+      swap.classList.add('is-3d');
+    }
+
+    var rt;
+    window.addEventListener('resize', function () {
+      clearTimeout(rt);
+      rt = setTimeout(layout, 150);
+    }, { passive: true });
+    window.addEventListener('load', layout);
+    layout();
   }
 
   // ── Sticky mobile CTA ──────────────────────────────────────────────────

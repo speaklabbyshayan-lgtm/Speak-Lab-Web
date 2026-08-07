@@ -833,12 +833,17 @@ a { color: inherit; }
   margin: 0;
   transition: none;              /* transform is scroll-driven; no lag */
   transform-origin: 50% 50%;
-  /* Each card glows in its own accent — the "lights" that lift the top card
-     off the pile as it lands. */
+  /* Promote each card to its own GPU layer and keep its paint contained, so
+     moving them is a cheap composite — this is what kills the scroll jank. */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  contain: layout paint;
+  /* Lighter shadow than a static card: a big blur radius repaints expensively
+     on every frame while the card slides. */
   border-color: color-mix(in srgb, var(--xp) 28%, var(--sat-line));
   box-shadow:
-    0 26px 60px -28px color-mix(in srgb, var(--xp) 78%, transparent),
-    var(--sat-shadow);
+    0 14px 28px -16px color-mix(in srgb, var(--xp) 70%, transparent),
+    0 3px 10px rgba(15, 23, 42, 0.06);
 }
 .sat-hstack.is-hstack .sat-hstack-stage > .sat-xp::before {
   width: 260px; height: 260px; opacity: 0.32;
@@ -928,6 +933,49 @@ a { color: inherit; }
 }
 
 .sat-panel h2 { margin-bottom: 4px; }
+
+/* ── Two-panel 3D swap ────────────────────────────────────────────────────
+   Base (no JS / reduced motion): the two panels are a plain readable stack.
+   JS adds .is-3d, which floats them into a shared 3D space where they trade
+   front/back forever. Pure transform + opacity keyframes = smooth. */
+.sat-swap { position: relative; max-width: 560px; margin: 0 auto; }
+.sat-swap > .sat-panel + .sat-panel { margin-top: 14px; }
+
+.sat-swap.is-3d {
+  perspective: 1600px;
+  height: var(--swap-h, auto);
+}
+.sat-swap.is-3d > .sat-panel {
+  position: absolute;
+  inset: 0 0 auto 0;
+  margin: 0;
+  transform-origin: 50% 60%;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  animation: sat-swap-a 11s ease-in-out infinite;
+}
+.sat-swap.is-3d > .sat-panel:nth-child(2) { animation-name: sat-swap-b; }
+/* Let people actually read — hovering (desktop) freezes the loop. */
+.sat-swap.is-3d:hover > .sat-panel { animation-play-state: paused; }
+
+/* A holds the front for the first half, dips back in 3D, waits, returns. */
+@keyframes sat-swap-a {
+  0%,   40% { transform: translate3d(0,0,0) rotateX(0deg); opacity: 1; z-index: 2; }
+  50%       { transform: translate3d(0,22px,-150px) rotateX(7deg); opacity: 0.9; z-index: 1; }
+  90%       { transform: translate3d(0,22px,-150px) rotateX(7deg); opacity: 0.9; z-index: 1; }
+  100%      { transform: translate3d(0,0,0) rotateX(0deg); opacity: 1; z-index: 2; }
+}
+/* B is the mirror — back first, rises to front at the midpoint. */
+@keyframes sat-swap-b {
+  0%,   40% { transform: translate3d(0,22px,-150px) rotateX(7deg); opacity: 0.9; z-index: 1; }
+  50%       { transform: translate3d(0,0,0) rotateX(0deg); opacity: 1; z-index: 2; }
+  90%       { transform: translate3d(0,0,0) rotateX(0deg); opacity: 1; z-index: 2; }
+  100%      { transform: translate3d(0,22px,-150px) rotateX(7deg); opacity: 0.9; z-index: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sat-swap.is-3d > .sat-panel { animation: none; }
+}
 
 /* ── Mission ──────────────────────────────────────────────────────────── */
 .sat-mission {
