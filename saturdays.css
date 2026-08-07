@@ -942,35 +942,38 @@ a { color: inherit; }
 .sat-swap > .sat-panel + .sat-panel { margin-top: 14px; }
 
 .sat-swap.is-3d {
-  perspective: 1600px;
-  height: var(--swap-h, auto);
+  perspective: 1500px;
+  /* Extra room below so the back card can peek out under the front one. */
+  height: calc(var(--swap-h, 320px) + 66px);
 }
 .sat-swap.is-3d > .sat-panel {
   position: absolute;
   inset: 0 0 auto 0;
   margin: 0;
-  transform-origin: 50% 60%;
+  transform-origin: 50% 100%;    /* hinge at the bottom, so it tilts up like a lid */
   backface-visibility: hidden;
   will-change: transform, opacity;
-  animation: sat-swap-a 11s ease-in-out infinite;
+  animation: sat-swap-a 9s ease-in-out infinite;
 }
 .sat-swap.is-3d > .sat-panel:nth-child(2) { animation-name: sat-swap-b; }
+/* The front card casts over the peeking one so the stack reads as depth. */
+.sat-swap.is-3d > .sat-panel { box-shadow: 0 18px 40px -20px rgba(15, 23, 42, 0.28); }
 /* Let people actually read — hovering (desktop) freezes the loop. */
 .sat-swap.is-3d:hover > .sat-panel { animation-play-state: paused; }
 
-/* A holds the front for the first half, dips back in 3D, waits, returns. */
+/* Two states only, so the pair always reads as one FRONT card (flat, forward)
+   and one BACK card (dropped down and pushed away, tilted back so it clearly
+   peeks out under the front one). A is front first; B is front second; the
+   z-index flips at the mid-cross so they trade cleanly. */
 @keyframes sat-swap-a {
-  0%,   40% { transform: translate3d(0,0,0) rotateX(0deg); opacity: 1; z-index: 2; }
-  50%       { transform: translate3d(0,22px,-150px) rotateX(7deg); opacity: 0.9; z-index: 1; }
-  90%       { transform: translate3d(0,22px,-150px) rotateX(7deg); opacity: 0.9; z-index: 1; }
-  100%      { transform: translate3d(0,0,0) rotateX(0deg); opacity: 1; z-index: 2; }
+  0%,  40% { transform: translate3d(0,0,0) rotateX(0deg); opacity: 1; z-index: 2; }
+  50%, 90% { transform: translate3d(0,54px,-150px) rotateX(9deg); opacity: 0.94; z-index: 1; }
+  100%     { transform: translate3d(0,0,0) rotateX(0deg); opacity: 1; z-index: 2; }
 }
-/* B is the mirror — back first, rises to front at the midpoint. */
 @keyframes sat-swap-b {
-  0%,   40% { transform: translate3d(0,22px,-150px) rotateX(7deg); opacity: 0.9; z-index: 1; }
-  50%       { transform: translate3d(0,0,0) rotateX(0deg); opacity: 1; z-index: 2; }
-  90%       { transform: translate3d(0,0,0) rotateX(0deg); opacity: 1; z-index: 2; }
-  100%      { transform: translate3d(0,22px,-150px) rotateX(7deg); opacity: 0.9; z-index: 1; }
+  0%,  40% { transform: translate3d(0,54px,-150px) rotateX(9deg); opacity: 0.94; z-index: 1; }
+  50%, 90% { transform: translate3d(0,0,0) rotateX(0deg); opacity: 1; z-index: 2; }
+  100%     { transform: translate3d(0,54px,-150px) rotateX(9deg); opacity: 0.94; z-index: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
